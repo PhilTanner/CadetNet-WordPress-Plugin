@@ -1,15 +1,15 @@
 <?php
 	/*			
-		Plugin Name: NZCF Unit Administration
-		Plugin URI:  https://github.com/PhilTanner/nzcf-unit-administration.git
-		Description: WordPress NZCF Unit Administration Plugin
+		Plugin Name: NZCF Cadet Net 
+		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
+		Description: WordPress NZCF Cadet Net
 		Version:     0.01
 		Author:      Phil Tanner
 		Author URI:  https://github.com/PhilTanner
 		License:     GPL3
 		License URI: http://www.gnu.org/licenses/gpl.html
 		Domain Path: /languages
-		Text Domain: nzcf-unit-administration
+		Text Domain: nzcf-cadet-net
         
         Copyright (C) 2016 Phil Tanner
 
@@ -27,7 +27,7 @@
     	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/	
 
-	class WPNZCFUAException extends Exception {
+	class WPNZCFCNException extends Exception {
 		/**
 		 * Pretty prints the exception for the user to see
 		 */
@@ -43,41 +43,41 @@
 			return sprintf("EXCEPTION:%s", $class, self::$mysqli->real_escape_string($this->getMessage()));
 		}
 	}
-	class WPNZCFUAExceptionBadData							extends WPNZCFUAException {}
-	class WPNZCFUAExceptionDBConn							extends WPNZCFUAException {}
-	class WPNZCFUAExceptionDBError							extends WPNZCFUAExceptionDBConn {}
-	class WPNZCFUAExceptionInsufficientPermissions			extends WPNZCFUAException {}
-	class WPNZCFUAExceptionInvalidUserSession				extends WPNZCFUAExceptionInsufficientPermissions {}
-	class WPNZCFUAExceptionWordPressInteraction				extends WPNZCFUAException {}
-	class WPNZCFUAExceptionWordPressInteractionInstall		extends WPNZCFUAExceptionWordPressInteraction {}
-	class WPNZCFUAExceptionWordPressInteractionCreateRole	extends WPNZCFUAExceptionWordPressInteractionInstall {}
+	class WPNZCFCNExceptionBadData							extends WPNZCFCNException {}
+	class WPNZCFCNExceptionDBConn							extends WPNZCFCNException {}
+	class WPNZCFCNExceptionDBError							extends WPNZCFCNExceptionDBConn {}
+	class WPNZCFCNExceptionInsufficientPermissions			extends WPNZCFCNException {}
+	class WPNZCFCNExceptionInvalidUserSession				extends WPNZCFCNExceptionInsufficientPermissions {}
+	class WPNZCFCNExceptionWordPressInteraction				extends WPNZCFCNException {}
+	class WPNZCFCNExceptionWordPressInteractionInstall		extends WPNZCFCNExceptionWordPressInteraction {}
+	class WPNZCFCNExceptionWordPressInteractionCreateRole	extends WPNZCFCNExceptionWordPressInteractionInstall {}
 
 	defined( 'ABSPATH' ) or die( 'No script kiddies please!' );	
 	
 	$version = "0.01";
-	$db_version = "0.03";
+	$db_version = "0.01";
 	
-	add_option( "wpnzcfua_version", $version );
-	add_option( "wpnzcfua_db_version", $db_version );
+	add_option( "wpnzcfcn_version", $version );
+	add_option( "wpnzcfcn_db_version", $db_version );
 	
 	if ( is_admin() ) {
     	// We are in admin mode
-     	require_once( dirname(__FILE__).'/admin/nzcfadmin_admin.php' );
+     	require_once( dirname(__FILE__).'/admin/admin.php' );
 	}	
 	
 	require_once( dirname(__FILE__).'/defines.php' );
 	
 	// Function to be called when this application is installed:
-	register_activation_hook( __FILE__, 'nzcfadmin_install' );
+	register_activation_hook( __FILE__, 'wpnzcfcn_install' );
 	// Create our DB tables to hold our data
-	register_activation_hook( __FILE__, 'nzcfadmin_db_install' );
+	register_activation_hook( __FILE__, 'wpnzcfcn_db_install' );
 	//Populate our data
-	register_activation_hook( __FILE__, 'nzcfadmin_db_init' );
+	register_activation_hook( __FILE__, 'wpnzcfcn_db_init' );
 	
 	// Function to be called when this application is uninstalled:
-	register_uninstall_hook( __FILE__, 'nzcfadmin_uninstall' );
+	register_uninstall_hook( __FILE__, 'wpnzcfcn_uninstall' );
 	// Function to be alled when this application is loaded
-	add_action('init', 'register_nzcfadmin');
+	add_action('init', 'register_wpnzcfcn');
 	
 	
 	// JSON API calls
@@ -91,7 +91,7 @@
 	if ( ! class_exists( 'AngularEndpoint' ) ):
 
 	    class AngularEndpoint {
- 	       const ENDPOINT_QUERY_NAME  = 'api/wpnzcfua/partial';
+ 	       const ENDPOINT_QUERY_NAME  = 'api/wpnzcfcn/partial';
   	      const ENDPOINT_QUERY_PARAM = '__api_angular';
 
 	        // WordPress hooks
@@ -115,11 +115,11 @@
 
 	        // Add API Endpoint
 	        public function add_endpoint() {
-				//	http://localhost:8080/wordpress/api/wpnzcfua/partial/ping
+				//	http://localhost:8080/wordpress/api/wpnzcfcn/partial/ping
  	           //add_rewrite_rule( '.*' . static::ENDPOINT_QUERY_NAME . '/partial/([^/]*)/?', '/wordpress/index.php?' . static::ENDPOINT_QUERY_PARAM . '=1&partial=$matches[1]', 'top' );
- 				add_rewrite_rule( '^/?api/wpnzcfua/partial/([^/]*)/?', '/wordpress/wp-content/plugins/nzcf-unit-administration/eoi/eoi.php', 'top' );
+ 				add_rewrite_rule( '^/?api/wpnzcfcn/partial/([^/]*)/?', '/wordpress/wp-content/plugins/nzcf-unit-administration/eoi/eoi.php', 'top' );
  				
- 				add_rewrite_rule( '^/?wordpress/api/wpnzcfua/eoi/?', '/wordpress/wp-content/plugins/nzcf-unit-administration/eoi/eoi.php', 'top' );
+ 				add_rewrite_rule( '^/?wordpress/api/wpnzcfcn/eoi/?', '/wordpress/wp-content/plugins/nzcf-unit-administration/eoi/eoi.php', 'top' );
  				
 
 	            //////////////////////////////////
@@ -176,86 +176,27 @@
 	endif; // AngularEndpoint
 	
 	
-	function nzcfadmin_install(){
+	function wpnzcfcn_install(){
 		global $wp_roles, $version;
 		
-		add_site_option( "wpnzcfua_version", $version );
-		
-		// First off, we're going to create the role types for NZCF to allow new roles and permissions for various user types
-		
-		// Based off code at https://codex.wordpress.org/Function_Reference/add_role
-		remove_role('nzcf-ua_cmdt');
-		$result = add_role(
-			'nzcf-ua_cmdt',
-			_('Commandant'),
-			array(
-				'view_personnel_detail_global'					=> true,
-				'edit_personnel_detail_global'					=> false,
-				'view_personnel_detail_own_area'					=> true,
-				'edit_personnel_detail_own_area'					=> false,
-				'view_personnel_detail_own_unit'					=> true,
-				'edit_personnel_detail_own_unit'					=> false,
-				'view_personnel_detail_own_flight'					=> true,
-				'edit_personnel_detail_own_flight'					=> false,
-				'view_personnel_detail_own_record'					=> true,
-				'edit_personnel_detail_own_record'					=> false,
-				
-				'view_attendance_global'					=> true,
-				'edit_attendance_global'					=> false,
-				'view_attendance_own_area'					=> true,
-				'edit_attendance_own_area'					=> false,
-				'view_attendance_own_unit'					=> true,
-				'edit_attendance_own_unit'					=> false,
-				
-				'view_activity_global'					=> true,
-				'edit_activity_global'					=> false,
-				'view_activity_own_area'					=> true,
-				'edit_activity_own_area'					=> false,
-				'view_activity_own_unit'					=> true,
-				'edit_activity_own_unit'					=> false,
-				
-				'view_finance_global'					=> true,
-				'edit_finance_global'					=> false,
-				'view_finance_own_area'					=> true,
-				'edit_finance_own_area'					=> false,
-				'view_finance_own_unit'					=> true,
-				'edit_finance_own_unit'					=> false,
-				
-				'view_logistics_global'					=> true,
-				'edit_logistics_global'					=> false,
-				'view_logistics_own_area'					=> true,
-				'edit_logistics_own_area'					=> false,
-				'view_logistics_own_unit'					=> true,
-				'edit_logistics_own_unit'					=> false,
-				
-				'view_training_global'					=> true,
-				'edit_training_global'					=> false,
-				'view_training_own_area'					=> true,
-				'edit_training_own_area'					=> false,
-				'view_training_own_unit'					=> true,
-				'edit_training_own_unit'					=> false
-			)
-		);
-		if( is_null($result) ) {
-			throw new WPNZCFUAExceptionWordPressInteractionCreateRole( 'Unable to create Commandant role' );
-		}
+		add_site_option( "wpnzcfcn_version", $version );
 		
 	}
 	
 	// Create our database 
-	function nzcfadmin_db_install(){
+	function wpnzcfcn_db_install(){
 		
 		// Access & use the WP database
 		global $wpdb, $db_version;
 		
-		add_site_option( "wpnzcfua_db_version", $db_version );
+		add_site_option( "wpnzcfcn_db_version", $db_version );
 		
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		
 		// Create our database tables, to hold the WordPress NZCF Unit Admin data
 		// Modified from https://codex.wordpress.org/Creating_Tables_with_Plugins
 
-		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfua_rank (
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_rank (
   rank_id mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   rank varchar(70) NOT NULL,
   rank_shortname varchar(10) NOT NULL,
@@ -266,7 +207,7 @@
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
 		
-		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfua_vacancy (
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_vacancy (
   vacancy_id mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   short_desc varchar(255) NOT NULL,
   long_desc text NOT NULL,
@@ -279,7 +220,7 @@
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
 		
-		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfua_vacancy_application (
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_vacancy_application (
   application_id mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   vacancy_id mediumint(9) unsigned NOT NULL,
   user_id bigint(20) unsigned NOT NULL COMMENT 'WordPress user ID',
@@ -313,7 +254,7 @@
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
 		
-		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfua_vacancy_application_service (
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_vacancy_application_service (
   vacancy_service_id mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   application_id mediumint(9) unsigned NOT NULL,
   cadet_unit_id mediumint(9) unsigned NOT NULL,
@@ -324,7 +265,7 @@
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
 		
-		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfua_vacancy_application_course (
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_vacancy_application_course (
   vacancy_course_id mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   application_id mediumint(9) unsigned NOT NULL,
   course_id mediumint(9) unsigned NOT NULL,
@@ -335,19 +276,19 @@
 		dbDelta( $sql );
 		
 		
-		update_option( "wpnzcfua_db_version", $db_version );
-		update_site_option( "wpnzcfua_db_version", $db_version );
+		update_option( "wpnzcfcn_db_version", $db_version );
+		update_site_option( "wpnzcfcn_db_version", $db_version );
 		
 	}
 
 	// Prepopulate our database
-	function nzcfadmin_db_init(){
+	function wpnzcfcn_db_init(){
 		
 		// Access & use the WP database
 		global $wpdb;
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		
-		$table = $wpdb->prefix."wpnzcfua_rank";
+		$table = $wpdb->prefix."wpnzcfcn_rank";
 		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'WNGCDR'" ) === null ){
 			$wpdb->insert( 
 				$table, 
@@ -356,7 +297,7 @@
 					'rank_shortname' => 'WNGCDR', 
 					'ordering' => 20, 
 					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFUA_CADETS_ATC
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC
 				) 
 			);
 		}
@@ -368,7 +309,7 @@
 					'rank_shortname' => 'SQNLDR', 
 					'ordering' => 30, 
 					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFUA_CADETS_ATC
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC
 				) 
 			);
 		}
@@ -380,7 +321,7 @@
 					'rank_shortname' => 'FLTLT', 
 					'ordering' => 30, 
 					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFUA_CADETS_ATC
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC
 				) 
 			);
 		}
@@ -392,7 +333,7 @@
 					'rank_shortname' => 'PLTOFF', 
 					'ordering' => 40, 
 					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFUA_CADETS_ATC
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC
 				) 
 			);
 		}
@@ -404,7 +345,7 @@
 					'rank_shortname' => 'A/PLTOFF', 
 					'ordering' => 41, 
 					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFUA_CADETS_ATC
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC
 				) 
 			);
 		}
@@ -416,7 +357,7 @@
 					'rank_shortname' => 'CIVILIAN', 
 					'ordering' => 99, 
 					'nzcf20_order' => 99,
-					'nzcf_corps' => WPNZCFUA_CADETS_ATC | WPNZCFUA_CADETS_CORPS | WPNZCFUA_CADETS_SEA 
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA 
 				) 
 			);
 		}
@@ -425,31 +366,28 @@
  	   $wpAngularEndpoint->init();
 	}
 
-	function register_nzcfadmin(){
+	function register_wpnzcfcn(){
 		// We've got an updated plugin version installed, which needs updates to the DB
-	    if ( get_site_option( 'wpnzcfua_db_version' ) != get_option('wpnzcfua_db_version') ) {
-     	   nzcfadmin_db_install();
+	    if ( get_site_option( 'wpnzcfcn_db_version' ) != get_option('wpnzcfcn_db_version') ) {
+     	   wpnzcfcn_db_install();
     	}
 	}
 
-	function nzcfadmin_uninstall(){
+	function wpnzcfcn_uninstall(){
       	// If uninstall is not called from WordPress (i.e. is called via URL or command line)
 		if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) {
           exit();
 		}	
  
 		// Delete our saved options
-		delete_option( 'pluginoptionname' );
- 
-		// For site options in Multisite
-		delete_site_option( $option_name );  
+		delete_option( 'wpnzcfcn_version' );
+		delete_option( 'wpnzcfcn_db_version' );
+		delete_site_option( 'wpnzcfcn_db_version' );
  
 		// Drop a custom db table
 		global $wpdb;
 		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}mytable" );
 		
-		// Remove our roles
-		remove_role('nzcf-ua_cmdt');
     }
     
     if( !function_exists('current_user_has_role') ){

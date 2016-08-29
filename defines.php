@@ -36,11 +36,11 @@
 	}	
 	
 	// New Zealand Cadet Forces, as a bitmask - used for lesson training
-	define( 'WPNZCFUA_CADETS_ATC',			1 );
-	define( 'WPNZCFUA_CADETS_CORPS',			1 << 1 );
-	define( 'WPNZCFUA_CADETS_SEA',			1 << 2 );
+	define( 'WPNZCFCN_CADETS_ATC',			1 );
+	define( 'WPNZCFCN_CADETS_CORPS',			1 << 1 );
+	define( 'WPNZCFCN_CADETS_SEA',			1 << 2 );
 	
 	// New Zealand Cadet Forces Areas, as a bitmask
-	define( 'WPNZCFUA_AREA_NORTHERN',			1 );
-	define( 'WPNZCFUA_AREA_CENTRAL',			1 << 1 );
-	define( 'WPNZCFUA_AREA_SOUTHERN',			1 << 2 );
+	define( 'WPNZCFCN_AREA_NORTHERN',			1 );
+	define( 'WPNZCFCN_AREA_CENTRAL',			1 << 1 );
+	define( 'WPNZCFCN_AREA_SOUTHERN',			1 << 2 );
