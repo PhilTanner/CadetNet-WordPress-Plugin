@@ -1,0 +1,10 @@
+define( 'WP_NZCF_UA_DRESS_CODE_BLUES',				0 );
+blues?
+
+one-off install, or for each unit?
+
+How to handle individual settings like this:
+define( 'WP_NZCF_UA_SETTING_PARADE_NIGHT',			"Wednesday" );
+	define( 'WP_NZCF_UA_SETTING_FINANCE_TERM_FEES',			50.00 );
+	define( 'WP_NZCF_UA_SETTING_FINANCE_UNIFORM_DEPOSIT',		50.00 );
+

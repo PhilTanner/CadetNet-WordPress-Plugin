@@ -1,0 +1,85 @@
+body
+{
+	font-family: 'Lucida Sans', 'Lucida Sans Unicode', Verdana, Arial, sans-serif;
+	font-size:80%;
+	/*background: url("logo.png") no-repeat fixed right bottom White*/
+	margin-bottom:5em;
+}
+
+td.currency { text-align: right; }
+table { border-left: 1px solid silver; border-spacing:0; border-collapse:collapse; }
+tr th, tbody tr td { border: 1px solid silver; border-left:0px; }
+th, td { padding: 0.25ex 1ex; }
+thead th { padding: 1ex 1ex; }
+td.attendance { text-align: center; }
+
+.ui-widget { font-size: 90%; }
+.ui-button-text { margin-left : 0.75ex; }
+.picktime, .hourlyrate { width: 4em; }
+.pickdate { width: 8em; }
+.navoptions { float: right; }
+.navoptions button { margin-bottom: 5px; }
+.highlighted { background-color:Yellow; }
+.evenrow { background-color: #f3f3f3; }
+
+nav ul li { float: right; list-style: none; margin-left: 1ex; }
+
+label { display:inline-block; width: 10em; line-height: 2em; }
+input, select, textarea { width: 50em; border: 1px solid #ddd; padding: 0.5ex 0.5em; }
+.ui-dialog-content label { width:auto; }
+.ui-dialog-content input, .ui-widget-content select, .ui-widget-content textarea { width: auto; }
+
+.ui-dialog-content ol.dragdrop {
+	border: 1px solid #eee;
+    min-height: 20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 0 0 0;
+    margin-right: 10px;
+}
+ol.dragdrop li {
+	margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+}
+#attendees, #non_attendees {     float: left;  width:42%; }
+fieldset.dragdrop.attendees {
+    /*
+overflow-y: scroll;
+    max-height: 20em;
+*/
+    padding-right:2em;
+}
+
+table.tablesorter thead tr .header {
+	background-image: url(tablesorter/themes/blue/bg.gif);
+	background-repeat: no-repeat;
+	background-position: center left;
+	cursor: pointer;
+}
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(tablesorter/themes/blue/asc.gif);
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(tablesorter/themes/blue/desc.gif);
+}
+
+input[type=checkbox] { width: auto; }
+button[type=submit] { float:right; }
+td.attendance select { width: auto; font-size: 70%; }
+
+#nokform fieldset { width:45%; float:left; }
+#nokform label  { width:25%; }
+#nokform input { width: 70%; }
+#nokform input.halfsize { width: 33%; }
+
+.lessonholder { margin: 0px; text-indent:0px; list-style:none; }
+.lessonholder li { float:left; }
+.lesson_timetable { font-size: 66%; text-align:center; width:10em; margin:1ex; border:1px solid black; background-color:White }
+.lesson_timetable h2 { margin:0px; border-bottom:1px solid black;  }
+.lesson_timetable p { margin:0px; padding:0.25ex 0.5ex; }
+.lesson_timetable p.unknown { font-style:italic; }
+td.lesson_block {padding:0px} 
+
+footer { position: fixed; bottom:0px; color: #ddd; margin:0px; padding:0px; width: 99%; z-index: -1; }
+footer a { color: #ccc;  }
