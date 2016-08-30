@@ -1,4 +1,7 @@
-	<style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<style>
 		.eoi { color:#000; }
 		.eoi * { box-sizing:border-box; font-size: 1em; }
 		.eoi fieldset { margin-top:2em; }
@@ -54,7 +57,8 @@
 				<label for="applicant_rank"> Rank </label>
 				<label for="applicant_name"> Initials and Surname </label>
 				<label for="service_number"> Service number </label>
-				<br />	
+				<br />
+				<input type="hidden" name="applicant_rank_id" id="applicant_rank_id" />
 				<input type="text" name="applicant_rank" id="applicant_rank" class="rank" />
 				<input type="text" name="applicant_name" id="applicant_name" />
 				<input type="number" name="service_number" id="service_number" />
@@ -136,6 +140,7 @@
 				<label for="cucdr_date"> Date </label>
 			</div>
 			<div>
+				<input type="hidden" name="cucdr_rank_id" id="cucdr_rank_id" />
 				<input type="text" class="rank" name="cucdr_rank" id="cucdr_rank" required="required" />
 				<input type="text" name="cucdr_name" id="cucdr_name" required="required" />
 				<input type="date" name="cucdr_date" id="cucdr_date" required="required" />
@@ -160,6 +165,7 @@
 			<label for="aso_date"> Date </label>
 			<br />
 			<div>
+				<input type="hidden" name="aso_rank_id" id="aso_rank_id" />
 				<input type="text" class="rank" name="aso_rank" id="aso_rank" required="required" />
 				<input type="text" name="aso_name" id="aso_name" required="required" />
 				<input type="date" name="aso_date" id="aso_date" required="required" />
@@ -184,6 +190,7 @@
 			<label for="ac_date"> Date </label>
 			<br />
 			<div>
+				<input type="hidden" name="ac_rank_id" id="ac_rank_id" />
 				<input type="text" class="rank" name="ac_rank" id="ac_rank" required="required" />
 				<input type="text" name="ac_name" id="ac_name" required="required" />
 				<input type="date" name="ac_date" id="ac_date" required="required" />
@@ -208,6 +215,7 @@
 			<label for="comdt_date"> Date </label>
 			<br />
 			<div>
+				<input type="hidden" name="comdt_rank_id" id="comdt_rank_id" />
 				<input type="text" class="rank" name="comdt_rank" id="comdt_rank" required="required" />
 				<input type="text" name="ac_name" id="comdt_name" required="required" />
 				<input type="date" name="comdt_date" id="comdt_date" required="required" />
@@ -225,8 +233,17 @@
 		
 		// Make our rank entries a auto-complete drop down
 		$('input.rank').autocomplete({
-			source: ["GRPCPT","WNGCDR","SQNLDR","FLTLT","FLYOFF","PLTOFF"],
-			minLength:0
+			source: "/wordpress/wp-admin/admin-ajax.php?action=rank",
+			minLength:0,
+			focus: function( event, ui ) {
+				$( this ).val( ui.item.label );
+				return false;
+			},
+			select: function( event, ui ) {
+				$( this ).val( ui.item.label );
+				$( "#"+$(this).attr("id")+"_id" ).val( ui.item.value );
+				return false;
+			}
 		});
 		
 		// Make our appointments an autocomplete drop down
@@ -390,47 +407,28 @@
 			// Part 1
 			part1: [{
 				vacancy_id: 0,
-				vacancy_description: "Prepopulated vacancy desc",
-				rank: "A/PLTOFF",
-				application_closes: "2016-06-30"
+				vacancy_description: "",
+				rank: "",
+				application_closes: ""
 			}],
 			
 			part2: [{
-				applicant_name: "Phil Tanner",
-				applicant_rank: "A/PLTOFF",
-				service_number: "12345"
+				applicant_name: "",
+				applicant_rank: "",
+				service_number: ""
 			}],
 			
 			part3: [{
 				service: [{
-					service_cadet_unit_1: "aa",
-					service_start_date_1: "1970-01-01",
-					service_end_date_1: "1970-01-01",
-					service_appointments_held_1: "aa" 
-				},{
-					service_cadet_unit_2: "bb",
-					service_start_date_2: "1971-02-02",
-					service_end_date_2: "1971-02-02",
-					service_appointments_held_2: "bb" 
-				},{
-					service_cadet_unit_3: "cc",
-					service_start_date_3: "1972-03-03",
-					service_end_date_3: "1972-03-03",
-					service_appointments_held_3: "cc" 
-				},{
-					service_cadet_unit_4: "dd",
-					service_start_date_4: "1973-04-04",
-					service_end_date_4: "",
-					service_appointments_held_4: "dd" 
+					service_cadet_unit_1: "a",
+					service_start_date_1: "",
+					service_end_date_1: "",
+					service_appointments_held_1: "" 
 				}],
 				course: [{
-					course_qual_id_1: "1",
-					course_qual_1: "Commissioning Course",
-					course_date_1: "2016-05-19"
-				},{
-					course_qual_id_2: "2",
-					course_qual_2: "Range Conducting Officer",
-					course_date_2: "2016-08-19",
+					course_qual_id_1: "",
+					course_qual_1: "",
+					course_date_1: ""
 				}],
 				course_staffed: [{
 					course_staffed_id_1: "",
@@ -440,11 +438,11 @@
 			}],
 			
 			part4: [{
-				best_candidate_response: "I'm the best candidate because I'm Oh-4"
+				best_candidate_response: ""
 			}],
 
 			part5: [{
-				cv: "This is my Curriculum Vitae"
+				cv: ""
 			}],
 			
 			part6: [{

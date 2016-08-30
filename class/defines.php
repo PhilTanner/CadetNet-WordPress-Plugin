@@ -1,4 +1,5 @@
-
+<?php
+	
 	defined( 'ABSPATH' ) or die( 'No script kiddies please!' );	
 	
 	
@@ -27,13 +28,12 @@
 	class WPNZCFCNExceptionWordPressInteractionInstall		extends WPNZCFCNExceptionWordPressInteraction {}
 	class WPNZCFCNExceptionWordPressInteractionCreateRole	extends WPNZCFCNExceptionWordPressInteractionInstall {}
 	
-	
 	if ( is_admin() ) {
     	// We are in admin mode
-     	require_once( dirname(__FILE__).'/admin/admin.php' );
+     	require_once( dirname(__FILE__).'/../admin/admin.php' );
 	}	
 	
-	// New Zealand Cadet Forces, as a bitmask - used for lesson training
+	// New Zealand Cadet Forces, as a bitmask 
 	define( 'WPNZCFCN_CADETS_ATC',			1 );
 	define( 'WPNZCFCN_CADETS_CORPS',			1 << 1 );
 	define( 'WPNZCFCN_CADETS_SEA',			1 << 2 );

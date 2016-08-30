@@ -45,103 +45,15 @@
 	
 	// Function to be called when this application is uninstalled:
 	register_uninstall_hook( __FILE__, 'wpnzcfcn_uninstall' );
-	// Function to be alled when this application is loaded
-	add_action('init', 'register_wpnzcfcn');
+	// Function to be called when this application is loaded
+	add_action('init', 'wpnzcfcn_register');
 	
-	
-	// JSON API calls
-	// Taken from: http://wordpress.stackexchange.com/questions/217103/how-to-use-wordpress-php-functions-in-angularjs-partials-files/218912#218912
-	/*
-	So we're going to turn a front-end request for:
-	example.com/api/angular/partial/custom
-	into something we can use internally as:
-	example.com/index.php?__api_angular=1&partial=custom
-	*/
-	
-if ( ! class_exists( 'AngularJSONEndpoint' ) ):
-
-    class AngularJSONEndpoint {
-        const ENDPOINT_NAMESPACE  = 'namespace/v2';
-
-        /**
-         * Initialize WordPress hooks
-         */
-        public function init() {
-            add_action( 'init', array ( $this, 'add_endpoint' ), 0 );
-        }
-
-        /**
-         * Add JSON API Endpoint
-         */
-        public function add_endpoint() {
-
-            add_action('rest_api_init', function () {
-
-                // http://example.com/wp-json/namespace/v2/angular?partial=custom
-
-                register_rest_route( static::ENDPOINT_NAMESPACE, '/angular', array (
-                    'methods'             => 'GET',
-                    'callback'            => array($this, 'wp_json_namespace_v2__angular'),
-                    'permission_callback' => function (WP_REST_Request $request) {
-                        return true;
-                    }
-                ));
-            });
-
-            flush_rewrite_rules(true); // FIXME: ------- DONT LEAVE ME HERE
-        }
-
-        /**
-         * Handle the endpoint
-         * @param $request
-         *
-         * @return WP_REST_Response
-         */
-        function wp_json_namespace_v2__angular($request)
-        {
-            // json-api params
-
-            $parameters = $request->get_query_params();
-
-            // check for partial requests
-
-            if(isset($parameters['partial'])){
-                switch($parameters['partial']) {
-                    case 'custom':
-                        require __DIR__ . '/custom.php';
-                        die();
-                }
-            }
-
-            // return results
-
-            $data = array(
-                'success' => false,
-                'message' => 'Bad Request'
-            );
-
-            return new WP_REST_Response($data, 400);
-        }
-    }
-
-    $wpAngularJSONEndpoint = new AngularJSONEndpoint();
-    $wpAngularJSONEndpoint->init();
-
-endif; // AngularJSONEndpoint
 	
 	function wpnzcfcn_install(){
 		global $wp_roles, $version;
 		
 		add_site_option( "wpnzcfcn_version", $version );
 		
-		/*
- 				add_rewrite_rule( '^/?wordpress/api/wpnzcfcn/eoi/?', '/wordpress/wp-content/plugins/nzcf-unit-administration/eoi/eoi.php', 'top' );
- 				
-
-	            //////////////////////////////////
- 	           flush_rewrite_rules( false ); //// REMOVE THIS WHEN DONE
-  	          //////////////////////////////////
-		*/
 	}
 	
 	// Create our database 
@@ -315,7 +227,7 @@ endif; // AngularJSONEndpoint
 				$table, 
 				array( 
 					'rank' => 'Civilian', 
-					'rank_shortname' => 'CIVILIAN', 
+					'rank_shortname' => 'CIV', 
 					'ordering' => 99, 
 					'nzcf20_order' => 99,
 					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA 
@@ -325,11 +237,47 @@ endif; // AngularJSONEndpoint
 		
 	}
     
-	function register_wpnzcfcn(){
+	function wpnzcfcn_register(){
 		// We've got an updated plugin version installed, which needs updates to the DB
 	    if ( get_site_option( 'wpnzcfcn_db_version' ) != get_option('wpnzcfcn_db_version') ) {
      	   wpnzcfcn_db_install();
     	}
+    
+    	// Register our JSON callbacks
+    	// http://bordoni.me/ajax-wordpress/
+    	add_action( 'wp_ajax_rank', 'wpnzcfcn_json_callback_rank' );
+		add_action( 'wp_ajax_nopriv_rank', 'wpnzcfcn_json_callback_rank' );  
+	}
+	
+	// http://bordoni.me/ajax-wordpress/
+	function wpnzcfcn_json_callback_rank() {
+		global $wpdb;
+	    $response = array();
+
+		$keywords = (isset($_GET['term'])?$_GET['term']:'');
+		// Never trust input from a user!
+		$keywords = wp_kses( strtolower($keywords), array() );
+		$response = $wpdb->get_results( $wpdb->prepare(
+		"
+			SELECT 
+				* 
+			FROM 
+				".$wpdb->prefix."wpnzcfcn_rank 
+			WHERE 
+				LOWER(rank_shortname) LIKE %s 
+				OR LOWER(rank) LIKE %s
+			ORDER BY 
+				ordering ASC;",
+			'%'.$wpdb->esc_like($keywords).'%',
+			'%'.$wpdb->esc_like($keywords).'%'
+        ) );
+        // For our autocomplete jQueryUI boxes, simplify our value/label options
+		foreach( $response as $rank ) {
+			$rank->value = $rank->rank_id;
+			$rank->label = $rank->rank." (".$rank->rank_shortname.")";
+		}
+ 	   // Never forget to exit or die on the end of a WordPress AJAX action!
+	    exit( json_encode( $response ) ); 
 	}
 
 	function wpnzcfcn_uninstall(){
