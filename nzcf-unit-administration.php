@@ -26,33 +26,8 @@
     	You should have received a copy of the GNU General Public License
     	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/	
+	require_once( dirname(__FILE__).'/class/defines.php' );
 
-	class WPNZCFCNException extends Exception {
-		/**
-		 * Pretty prints the exception for the user to see
-		 */
-		public function toString() {
-			$t = $this->getTrace();
-			if (empty($t)) {
-				$class = "Unknown";
-			}
-			else {
-				$first = reset($t);
-				$class = $first["class"];
-			}
-			return sprintf("EXCEPTION:%s", $class, self::$mysqli->real_escape_string($this->getMessage()));
-		}
-	}
-	class WPNZCFCNExceptionBadData							extends WPNZCFCNException {}
-	class WPNZCFCNExceptionDBConn							extends WPNZCFCNException {}
-	class WPNZCFCNExceptionDBError							extends WPNZCFCNExceptionDBConn {}
-	class WPNZCFCNExceptionInsufficientPermissions			extends WPNZCFCNException {}
-	class WPNZCFCNExceptionInvalidUserSession				extends WPNZCFCNExceptionInsufficientPermissions {}
-	class WPNZCFCNExceptionWordPressInteraction				extends WPNZCFCNException {}
-	class WPNZCFCNExceptionWordPressInteractionInstall		extends WPNZCFCNExceptionWordPressInteraction {}
-	class WPNZCFCNExceptionWordPressInteractionCreateRole	extends WPNZCFCNExceptionWordPressInteractionInstall {}
-
-	defined( 'ABSPATH' ) or die( 'No script kiddies please!' );	
 	
 	$version = "0.01";
 	$db_version = "0.01";
@@ -60,12 +35,6 @@
 	add_option( "wpnzcfcn_version", $version );
 	add_option( "wpnzcfcn_db_version", $db_version );
 	
-	if ( is_admin() ) {
-    	// We are in admin mode
-     	require_once( dirname(__FILE__).'/admin/admin.php' );
-	}	
-	
-	require_once( dirname(__FILE__).'/defines.php' );
 	
 	// Function to be called when this application is installed:
 	register_activation_hook( __FILE__, 'wpnzcfcn_install' );
@@ -88,99 +57,91 @@
 	into something we can use internally as:
 	example.com/index.php?__api_angular=1&partial=custom
 	*/
-	if ( ! class_exists( 'AngularEndpoint' ) ):
-
-	    class AngularEndpoint {
- 	       const ENDPOINT_QUERY_NAME  = 'api/wpnzcfcn/partial';
-  	      const ENDPOINT_QUERY_PARAM = '__api_angular';
-
-	        // WordPress hooks
-	        public function init() {
-	            add_filter( 'query_vars', array ( $this, 'add_query_vars' ), 0 );
-	            add_action( 'parse_request', array ( $this, 'sniff_requests' ), 0 );
-	            add_action( 'init', array ( $this, 'add_endpoint' ), 0 );
-	        }
-
-	        // Add public query vars
-	        public function add_query_vars( $vars ) {
-
-	            // add all the things we know we'll use
-	            $vars[] = static::ENDPOINT_QUERY_PARAM;
- 	           $vars[] = 'partial';
-  	          $vars[] = 'filter';
-   	         $vars[] = 'type';
-
-	            return $vars;
-        	}
-
-	        // Add API Endpoint
-	        public function add_endpoint() {
-				//	http://localhost:8080/wordpress/api/wpnzcfcn/partial/ping
- 	           //add_rewrite_rule( '.*' . static::ENDPOINT_QUERY_NAME . '/partial/([^/]*)/?', '/wordpress/index.php?' . static::ENDPOINT_QUERY_PARAM . '=1&partial=$matches[1]', 'top' );
- 				add_rewrite_rule( '^/?api/wpnzcfcn/partial/([^/]*)/?', '/wordpress/wp-content/plugins/nzcf-unit-administration/eoi/eoi.php', 'top' );
- 				
- 				add_rewrite_rule( '^/?wordpress/api/wpnzcfcn/eoi/?', '/wordpress/wp-content/plugins/nzcf-unit-administration/eoi/eoi.php', 'top' );
- 				
-
-	            //////////////////////////////////
- 	           flush_rewrite_rules( false ); //// REMOVE THIS WHEN DONE
-  	          //////////////////////////////////
-   	     }
-
-	        // Sniff Requests
-	        public function sniff_requests( $wp_query ) {
-	            global $wp;
-
-	            if ( isset(
- 	               $wp->query_vars[ static::ENDPOINT_QUERY_PARAM ],
-  	              $wp->query_vars[ 'partial' ] ) ) {
-   	             $this->handle_partial_request(); // handle it
-    	        }
-     	   }
-
-	        // Handle Requests
-	        protected function handle_partial_request() {
- 	           global $wp;
-
-	            $partial_requested = $wp->query_vars[ 'partial' ];
-
-	            switch ( $partial_requested ) {
-
-	                // example.com/api/angular/partial/ping
- 	               case 'ping':
-  	                  wp_send_json_success( array (
-   	                     'message' => 'Enjoy your partial', 'partial' => $partial_requested,
-    	                ) );
-     	               break;
-
-	                // example.com/api/angular/partial/custom
- 	               case 'custom':
-  	                  add_filter( 'template_include', function( $original_template ) {
-   	                     return __DIR__ . '/custom.php';
-    	                } );
-     	               break;
-
-	                // example.com/api/angular/partial/search
- 	               case 'search':
-  	                  add_filter( 'template_include', function( $original_template ) {
-      	                  return get_template_directory() . '/search.php';
-   	                 } );
-    	                break;
-    
-     	           default:
-       	             wp_send_json_error( array ( 'message' => 'Invalid Request' ) );
-        	    }
-        	}
-    	}
-
-	endif; // AngularEndpoint
 	
+if ( ! class_exists( 'AngularJSONEndpoint' ) ):
+
+    class AngularJSONEndpoint {
+        const ENDPOINT_NAMESPACE  = 'namespace/v2';
+
+        /**
+         * Initialize WordPress hooks
+         */
+        public function init() {
+            add_action( 'init', array ( $this, 'add_endpoint' ), 0 );
+        }
+
+        /**
+         * Add JSON API Endpoint
+         */
+        public function add_endpoint() {
+
+            add_action('rest_api_init', function () {
+
+                // http://example.com/wp-json/namespace/v2/angular?partial=custom
+
+                register_rest_route( static::ENDPOINT_NAMESPACE, '/angular', array (
+                    'methods'             => 'GET',
+                    'callback'            => array($this, 'wp_json_namespace_v2__angular'),
+                    'permission_callback' => function (WP_REST_Request $request) {
+                        return true;
+                    }
+                ));
+            });
+
+            flush_rewrite_rules(true); // FIXME: ------- DONT LEAVE ME HERE
+        }
+
+        /**
+         * Handle the endpoint
+         * @param $request
+         *
+         * @return WP_REST_Response
+         */
+        function wp_json_namespace_v2__angular($request)
+        {
+            // json-api params
+
+            $parameters = $request->get_query_params();
+
+            // check for partial requests
+
+            if(isset($parameters['partial'])){
+                switch($parameters['partial']) {
+                    case 'custom':
+                        require __DIR__ . '/custom.php';
+                        die();
+                }
+            }
+
+            // return results
+
+            $data = array(
+                'success' => false,
+                'message' => 'Bad Request'
+            );
+
+            return new WP_REST_Response($data, 400);
+        }
+    }
+
+    $wpAngularJSONEndpoint = new AngularJSONEndpoint();
+    $wpAngularJSONEndpoint->init();
+
+endif; // AngularJSONEndpoint
 	
 	function wpnzcfcn_install(){
 		global $wp_roles, $version;
 		
 		add_site_option( "wpnzcfcn_version", $version );
 		
+		/*
+ 				add_rewrite_rule( '^/?wordpress/api/wpnzcfcn/eoi/?', '/wordpress/wp-content/plugins/nzcf-unit-administration/eoi/eoi.php', 'top' );
+ 				
+
+	            //////////////////////////////////
+ 	           flush_rewrite_rules( false ); //// REMOVE THIS WHEN DONE
+  	          //////////////////////////////////
+		*/
 	}
 	
 	// Create our database 
@@ -362,10 +323,8 @@
 			);
 		}
 		
-	    $wpAngularEndpoint = new AngularEndpoint();
- 	   $wpAngularEndpoint->init();
 	}
-
+    
 	function register_wpnzcfcn(){
 		// We've got an updated plugin version installed, which needs updates to the DB
 	    if ( get_site_option( 'wpnzcfcn_db_version' ) != get_option('wpnzcfcn_db_version') ) {
