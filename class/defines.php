@@ -22,6 +22,8 @@
 	// Stop direct URL access
 	defined( 'ABSPATH' ) or die( 'No script kiddies please!' );	
 	
+	define('WP_DEBUG', true); 
+	
 	// Custom exceptions for error handling
 	class WPNZCFCNException extends Exception {
 		/**
