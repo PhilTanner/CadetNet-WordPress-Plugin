@@ -27,6 +27,8 @@
     	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/	
 	require_once( dirname(__FILE__).'/class/defines.php' );
+	// All our JSON outputter functions
+	require_once( dirname(__FILE__).'/json/json.php' );
 
 	
 	$version = "0.01";
@@ -36,7 +38,7 @@
 	add_option( "wpnzcfcn_db_version", $db_version );
 	
 	
-	// Function to be called when this application is installed:
+	// Function to be called when this application is installed (activated):
 	register_activation_hook( __FILE__, 'wpnzcfcn_install' );
 	// Create our DB tables to hold our data
 	register_activation_hook( __FILE__, 'wpnzcfcn_db_install' );
@@ -49,14 +51,91 @@
 	add_action('init', 'wpnzcfcn_register');
 	
 	
-	function wpnzcfcn_install(){
-		global $wp_roles, $version;
+	
+	// Prepopulate our database
+	function wpnzcfcn_db_init(){
 		
-		add_site_option( "wpnzcfcn_version", $version );
+		// Access & use the WP database
+		global $wpdb;
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		
+		$table = $wpdb->prefix."wpnzcfcn_rank";
+		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'WNGCDR'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'rank' => 'Wing Commander', 
+					'rank_shortname' => 'WNGCDR', 
+					'ordering' => 20, 
+					'nzcf20_order' => 50,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'SQNLDR'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'rank' => 'Squadron Leader', 
+					'rank_shortname' => 'SQNLDR', 
+					'ordering' => 30, 
+					'nzcf20_order' => 50,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'FLTLT'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'rank' => 'Flight Lieutenant', 
+					'rank_shortname' => 'FLTLT', 
+					'ordering' => 30, 
+					'nzcf20_order' => 50,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'PLTOFF'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'rank' => 'Pilot Officer', 
+					'rank_shortname' => 'PLTOFF', 
+					'ordering' => 40, 
+					'nzcf20_order' => 50,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'A/PLTOFF'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'rank' => 'Acting Pilot Officer', 
+					'rank_shortname' => 'A/PLTOFF', 
+					'ordering' => 41, 
+					'nzcf20_order' => 50,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'CIVILIAN'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'rank' => 'Civilian', 
+					'rank_shortname' => 'CIV', 
+					'ordering' => 99, 
+					'nzcf20_order' => 99,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA 
+				) 
+			);
+		}
 		
 	}
-	
-	// Create our database 
+   	
+	// Create our database on plugin Activation/Installation 
 	function wpnzcfcn_db_install(){
 		
 		// Access & use the WP database
@@ -148,138 +227,32 @@
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
 		
-		
 		update_option( "wpnzcfcn_db_version", $db_version );
 		update_site_option( "wpnzcfcn_db_version", $db_version );
-		
 	}
 
-	// Prepopulate our database
-	function wpnzcfcn_db_init(){
+	// Plugin install/activation, core processes
+	function wpnzcfcn_install(){
+		global $wp_roles, $version;
 		
-		// Access & use the WP database
-		global $wpdb;
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		
-		$table = $wpdb->prefix."wpnzcfcn_rank";
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'WNGCDR'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Wing Commander', 
-					'rank_shortname' => 'WNGCDR', 
-					'ordering' => 20, 
-					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'SQNLDR'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Squadron Leader', 
-					'rank_shortname' => 'SQNLDR', 
-					'ordering' => 30, 
-					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'FLTLT'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Flight Lieutenant', 
-					'rank_shortname' => 'FLTLT', 
-					'ordering' => 30, 
-					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'PLTOFF'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Pilot Officer', 
-					'rank_shortname' => 'PLTOFF', 
-					'ordering' => 40, 
-					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'A/PLTOFF'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Acting Pilot Officer', 
-					'rank_shortname' => 'A/PLTOFF', 
-					'ordering' => 41, 
-					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'CIVILIAN'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Civilian', 
-					'rank_shortname' => 'CIV', 
-					'ordering' => 99, 
-					'nzcf20_order' => 99,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA 
-				) 
-			);
-		}
+		add_site_option( "wpnzcfcn_version", $version );
 		
 	}
-    
+	 
+	// Plugin initialisation (loading)
 	function wpnzcfcn_register(){
 		// We've got an updated plugin version installed, which needs updates to the DB
 	    if ( get_site_option( 'wpnzcfcn_db_version' ) != get_option('wpnzcfcn_db_version') ) {
      	   wpnzcfcn_db_install();
     	}
     
-    	// Register our JSON callbacks
+        // Register our JSON callbacks
     	// http://bordoni.me/ajax-wordpress/
-    	add_action( 'wp_ajax_rank', 'wpnzcfcn_json_callback_rank' );
-		add_action( 'wp_ajax_nopriv_rank', 'wpnzcfcn_json_callback_rank' );  
+    	add_action( 'wp_ajax_rank', 			'wpnzcfcn_json_callback_rank' );
+		add_action( 'wp_ajax_nopriv_rank', 	'wpnzcfcn_json_callback_rank' );  
 	}
 	
-	// http://bordoni.me/ajax-wordpress/
-	function wpnzcfcn_json_callback_rank() {
-		global $wpdb;
-	    $response = array();
-
-		$keywords = (isset($_GET['term'])?$_GET['term']:'');
-		// Never trust input from a user!
-		$keywords = wp_kses( strtolower($keywords), array() );
-		$response = $wpdb->get_results( $wpdb->prepare(
-		"
-			SELECT 
-				* 
-			FROM 
-				".$wpdb->prefix."wpnzcfcn_rank 
-			WHERE 
-				LOWER(rank_shortname) LIKE %s 
-				OR LOWER(rank) LIKE %s
-			ORDER BY 
-				ordering ASC;",
-			'%'.$wpdb->esc_like($keywords).'%',
-			'%'.$wpdb->esc_like($keywords).'%'
-        ) );
-        // For our autocomplete jQueryUI boxes, simplify our value/label options
-		foreach( $response as $rank ) {
-			$rank->value = $rank->rank_id;
-			$rank->label = $rank->rank." (".$rank->rank_shortname.")";
-		}
- 	   // Never forget to exit or die on the end of a WordPress AJAX action!
-	    exit( json_encode( $response ) ); 
-	}
-
+	// Plugin uninstall/deactivations
 	function wpnzcfcn_uninstall(){
       	// If uninstall is not called from WordPress (i.e. is called via URL or command line)
 		if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) {
@@ -289,21 +262,15 @@
 		// Delete our saved options
 		delete_option( 'wpnzcfcn_version' );
 		delete_option( 'wpnzcfcn_db_version' );
+		delete_site_option( 'wpnzcfcn_version' );
 		delete_site_option( 'wpnzcfcn_db_version' );
  
 		// Drop a custom db table
 		global $wpdb;
-		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}mytable" );
+		//$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}mytable" );
 		
     }
     
-    if( !function_exists('current_user_has_role') ){
-        function current_user_has_role( $role ){
-            $current_user = new WP_User(wp_get_current_user()->ID);
-            $user_roles = $current_user->roles;
-            return in_array( $role, $user_roles );
-		}
-	}
 	
 
 	

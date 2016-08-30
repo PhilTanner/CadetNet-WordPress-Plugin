@@ -1,15 +1,7 @@
 <?php
 	/*			
-		Plugin Name: NZCF Unit Administration
-		Plugin URI:  https://github.com/PhilTanner/nzcf-unit-administration.git
-		Description: This describes my plugin in a short sentence
-		Version:     0.01
-		Author:      Phil Tanner
-		Author URI:  https://github.com/PhilTanner
-		License:     GPL3
-		License URI: http://www.gnu.org/licenses/gpl.html
-		Domain Path: /languages
-		Text Domain: nzcf-unit-administration
+		Plugin Name: NZCF Cadet Net 
+		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
         
         Copyright (C) 2016 Phil Tanner
 
@@ -25,8 +17,9 @@
 
     	You should have received a copy of the GNU General Public License
     	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-	*/	
-
-	defined( 'ABSPATH' ) or die( 'No script kiddies please!' );	
+	*/
+	require_once( dirname(__FILE__).'/../class/defines.php' );
+	
+	// First of all, we need to create a new top level menu
 	
 	
