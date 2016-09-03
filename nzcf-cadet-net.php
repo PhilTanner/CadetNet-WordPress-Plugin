@@ -227,10 +227,54 @@
 	function wpnzcfcn_install(){
 		global $wp_roles, $version;
 		
+		delete_option("wpnzcfcn_version");
 		add_site_option( "wpnzcfcn_version", $version );
 		
+		// Create an Expression of Interest page holder
+	    // the menu entry...
+ 	   delete_option("wpnzcfcn_eoi_page_title");
+    	add_option("wpnzcfcn_eoi_page_title", 'Expressions of Interest', '', 'yes');
+    	// the slug...
+    	delete_option("wpnzcfcn_eoi_page_name");
+    	add_option("wpnzcfcn_eoi_page_name", 'eoi', '', 'yes');
+    	// the id...
+    	delete_option("wpnzcfcn_eoi_page_id");
+    	add_option("wpnzcfcn_eoi_page_id", '0', '', 'yes');
+
+	    $eoi_page = get_page_by_title( get_option("wpnzcfcn_eoi_page_title") );
+	    if ( ! $the_page ) {
+	        // Create post object
+ 	       $_p = array();
+  	      $_p['post_title'] = get_option("wpnzcfcn_eoi_page_title");
+   	     $_p['post_content'] = "This text may be overridden by the plugin. You shouldn't edit it.";
+    	    $_p['post_status'] = 'publish';
+     	   $_p['post_type'] = 'page';
+      	  $_p['comment_status'] = 'closed';
+       	 $_p['ping_status'] = 'closed';
+        	$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+	        // Insert the post into the database
+  	      $eoi_page_id = wp_insert_post( $_p );
+	    } else {
+	        // the plugin may have been previously active and the page may just be trashed...
+	        $eoi_page_id = $eoi_page->ID;
+	        //make sure the page is not trashed...
+  	      $eoi_page->post_status = 'publish';
+   	     $eoi_page_id = wp_update_post( $eoi_page );
+    	}
+	    delete_option( 'wpnzcfcn_eoi_page_id' );
+ 	   add_option( 'wpnzcfcn_eoi_page_id', $eoi_page_id );
 	}
-	 
+	
+	// Allow users to access the EOI submission form
+	// Taken from http://blog.frontendfactory.com/how-to-create-front-end-page-from-your-wordpress-plugin/
+	function eoi_form()
+	{
+		if(is_page(get_option("wpnzcfcn_eoi_page_title"))) {
+			require_once( dirname(__FILE__)."/eoi/eoi.php");
+			die();
+		}
+	}
+	
 	// Plugin initialisation (loading)
 	function wpnzcfcn_register(){
 		// We've got an updated plugin version installed, which needs updates to the DB
@@ -241,7 +285,8 @@
         // Register our JSON callbacks
     	// http://bordoni.me/ajax-wordpress/
     	add_action( 'wp_ajax_rank', 			'wpnzcfcn_json_callback_rank' );
-		add_action( 'wp_ajax_nopriv_rank', 	'wpnzcfcn_json_callback_rank' );  
+		add_action( 'wp_ajax_nopriv_rank', 	'wpnzcfcn_json_callback_rank' ); 
+		add_action( 'wp', 'eoi_form' );
 	}
 	
 	// Plugin uninstall/deactivations
@@ -261,9 +306,18 @@
 		global $wpdb;
 		//$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}mytable" );
 		
+		// Clear the EOI page
+    	$the_page_id = get_option( 'wpnzcfcn_eoi_page_id' );
+    	if( $the_page_id ) {
+        	wp_delete_post( $the_page_id ); // this will trash, not delete
+    	}
+
+	    delete_option("wpnzcfcn_eoi_page_title");
+	    delete_option("wpnzcfcn_eoi_page_name");
+ 	   delete_option("wpnzcfcn_eoi_page_id");
+		
     }
     
 	
-
 	
 	
