@@ -27,16 +27,9 @@
     	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/	
 	require_once( dirname(__FILE__).'/class/defines.php' );
+	
 	// All our JSON outputter functions
 	require_once( dirname(__FILE__).'/json/json.php' );
-
-	
-	$version = "0.01";
-	$db_version = "0.01";
-	
-	add_option( "wpnzcfcn_version", $version );
-	add_option( "wpnzcfcn_db_version", $db_version );
-	
 	
 	// Function to be called when this application is installed (activated):
 	register_activation_hook( __FILE__, 'wpnzcfcn_install' );
@@ -50,8 +43,7 @@
 	// Function to be called when this application is loaded
 	add_action('init', 'wpnzcfcn_register');
 	
-	
-	
+		
 	// Prepopulate our database
 	function wpnzcfcn_db_init(){
 		
@@ -60,12 +52,12 @@
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		
 		$table = $wpdb->prefix."wpnzcfcn_rank";
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'WNGCDR'" ) === null ){
+		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'WGCDR'" ) === null ){
 			$wpdb->insert( 
 				$table, 
 				array( 
 					'rank' => 'Wing Commander', 
-					'rank_shortname' => 'WNGCDR', 
+					'rank_shortname' => 'WGCDR', 
 					'ordering' => 20, 
 					'nzcf20_order' => 50,
 					'nzcf_corps' => WPNZCFCN_CADETS_ATC
@@ -162,7 +154,7 @@
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_vacancy (
   vacancy_id mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   short_desc varchar(255) NOT NULL,
-  long_desc text NOT NULL,
+  min_rank_id mediumint(9) unsigned NOT NULL,
   closing_date datetime NOT NULL,
   posted_by_user_id mediumint(9) unsigned NOT NULL,
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

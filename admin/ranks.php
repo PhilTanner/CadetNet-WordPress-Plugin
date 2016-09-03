@@ -20,12 +20,12 @@
 	*/
 	require_once( dirname(__FILE__).'/../class/defines.php' );
 	
-	function cadetnet_admin_menu_eoi_vacancies() {
+	function cadetnet_admin_menu_ranks() {
 		
 		if ( !current_user_can( 'manage_options' ) )  {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
-		echo '<h2>'.__('Expression of Interest Vacancies','nzcf-cadet-net').'</h2>';
+		echo '<h2>'.__('Ranks','nzcf-cadet-net').'</h2>';
 		
 		global $wpdb;
 		
@@ -108,13 +108,9 @@
 				* 
 			FROM 
 				".$wpdb->prefix."wpnzcfcn_rank 
-			WHERE 
-				LOWER(rank_shortname) LIKE %s 
-				OR LOWER(rank) LIKE %s
 			ORDER BY 
 				ordering ASC;",
-			'%'.$wpdb->esc_like($keywords).'%',
-			'%'.$wpdb->esc_like($keywords).'%'
+			''
         ) );
  	   
 		?>
@@ -145,11 +141,11 @@
 								echo '	<td>';
 								echo '		<input type="text" name="rank_'.$rank->rank_id.'" id="rank_'.$rank->rank_id.'" value="'.htmlentities($rank->rank).'" maxlength="70" />';
 								echo '	</td>';
-								echo '	<td> <input type="text" name="rank_shortname_'.$rank->rank_id.'" id="rank_shortname_'.$rank->rank_id.'" value="'.htmlentities($rank->rank_shortname).'" maxlength="10" /> ';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$rank->rank_id.'_corps" id="nzcf_corps_'.$rank->rank_id.'_corps" value="1" '.($rank->nzcf_corps&WPNZCFCN_CADETS_CORPS?' checked="checked"':'').' class="corps" /> ';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$rank->rank_id.'_atc" id="nzcf_corps_'.$rank->rank_id.'_atc" value="1" '.($rank->nzcf_corps&WPNZCFCN_CADETS_ATC?' checked="checked"':'').' class="atc" /> ';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$rank->rank_id.'_sea" id="nzcf_corps_'.$rank->rank_id.'_sea" value="1" '.($rank->nzcf_corps&WPNZCFCN_CADETS_SEA?' checked="checked"':'').' class="sea" /> ';
-								echo '	<td> <input type="number" name="nzcf20_order_'.$rank->rank_id.'" id="nzcf20_order_'.$rank->rank_id.'" value="'.$rank->nzcf20_order.'"  class="order" /> ';	
+								echo '	<td> <input type="text" name="rank_shortname_'.$rank->rank_id.'" id="rank_shortname_'.$rank->rank_id.'" value="'.htmlentities($rank->rank_shortname).'" maxlength="10" /> </td>';
+								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$rank->rank_id.'_corps" id="nzcf_corps_'.$rank->rank_id.'_corps" value="1" '.($rank->nzcf_corps&WPNZCFCN_CADETS_CORPS?' checked="checked"':'').' class="corps" /> </td>';
+								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$rank->rank_id.'_atc" id="nzcf_corps_'.$rank->rank_id.'_atc" value="1" '.($rank->nzcf_corps&WPNZCFCN_CADETS_ATC?' checked="checked"':'').' class="atc" /> </td>';
+								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$rank->rank_id.'_sea" id="nzcf_corps_'.$rank->rank_id.'_sea" value="1" '.($rank->nzcf_corps&WPNZCFCN_CADETS_SEA?' checked="checked"':'').' class="sea" /> </td>';
+								echo '	<td> <input type="number" name="nzcf20_order_'.$rank->rank_id.'" id="nzcf20_order_'.$rank->rank_id.'" value="'.$rank->nzcf20_order.'"  class="order" /> </td>';	
 								echo '</tr>';
 							}
 							echo '<tr>';
@@ -159,11 +155,11 @@
 							echo '	<td>';
 							echo '		<input type="text" name="rank_0" id="rank_0" value="" maxlength="70" />';
 							echo '	</td>';
-							echo '	<td> <input type="text" name="rank_shortname_0" id="rank_shortname_0" value="" maxlength="10" /> ';
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_corps" id="nzcf_corps_0_corps" value="1" /> ';
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_atc" id="nzcf_corps_0_atc" value="1" /> ';
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_sea" id="nzcf_corps_0_sea" value="1" /> ';
-							echo '	<td> <input type="number" name="nzcf20_order_0" id="nzcf20_order_0" value="100"  class="order" /> ';
+							echo '	<td> <input type="text" name="rank_shortname_0" id="rank_shortname_0" value="" maxlength="10" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_corps" id="nzcf_corps_0_corps" value="1" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_atc" id="nzcf_corps_0_atc" value="1" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_sea" id="nzcf_corps_0_sea" value="1" /> </td>';
+							echo '	<td> <input type="number" name="nzcf20_order_0" id="nzcf20_order_0" value="100"  class="order" /> </td>';
 							echo '</tr>';
 						?>
 					</tbody>
