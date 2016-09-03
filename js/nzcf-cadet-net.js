@@ -18,6 +18,13 @@
     	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 	
-	// Placeholder file until we decide if we want any JS purely for admin
-	alert('bar');
+	jQuery(document).ready( function($){
+	
+		// Make any buttons ... buttons
+		$('button').button().filter('[type=submit]').button({ icons: {primary: 'ui-icon-disk' } }).css({ float:'right', marginRight:'1em' });
+		$('button[type=button].edit').button({ icons: {primary: 'ui-icon-pencil' }, text:false });
+		
+		
+	});
+	
 	

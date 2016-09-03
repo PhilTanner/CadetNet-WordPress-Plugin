@@ -20,33 +20,6 @@
 	*/
 	require_once( dirname(__FILE__).'/../class/defines.php' );
 	
-	// Load our JS scripts
-	// Taken from https://developer.wordpress.org/reference/functions/wp_enqueue_script/
-	function my_load_scripts($hook) {
-		wp_enqueue_script( 'jquery' );
-   	 wp_enqueue_script( 'jquery-ui-core' );
-		wp_enqueue_script( 'jquery-ui-button' );
-		wp_enqueue_script( 'jquery-ui-dialog' );
-		
-    	wp_enqueue_script( 
-			'cadetnet_admin_js', 
-			plugins_url( 'admin.js', __FILE__ ), 
-			array('jquery','jquery-ui-core'), 
-			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'admin.js' )), 
-			true 
-		);
-		
- 	   wp_register_style( 
-			'jquery-ui-redmond',    
-			plugins_url( '/../css/redmond/jquery-ui-1.9.2.custom.min.css', __FILE__ ), 
-			false,   
-			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/../css/redmond/jquery-ui-1.9.2.custom.min.css' )  )
-		);
-  	  wp_enqueue_style ( 'jquery-ui-redmond' ); 
-	}
-	add_action('admin_init', 'my_load_scripts');
-
-	
 	// Create our own CadetNet menu items
 	// Taken from:https://codex.wordpress.org/Adding_Administration_Menus
 	add_action( 'admin_menu', 'nzcf_cadet_net_plugin_menu' );

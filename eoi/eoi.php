@@ -24,33 +24,7 @@
 	?>
 	
 	<style>
-		.eoi { color:#000; }
-		.eoi * { box-sizing:border-box; font-size: 1em; }
-		.eoi fieldset { margin-top:2em; }
-		.eoi label
-		{
-			background-color: #ccc;
-			border: medium outset;
-			text-align: center;
-			border-radius:15px 15px 0 0;
-		}
-		.eoi label, .eoi input, .eoi select { width: 17em; }
 		
-		.eoi [readonly=readonly]
-		{
-			background-color:#eee;
-			color:#669;
-			font-style:italic;
-		}
-		.eoi input , .eoi select, .eoi textarea
-		{
-			font-family:cursive;
-			color:#00c;
-			background-color: #CFF;
-		}
-		.eoi textarea { height: 12em; }
-		.eoi p.instruction { font-style: italic; }
-		.eoi p.notice { color:red; }
 	</style>
 	
 	<h1>Expression of Interest </h1>
@@ -238,6 +212,8 @@
 				<input type="date" name="comdt_date" id="comdt_date" required="required" />
 			</div>
 		</fieldset>
+		<button type="submit">Save</button>
+		<button type="cancel">Cancel</button>
 	</form>
 	
 	<script>

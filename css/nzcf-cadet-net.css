@@ -1,0 +1,48 @@
+/*
+	Plugin Name: NZCF Cadet Net 
+	Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
+   
+    Copyright (C) 2016 Phil Tanner
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+.eoi { color:#000; }
+.eoi * { box-sizing:border-box; font-size: 1em; }
+.eoi fieldset { margin-top:2em; }
+.eoi label
+{
+	background-color: #ccc;
+	border: medium outset;
+	text-align: center;
+	border-radius:15px 15px 0 0;
+	display:inline-block;
+}
+.eoi label, .eoi input, .eoi select { width: 17em; }
+
+.eoi [readonly=readonly]
+{
+	background-color:#eee;
+	color:#669;
+	font-style:italic;
+}
+.eoi input , .eoi select, .eoi textarea
+{
+	font-family:cursive;
+	color:#00c;
+	background-color: #CFF;
+}
+.eoi textarea { height: 12em; }
+.eoi p.instruction { font-style: italic; }
+.eoi p.notice { color:red; }

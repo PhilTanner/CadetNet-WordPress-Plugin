@@ -25,6 +25,21 @@
 
     	You should have received a copy of the GNU General Public License
     	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    
+    
+    	Useful links:
+    	Done:
+    	https://codex.wordpress.org/Writing_a_Plugin
+		https://codex.wordpress.org/Adding_Administration_Menus
+    	https://developer.wordpress.org/reference/functions/wp_enqueue_script/
+		https://codex.wordpress.org/Creating_Tables_with_Plugins
+		http://blog.frontendfactory.com/how-to-create-front-end-page-from-your-wordpress-plugin/
+    
+    	To do:    
+    	https://make.wordpress.org/core/handbook/best-practices/inline-documentation-standards/php/
+    	http://bradsknutson.com/blog/custom-wordpress-page-template-custom-header-footer/
+    	http://wordpress.stackexchange.com/questions/47265/google-apps-login-in-wordpress
 	*/	
 	require_once( dirname(__FILE__).'/class/defines.php' );
 	
@@ -246,8 +261,8 @@
 	        // Create post object
  	       $_p = array();
   	      $_p['post_title'] = get_option("wpnzcfcn_eoi_page_title");
-   	     $_p['post_content'] = "This text may be overridden by the plugin. You shouldn't edit it.";
-    	    $_p['post_status'] = 'publish';
+   	     $_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+    	    $_p['post_status'] = 'private'; // Need to be logged in
      	   $_p['post_type'] = 'page';
       	  $_p['comment_status'] = 'closed';
        	 $_p['ping_status'] = 'closed';
@@ -274,6 +289,45 @@
 			die();
 		}
 	}
+	
+	// Load our JS scripts
+	// Taken from https://developer.wordpress.org/reference/functions/wp_enqueue_script/
+	function wpnzcfcn_load_scripts($hook) {
+		wp_enqueue_script( 'jquery' );
+   	 wp_enqueue_script( 'jquery-ui-core' );
+		wp_enqueue_script( 'jquery-ui-button' );
+		wp_enqueue_script( 'jquery-ui-dialog' );
+		
+    	wp_enqueue_script( 
+			'cadetnet_admin_js', 
+			plugins_url( '/js/nzcf-cadet-net.js', __FILE__ ), 
+			array('jquery','jquery-ui-core'), 
+			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/nzcf-cadet-net.js' )), 
+			true 
+		);
+	}
+	add_action('wp', 'wpnzcfcn_load_scripts');
+	
+	// Load our style sheets
+	function wpnzcfcn_load_styles($hook) {
+		
+ 	   wp_register_style( 
+			'jquery-ui-redmond',    
+			plugins_url( '/css/redmond/jquery-ui-1.9.2.custom.min.css', __FILE__ ), 
+			false,   
+			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/css/redmond/jquery-ui-1.9.2.custom.min.css' )  )
+		);
+  	  wp_enqueue_style ( 'jquery-ui-redmond' ); 
+  	
+ 	   wp_register_style( 
+			'nzcf-cadet-net',    
+			plugins_url( '/css/nzcf-cadet-net.css', __FILE__ ), 
+			false,   
+			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/css/nzcf-cadet-net.css' )  )
+		);
+  	  wp_enqueue_style ( 'nzcf-cadet-net' ); 
+	}
+	add_action('wp', 'wpnzcfcn_load_styles');
 	
 	// Plugin initialisation (loading)
 	function wpnzcfcn_register(){
