@@ -18,30 +18,28 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-fieldset {
-	border: 1px solid #ccc !important;
-	border-radius: 1ex !important;
-	padding: 1em !important;
-	margin-top: 2em !important;
+.eoi * { box-sizing:border-box; font-size: 1em; }
+.eoi fieldset { margin-top:2em; }
+.eoi label
+{
+	background-color: #eee;
+	text-align: center;
+	border-radius:1ex 1ex 0 0;
+	display:inline-block;
 }
-legend {
-	border: 1px solid #ccc !important;
-	border-radius: 2em !important;
-	padding: 0.5ex 1em 0.3ex 1em !important;
-	width: 100% !important;
-	background-color: #f9f9f9;
+.eoi label, .eoi input, .eoi select { width: 17em; }
+
+.eoi [readonly=readonly]
+{
+	background-color:#eee;
+	color:#669;
+	font-style:italic;
 }
-input,select {
-	height:2em;
+.eoi input , .eoi select, .eoi textarea
+{
+	font-family:cursive;
+	color:#00c;
 }
-input,select,textarea {
-	border: 1px solid #ddd !important;
-	background-color: #f9f9f9;
-	padding: 0.5ex 1ex;
-}
-input[type=date],label[type=date] {
-	width: 8em;
-}
-input[type=text].rank,label.rank {
-	width: 13em;
-}
+.eoi textarea { height: 12em; }
+.eoi p.instruction { font-style: italic; }
+.eoi p.notice { color:red; }

@@ -68,4 +68,4 @@
 	require_once( dirname(__FILE__).'/ranks.php' );
 	require_once( dirname(__FILE__).'/eoi_vacancies.php' );
 	
-	echo '<div id="dialog"></div>';
+	

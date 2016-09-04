@@ -35,6 +35,7 @@
     	https://developer.wordpress.org/reference/functions/wp_enqueue_script/
 		https://codex.wordpress.org/Creating_Tables_with_Plugins
 		http://blog.frontendfactory.com/how-to-create-front-end-page-from-your-wordpress-plugin/
+		http://bordoni.me/ajax-wordpress/
     
     	To do:    
     	https://make.wordpress.org/core/handbook/best-practices/inline-documentation-standards/php/
@@ -285,6 +286,14 @@
 	function eoi_form()
 	{
 		if(is_page(get_option("wpnzcfcn_eoi_page_title"))) {
+			
+			wp_enqueue_script( 
+				'cadetnet_eoi_js', 
+				plugins_url( '/js/eoi.js', __FILE__ ), 
+				array('jquery','jquery-ui-core'), 
+				date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/eoi.js' )), 
+				true 
+			);
 			require_once( dirname(__FILE__)."/eoi/eoi.php");
 			die();
 		}
@@ -295,6 +304,7 @@
 	function wpnzcfcn_load_scripts($hook) {
 		wp_enqueue_script( 'jquery' );
    	 wp_enqueue_script( 'jquery-ui-core' );
+		wp_enqueue_script( 'jquery-ui-autocomplete' );
 		wp_enqueue_script( 'jquery-ui-button' );
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		
@@ -305,6 +315,14 @@
 			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/nzcf-cadet-net.js' )), 
 			true 
 		);
+		wp_register_style( 
+			'eoi-css',    
+			plugins_url( '/css/eoi.css', __FILE__ ), 
+			false,   
+			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/css/eoi.css' )  )
+		);
+  	  wp_enqueue_style ( 'eoi-css' ); 
+		
 	}
 	add_action('wp', 'wpnzcfcn_load_scripts');
 	
@@ -372,6 +390,12 @@
 		
     }
     
+	function wpnzcfcn_footer() {
+		// Add jQueryUI dialog box element placeholder to text pages
+		echo '<div id="dialog"></div>';
+	}
+	add_action( 'wp_footer', 'wpnzcfcn_footer' );
+
 	
 	
 	
