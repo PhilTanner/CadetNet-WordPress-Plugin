@@ -30,10 +30,7 @@
 		
 		// Make our appointments an autocomplete drop down
 		$('#vacancy_description').autocomplete({
-			source:[
-				{ value: 1, label: 'Vacancy #1', rank: 'FLTLT', closes: '2016-08-30' },
-				{ value: 2, label: 'Vacancy #2', rank: 'PLTOFF', closes: '2016-09-02' }
-			],
+			source:"wp-admin/admin-ajax.php?action=eoi_positions",
 			minLength:0,
 			focus: function( event, ui ) {
 				$( "#vacancy_description" ).val( ui.item.label );
@@ -42,8 +39,8 @@
 			select: function( event, ui ) {
 				$( "#vacancy_description" ).val( ui.item.label );
 				$( "#vacancy_id" ).val( ui.item.value );
-				$( "#rank" ).val( ui.item.rank );
-				$( "#application_closes").val( ui.item.closes );
+				$( "#rank" ).val( ui.item.ranks );
+				$( "#application_closes").val( ui.item.closing_date );
 				return false;
 			}
 		});
@@ -93,15 +90,15 @@
 			// Part 1
 			part1: [{
 				vacancy_id: 0,
-				vacancy_description: "Prepopulated vacancy desc",
-				rank: "A/PLTOFF",
-				application_closes: "2016-06-30"
+				vacancy_description: "",
+				rank: "",
+				application_closes: ""
 			}],
 			
 			part2: [{
-				applicant_name: "Phil Tanner",
-				applicant_rank: "A/PLTOFF",
-				service_number: "12345"
+				applicant_name: "",
+				applicant_rank: "",
+				service_number: ""
 			}],
 			
 			part3: [{

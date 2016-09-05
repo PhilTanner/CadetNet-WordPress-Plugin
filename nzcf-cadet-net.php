@@ -358,6 +358,7 @@
     	// http://bordoni.me/ajax-wordpress/
     	add_action( 'wp_ajax_rank', 			'wpnzcfcn_json_callback_rank' );
 		add_action( 'wp_ajax_nopriv_rank', 	'wpnzcfcn_json_callback_rank' ); 
+		add_action( 'wp_ajax_eoi_positions', 	'wpnzcfcn_json_callback_eoi_positions' ); 
 		add_action( 'wp', 'eoi_form' );
 	}
 	
