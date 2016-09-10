@@ -24,33 +24,86 @@
 		$('button').button().filter('[type=submit]').button({ icons: {primary: 'ui-icon-disk' } }).css({ float:'right', marginRight:'1em' });
 		$('button[type=button].edit').button({ icons: {primary: 'ui-icon-pencil' }, text:false });
 
+		autocomplete_inputs();
+		
+		// Handle any AJAX errors with a friendly message popping up.
+		$( document ).ajaxError( function(jqXHR, text, error) {
+			// Interrupted AJAX calls return a status of 0, and we shouldn't bother users with that
+			if( text.status ) {
+				$('<div></div>').empty().html(text.responseText+"<pre>"+JSON.stringify(text)+"</pre>").dialog({
+					title: "Error: "+text.statusText,
+					modal: true,
+					close: function(){ $(this).dialog("destroy"); },
+					buttons: [{
+						text: 'OK',
+						click: function(){ $(this).dialog("destroy"); }
+					}] 
+				}).parent().children().filter('.ui-dialog-titlebar').addClass('ui-state-error');
+			}
+		});
+				
+	});
+	
+	function autocomplete_inputs() {
 		// Make our text input entry rank fields a auto-complete drop down
 		// Each rank input needs to have a parent hidden input field with a matching ID, with "_id" appended, which will hold our ID field
-		$('input[type=text].rank').autocomplete({
+		jQuery('input[type=text].rank').autocomplete({
 			source: "wp-admin/admin-ajax.php?action=rank",
 			minLength: 0,
 			focus: function( event, ui ) {
-				$(this).val( ui.item.label );
+				jQuery(this).val( ui.item.label );
 				return false;
 			},
 			select: function( event, ui ) {
 				// When we select an item from the list, put our friendly name in the box
-				$(this).val( ui.item.label );
+				jQuery(this).val( ui.item.label );
 				// And store the value (db id) in a connected hidden form element
-				$( "#"+$(this).attr('id')+"_id" ).val( ui.item.value );
+				jQuery( "#"+jQuery(this).attr('id')+"_id" ).val( ui.item.value );
 				return false;
 			},
 			// Restrict options to what's on the list
 			change: function(event,ui) {
 				if (ui.item==null) {
-					$(this).val('').addClass('ui-state-error');
-					$( "#"+$(this).attr('id')+"_id" ).val( '' );
-					$(this).focus();
+					jQuery(this).val('').addClass('ui-state-error');
+					jQuery( "#"+jQuery(this).attr('id')+"_id" ).val( '' );
+					jQuery(this).focus();
+				} else {
+					jQuery(this).removeClass('ui-state-error');
 				}
 			}
-			
 		});
-				
-	});
+		
+		jQuery('input[type=text].cadet_unit').autocomplete({
+			source: "wp-admin/admin-ajax.php?action=unit",
+			minLength: 0,
+			focus: function( event, ui ) {
+				jQuery(this).val( ui.item.label );
+				alert(jQuery(this).attr('id'));
+				return false;
+			},
+			select: function( event, ui ) {
+				// When we select an item from the list, put our friendly name in the box
+				jQuery(this).val( ui.item.label );
+				// And store the value (db id) in a connected hidden form element
+				jQuery( "#"+jQuery(this).attr('id')+"_id" ).val( ui.item.value );
+				return false;
+			},
+			// Restrict options to what's on the list
+			change: function(event,ui) {
+				if (ui.item==null) {
+					jQuery(this).val('').addClass('ui-state-error');
+					jQuery( "#"+jQuery(this).attr('id')+"_id" ).val( '' );
+					jQuery(this).focus();
+				} else {
+					jQuery(this).removeClass('ui-state-error');
+				}
+			}
+		});
+		
+	}
 	
 	
+window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+    alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber
+    + ' Column: ' + column + ' StackTrace: ' +  errorObj);
+}

@@ -56,3 +56,42 @@
  	   // Never forget to exit or die on the end of a WordPress AJAX action!
 	    exit( json_encode( $response ) ); 
 	}
+
+	// List the units
+	function wpnzcfcn_json_callback_unit() {
+		global $wpdb;
+	    $response = array();
+
+		// term is the partial text entered into a jQueryUI AutoComplete field & passed to us
+		$keywords = (isset($_GET['term'])?$_GET['term']:'');
+		// Never trust input from a user!
+		$keywords = wp_kses( strtolower($keywords), array() );
+		$response = $wpdb->get_results( $wpdb->prepare(
+			"
+			SELECT 
+				*
+			FROM 
+				".$wpdb->prefix."wpnzcfcn_unit
+			WHERE
+				LOWER(".$wpdb->prefix."wpnzcfcn_unit.unit_name) LIKE %s
+				OR LOWER(".$wpdb->prefix."wpnzcfcn_unit.address) LIKE %s
+				OR LOWER(".$wpdb->prefix."wpnzcfcn_unit.website) LIKE %s
+				OR LOWER(".$wpdb->prefix."wpnzcfcn_unit.phone) LIKE %s
+				OR LOWER(".$wpdb->prefix."wpnzcfcn_unit.email) LIKE %s
+			ORDER BY
+				LOWER(".$wpdb->prefix."wpnzcfcn_unit.unit_name) ASC;",
+			'%'.$wpdb->esc_like($keywords).'%',
+			'%'.$wpdb->esc_like($keywords).'%',
+			'%'.$wpdb->esc_like($keywords).'%',
+			'%'.$wpdb->esc_like($keywords).'%',
+			'%'.$wpdb->esc_like($keywords).'%'
+        ) );
+        // For our autocomplete jQueryUI boxes, simplify our value/label options
+		foreach( $response as $row ) {
+			$row->value = $row->unit_id;
+			$row->label = $row->unit_name;
+			unset($row->unit_id);
+		}
+ 	   // Never forget to exit or die on the end of a WordPress AJAX action!
+	    exit( json_encode( $response ) ); 
+	}

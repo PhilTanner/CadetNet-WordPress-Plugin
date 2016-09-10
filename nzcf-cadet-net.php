@@ -141,6 +141,20 @@
 			);
 		}
 		
+		$table = $wpdb->prefix."wpnzcfcn_unit";
+		if( $wpdb->get_var( "SELECT unit_id FROM $table WHERE unit_name = 'No 49 (District of Kāpiti) Squadron, Air Training Corps'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'unit_name' => 'No 49 (District of Kāpiti) Squadron, Air Training Corps', 
+					'address' => 'Old Crash Fire Building, 227 Kāpiti Road, Paraparaumu, Kāpiti Coast 5032.', 
+					'website' => 'http://www.49squadron.org.nz', 
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC,
+					'parade_night' => WPNZCFCN_DAY_WEDNESDAY
+				) 
+			);
+		}
+		
 	}
    	
 	// Create our database on plugin Activation/Installation 
@@ -156,14 +170,38 @@
 		// Create our database tables, to hold the WordPress NZCF Unit Admin data
 		// Modified from https://codex.wordpress.org/Creating_Tables_with_Plugins
 
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_course (
+  course_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  course_name varchar(70) NOT NULL,
+  personnel tinyint(5) NOT NULL,
+  nzcf_corps tinyint(3) unsigned NOT NULL,
+  UNIQUE KEY course_id (course_id)
+) ".$wpdb->get_charset_collate().";";
+		dbDelta( $sql );
+		
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_rank (
-  rank_id mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  rank_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   rank varchar(70) NOT NULL,
   rank_shortname varchar(10) NOT NULL,
   ordering mediumint(8) unsigned NOT NULL,
   nzcf20_order mediumint(8) unsigned NOT NULL,  
   nzcf_corps tinyint(3) unsigned NOT NULL,
   UNIQUE KEY rank_id (rank_id)
+) ".$wpdb->get_charset_collate().";";
+		dbDelta( $sql );
+		
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_unit (
+  unit_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  unit_name varchar(255) NOT NULL,
+  address varchar(255) NOT NULL,
+  phone varchar(255),
+  email varchar(255),
+  latitude float(10,6),
+  longitude float(10,6),
+  website varchar(150),
+  nzcf_corps tinyint(3) unsigned NOT NULL,
+  parade_night tinyint(7) unsigned,
+  UNIQUE KEY unit_id (unit_id)
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
 		
@@ -359,6 +397,10 @@
     	add_action( 'wp_ajax_rank', 			'wpnzcfcn_json_callback_rank' );
 		add_action( 'wp_ajax_nopriv_rank', 	'wpnzcfcn_json_callback_rank' ); 
 		add_action( 'wp_ajax_eoi_positions', 	'wpnzcfcn_json_callback_eoi_positions' ); 
+		add_action( 'wp_ajax_eoi_application', 	'wpnzcfcn_json_callback_eoi_application' ); 
+		add_action( 'wp_ajax_unit', 			'wpnzcfcn_json_callback_unit' );
+		add_action( 'wp_ajax_nopriv_unit', 	'wpnzcfcn_json_callback_unit' ); 
+		
 		add_action( 'wp', 'eoi_form' );
 	}
 	

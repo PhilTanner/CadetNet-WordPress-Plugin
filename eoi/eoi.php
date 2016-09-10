@@ -23,18 +23,18 @@
 	get_header();
 	?>
 	
-	<h1>Expression of Interest </h1>
+	<h2> <?= __('Expression of Interest','nzcf-cadet-net') ?> </h2>
 	
 	<form name="eoi" class="eoi" data-id="4a">
 		
-		<p class="instruction"> Completed forms are to be emailed through to the Area Support Officer no later and Area Coordiator to reach NZCF HQ no later than 1200 hours on the Application close off date. </p>
+		<p class="instruction"> <?= __('Completed forms are to be emailed through to the Area Support Officer no later and Area Coordiator to reach NZCF HQ no later than 1200 hours on the Application close off date.','nzcf-cadet-net') ?> </p>
 		
 		<fieldset>
-			<legend> Position applying for </legend>
+			<legend> <?= __('Position applying for','nzcf-cadet-net') ?> </legend>
 			<div>
-				<label for="vacancy_description">Vacancy Description</label>
-				<label for="rank" class="rank">Rank</label>
-				<label for="application_closes" type="date">Application closes</label>
+				<label for="vacancy_description"><?= __('Vacancy Description','nzcf-cadet-net') ?></label>
+				<label for="rank" class="rank"><?= __('Rank','nzcf-cadet-net') ?></label>
+				<label for="application_closes" type="date"><?= __('Closing date','nzcf-cadet-net') ?></label>
 				<br />
 				<input type="hidden" name="vacancy_id" id="vacancy_id" value="" />
 				<input type="text" name="vacancy_description" id="vacancy_description" required="required" />
@@ -44,11 +44,11 @@
 		</fieldset>
 		
 		<fieldset>
-			<legend> Applicant details </legend>
+			<legend> <?= __('Applicant details','nzcf-cadet-net') ?> </legend>
 			<div>
-				<label for="applicant_rank" class="rank"> Rank </label>
-				<label for="applicant_name"> Initials and Surname </label>
-				<label for="service_number"> Service number </label>
+				<label for="applicant_rank" class="rank"> <?= __('Rank','nzcf-cadet-net') ?> </label>
+				<label for="applicant_name"> <?= __('Initials and Surname','nzcf-cadet-net') ?> </label>
+				<label for="service_number"> <?= __('Service number','nzcf-cadet-net') ?> </label>
 				<br />
 				<input type="hidden" name="applicant_rank_id" id="applicant_rank_id" />
 				<input type="text" name="applicant_rank" id="applicant_rank" class="rank" />
@@ -58,24 +58,26 @@
 		</fieldset>
 		
 		<fieldset>
-			<legend> NZ Cadet Forces Service </legend>
+			<legend> <?= __('NZ Cadet Forces Service','nzcf-cadet-net') ?> </legend>
 			<div>
-				<label for="service_cadet_unit_1">Cadet Unit</label>
-				<label for="service_start_date_1" type="date">Start Date</label>
-				<label for="service_end_date_1" type="date">End Date</label>
-				<label for="service_appts_held_1">Appointments Held</label>
+				<label for="service_cadet_unit_1"><?= __('Cadet Unit','nzcf-cadet-net') ?></label>
+				<label for="service_start_date_1" type="date"><?= __('Start Date','nzcf-cadet-net') ?></label>
+				<label for="service_end_date_1" type="date"><?= __('End Date','nzcf-cadet-net') ?></label>
+				<label for="service_appts_held_1"><?= __('Appointments Held','nzcf-cadet-net') ?></label>
 			</div>
 			<div class="container" id="service">
 				<div class="datarow" data-rownum="1">
+					<input type="text" name="service_cadet_unit_1_id" id="service_cadet_unit_1_id" data-name="service_cadet_unit_id_" />
 					<input type="text" name="service_cadet_unit_1" id="service_cadet_unit_1" class="cadet_unit" data-name="service_cadet_unit_" />
 					<input type="date" name="service_start_date_1" id="service_start_date_1" max="<?= date("%Y-%m-%d") ?>" data-name="service_start_date_" />
 					<input type="date" name="service_end_date_1" id="service_end_date_1" max="<?= date("%Y-%m-%d") ?>" data-name="service_end_date_" />
 					<input type="text" name="service_appointments_held_1" id="service_appointments_held_1" data-name="service_appointments_held_" />
 				</div>
 			</div>
+			&nbsp;
 			<div>
-				<label for="course_qual_1"> NZCF Officer Course Qualifications</label>
-				<label for="course_date_1" type="date"> Date completed course </label>
+				<label for="course_qual_1"> <?= __('NZCF Officer Course Qualifications','nzcf-cadet-net') ?></label>
+				<label for="course_date_1" type="date"> <?= __('Date completed','nzcf-cadet-net') ?> </label>
 			</div>
 			<div class="container" id="course">
 				<div class="datarow" data-rownum="1">
@@ -85,9 +87,9 @@
 				</div>
 			</div>
 			<div>
-				<p class="instruction">List NZCF courses you have staffed</p>
-				<label for="course_staffed_1"> Course Name</label>
-				<label for="course_staffed_qty_1"> Number of times Staffed </label>
+				<p class="instruction"><?= __('List NZCF courses you have staffed','nzcf-cadet-net') ?></p>
+				<label for="course_staffed_1"> <?= __('Course Name','nzcf-cadet-net') ?></label>
+				<label for="course_staffed_qty_1"> <?= __('Number of times Staffed','nzcf-cadet-net') ?> </label>
 			</div>
 			<div class="container" id="course_staffed">
 				<div class="datarow" data-rownum="1">
@@ -99,37 +101,37 @@
 		</fieldset>
 		
 		<fieldset>
-			<legend> Reasons for applying </legend>
-			<p class="instruction">(In your own words, describe why you would be the best candidate for this role </p>
+			<legend> <?= __('Reasons for applying','nzcf-cadet-net') ?> </legend>
+			<p class="instruction"><?= __('In your own words, describe why you would be the best candidate for this role','nzcf-cadet-net') ?> </p>
 			<textarea name="best_candidate_response" id="best_candidate_response"></textarea>
 		</fieldset>
 		
 		<fieldset>
-			<legend> Curriculum Vitae </legend>
-			<p class="instruction"> Provide a short summary of your NZCF and professional work history including any civilian qualifications that will assist you in this appointment.</p>
+			<legend> <?= __('Curriculum Vitae','nzcf-cadet-net') ?> </legend>
+			<p class="instruction"> <?= __('Provide a short summary of your NZCF and professional work history including any civilian qualifications that will assist you in this appointment.','nzcf-cadet-net') ?></p>
 			<textarea name="cv" id="cv"></textarea>
-			<p class="notice">As necessary, the AC, the Asst COMDT or COMDT may conduct further inquiries as to your suitability for the appointment. </p>
+			<p class="notice"><?= __('As necessary, the AC, the Asst COMDT or COMDT may conduct further inquiries as to your suitability for the appointment.','nzcf-cadet-net') ?> </p>
 		</fieldset>
 
 		<fieldset>
-			<legend> Cadet Unit Commander Recommendation </legend>
+			<legend> <?= __('Cadet Unit Commander Recommendation','nzcf-cadet-net') ?> </legend>
 			<div>
-				<label for="cucdr_recommendation"> Recommendation </label>
+				<label for="cucdr_recommendation"> <?= __('Recommendation','nzcf-cadet-net') ?> </label>
 				<select name="cucdr_recommendation" id="cucdr_recommendation" required="required">
-					<option value="">Select</option>
-					<option value="1">Recommended</option>
-					<option value="0">Not Recommended</option>
+					<option value=""><?= __('Select','nzcf-cadet-net') ?></option>
+					<option value="1"><?= __('Recommended','nzcf-cadet-net') ?></option>
+					<option value="0"><?= __('Not Recommended','nzcf-cadet-net') ?></option>
 				</select>
 			</div>
 			<div>
-				<p class="instruction">Provide specific comment regarding the suitability of the candidate for the vacancy </p>
-				<label for="cucdr_comment">Comment</label>
+				<p class="instruction"><?= __('Provide specific comment regarding the suitability of the candidate for the vacancy','nzcf-cadet-net') ?> </p>
+				<label for="cucdr_comment"><?= __('Comment','nzcf-cadet-net') ?></label>
 				<textarea name="cucdr_comment" id="cucdr_comment" required="required"></textarea>
 			</div>
 			<div>
-				<label for="cucdr_rank" class="rank"> Rank </label>
-				<label for="cucdr_name"> Name </label>
-				<label for="cucdr_date" type="date"> Date </label>
+				<label for="cucdr_rank" class="rank"> <?= __('Rank','nzcf-cadet-net') ?> </label>
+				<label for="cucdr_name"> <?= __('Name','nzcf-cadet-net') ?> </label>
+				<label for="cucdr_date" type="date"> <?= __('Date','nzcf-cadet-net') ?> </label>
 			</div>
 			<div>
 				<input type="hidden" name="cucdr_rank_id" id="cucdr_rank_id" />
@@ -140,22 +142,22 @@
 		</fieldset>
 		
 		<fieldset>
-			<legend> Area Support Officer Recommendation </legend>
-			<label for="aso_recommendation"> Recommendation </label>
+			<legend> <?= __('Area Support Officer Recommendation','nzcf-cadet-net') ?> </legend>
+			<label for="aso_recommendation"> <?= __('Recommendation','nzcf-cadet-net') ?> </label>
 			<select name="aso_recommendation" id="aso_recommendation" required="required">
-				<option value="">Select</option>
-				<option value="1">Recommended</option>
-				<option value="0">Not Recommended</option>
+				<option value=""><?= __('Select','nzcf-cadet-net') ?></option>
+				<option value="1"><?= __('Recommended','nzcf-cadet-net') ?></option>
+				<option value="0"><?= __('Not Recommended<','nzcf-cadet-net') ?>/option>
 			</select>
 			<br />
-			<p class="instruction">Provide specific comment regarding the suitability of the candidate for the vacancy </p>
+			<p class="instruction"><?= __('Provide specific comment regarding the suitability of the candidate for the vacancy','nzcf-cadet-net') ?> </p>
 			
-			<label for="aso_comment">Comment</label>
+			<label for="aso_comment"><?= __('Comment','nzcf-cadet-net') ?></label>
 			<textarea name="aso_comment" id="aso_comment" required="required"></textarea>
 			<br />
-			<label for="aso_rank" class="rank"> Rank </label>
-			<label for="aso_name"> Name </label>
-			<label for="aso_date" type="date"> Date </label>
+			<label for="aso_rank" class="rank"> <?= __('Rank','nzcf-cadet-net') ?> </label>
+			<label for="aso_name"> <?= __('Name','nzcf-cadet-net') ?> </label>
+			<label for="aso_date" type="date"> <?= __('Date','nzcf-cadet-net') ?> </label>
 			<br />
 			<div>
 				<input type="hidden" name="aso_rank_id" id="aso_rank_id" />
@@ -166,21 +168,21 @@
 		</fieldset>
 
 		<fieldset>
-			<legend> Area Coordinator Recommendation </legend>
-			<label for="ac_recommendation"> Recommendation </label>
+			<legend> <?= __('Area Coordinator Recommendation','nzcf-cadet-net') ?> </legend>
+			<label for="ac_recommendation"> <?= __('Recommendation','nzcf-cadet-net') ?> </label>
 			<select name="ac_recommendation" id="ac_recommendation" required="required">
-				<option value="">Select</option>
-				<option value="1">Recommended</option>
-				<option value="0">Not Recommended</option>
+				<option value=""><?= __('Select','nzcf-cadet-net') ?></option>
+				<option value="1"><?= __('Recommended','nzcf-cadet-net') ?></option>
+				<option value="0"><?= __('Not Recommended','nzcf-cadet-net') ?></option>
 			</select>
 			<br />
-			<p class="instruction">Provide specific comment regarding the suitability of the candidate for the vacancy </p>
-			<label for="ac_comment">Comment</label>
+			<p class="instruction"><?= __('Provide specific comment regarding the suitability of the candidate for the vacancy','nzcf-cadet-net') ?> </p>
+			<label for="ac_comment"><?= __('Comment','nzcf-cadet-net') ?></label>
 			<textarea name="ac_comment" id="ac_comment" required="required"></textarea>
 			<br />
-			<label for="ac_rank" class="rank"> Rank </label>
-			<label for="ac_name"> Name </label>
-			<label for="ac_date" type="date"> Date </label>
+			<label for="ac_rank" class="rank"> <?= __('Rank','nzcf-cadet-net') ?> </label>
+			<label for="ac_name"> <?= __('Name','nzcf-cadet-net') ?> </label>
+			<label for="ac_date" type="date"> <?= __('Date','nzcf-cadet-net') ?> </label>
 			<br />
 			<div>
 				<input type="hidden" name="ac_rank_id" id="ac_rank_id" />
@@ -191,20 +193,20 @@
 		</fieldset>
 		
 		<fieldset>
-			<legend> Headquarters NZCF </legend>
-			<label for="comdt_approval"> COMDT Approval </label>
+			<legend> <?= __('Headquarters NZCF','nzcf-cadet-net') ?> </legend>
+			<label for="comdt_approval"> <?= __('COMDT Approval','nzcf-cadet-net') ?> </label>
 			<select name="comdt_approval" id="comdt_approval" required="required">
-				<option value="">Select</option>
-				<option value="1">Approved</option>
-				<option value="0">Not Approved</option>
+				<option value=""><?= __('Select','nzcf-cadet-net') ?></option>
+				<option value="1"><?= __('Approved','nzcf-cadet-net') ?></option>
+				<option value="0"><?= __('Not Approved','nzcf-cadet-net') ?></option>
 			</select>
 			<br />
-			<label for="comdt_comment">Comment</label>
+			<label for="comdt_comment"><?= __('Comment','nzcf-cadet-net') ?></label>
 			<textarea name="comdt_comment" id="comdt_comment" required="required"></textarea>
 			<br />
-			<label for="comdt_rank" class="rank"> Rank </label>
-			<label for="comdt_name"> Name </label>
-			<label for="comdt_date" type="date"> Date </label>
+			<label for="comdt_rank" class="rank"> <?= __('Rank','nzcf-cadet-net') ?> </label>
+			<label for="comdt_name"> <?= __('Name','nzcf-cadet-net') ?> </label>
+			<label for="comdt_date" type="date"> <?= __('Date','nzcf-cadet-net') ?> </label>
 			<br />
 			<div>
 				<input type="hidden" name="comdt_rank_id" id="comdt_rank_id" />
@@ -214,12 +216,12 @@
 			</div>
 		</fieldset>
 		<hr />
-		<button type="submit">Save</button>
-		<button type="cancel">Cancel</button>
+		<button type="submit"><?= __('Save','nzcf-cadet-net') ?></button>
+		<button type="cancel"><?= __('Cancel','nzcf-cadet-net') ?></button>
 	</form>
 	
 	<script>
-		
+		var eoi_id = <?= (isset($_GET['eoi_id'])?(int)$_GET['eoi_id']:0)?>;
 	</script>
 	
 	<?= get_footer() ?>
