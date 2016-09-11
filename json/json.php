@@ -25,12 +25,43 @@
 	// http://bordoni.me/ajax-wordpress/
 	// JSON URIs defined in ../nzcf-cadet-net.php -> wpnzcfcn_register()
 	
+	// $_GET['term'] is the partial text entered into a jQueryUI AutoComplete field & passed to us
+	
+	// List the types of courses
+	function wpnzcfcn_json_callback_course_type() {
+		global $wpdb;
+	    $response = array();
+
+		$keywords = (isset($_GET['term'])?$_GET['term']:'');
+		// Never trust input from a user!
+		$keywords = wp_kses( strtolower($keywords), array() );
+		$response = $wpdb->get_results( $wpdb->prepare(
+			"
+			SELECT 
+				*
+			FROM 
+				".$wpdb->prefix."wpnzcfcn_course
+			WHERE
+				LOWER(".$wpdb->prefix."wpnzcfcn_course.course_name) LIKE %s
+			ORDER BY
+				LOWER(".$wpdb->prefix."wpnzcfcn_course.course_name) ASC;",
+			'%'.$wpdb->esc_like($keywords).'%'
+        ) );
+        // For our autocomplete jQueryUI boxes, simplify our value/label options
+		foreach( $response as $row ) {
+			$row->value = $row->course_id;
+			$row->label = $row->course_name;
+			unset($row->course_id);
+		}
+ 	   // Never forget to exit or die on the end of a WordPress AJAX action!
+	    exit( json_encode( $response ) ); 
+	}
+	
 	// List the NZCF ranks
 	function wpnzcfcn_json_callback_rank() {
 		global $wpdb;
 	    $response = array();
 
-		// term is the partial text entered into a jQueryUI AutoComplete field & passed to us
 		$keywords = (isset($_GET['term'])?$_GET['term']:'');
 		// Never trust input from a user!
 		$keywords = wp_kses( strtolower($keywords), array() );
@@ -62,7 +93,6 @@
 		global $wpdb;
 	    $response = array();
 
-		// term is the partial text entered into a jQueryUI AutoComplete field & passed to us
 		$keywords = (isset($_GET['term'])?$_GET['term']:'');
 		// Never trust input from a user!
 		$keywords = wp_kses( strtolower($keywords), array() );

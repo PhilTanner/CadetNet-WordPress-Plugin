@@ -20,46 +20,8 @@
 	*/
 	require_once( dirname(__FILE__).'/../class/defines.php' );
 	
-	// Based on code located at:
-	// http://bordoni.me/ajax-wordpress/
-	// JSON URIs defined in ../nzcf-cadet-net.php -> wpnzcfcn_register()
+	// included by ../json/json.php
 	
-	// List EOI vacancy positions currently available
-	function wpnzcfcn_json_callback_eoi_positions() {
-		global $wpdb;
-	    $response = array();
-
-		// term is the partial text entered into a jQueryUI AutoComplete field & passed to us
-		$keywords = (isset($_GET['term'])?$_GET['term']:'');
-		// Never trust input from a user!
-		$keywords = wp_kses( strtolower($keywords), array() );
-        $response = $wpdb->get_results( $wpdb->prepare(
-			"
-			SELECT 
-				IF( ".$wpdb->prefix."wpnzcfcn_rank.nzcf_corps = ".$wpdb->prefix."wpnzcfcn_vacancy.nzcf_corps, ".$wpdb->prefix."wpnzcfcn_rank.rank, CONCAT( ".$wpdb->prefix."wpnzcfcn_rank.rank, ' (E)') ) AS ranks,
-				".$wpdb->prefix."wpnzcfcn_vacancy.*
-			FROM 
-				".$wpdb->prefix."wpnzcfcn_vacancy
-				INNER JOIN ".$wpdb->prefix."wpnzcfcn_rank
-					ON ".$wpdb->prefix."wpnzcfcn_rank.rank_id = ".$wpdb->prefix."wpnzcfcn_vacancy.min_rank_id
-			WHERE
-				LOWER(".$wpdb->prefix."wpnzcfcn_vacancy.short_desc) LIKE %s
-				AND ".$wpdb->prefix."wpnzcfcn_vacancy.closing_date > now()
-			ORDER BY
-				LOWER(".$wpdb->prefix."wpnzcfcn_vacancy.short_desc) ASC;",
-			'%'.$wpdb->esc_like($keywords).'%'
-        ) );
-        // For our autocomplete jQueryUI boxes, simplify our value/label options
-		foreach( $response as $row ) {
-			$row->value = $row->vacancy_id;
-			$row->label = $row->short_desc;
-			$row->closing_date = date('Y-m-d',strtotime($row->closing_date))."";
-			unset($row->vacancy_id);
-		}
- 	   // Never forget to exit or die on the end of a WordPress AJAX action!
-	    exit( json_encode( $response ) ); 
-	}
-
 	// Return details for EOI id passed in
 	function wpnzcfcn_json_callback_eoi_application() {
 		global $wpdb;
@@ -67,7 +29,6 @@
 		
 		// This is a POST method, so we're updating data
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-			$displaymsg = "";
 			
 			try {
 				// TODO - check for capability for the relevnt parts
@@ -108,10 +69,63 @@
 						'comdt_date' =>  $_POST['comdt_date']
 					) 
 				);
+				// If we've just created a new entry, then grab our new ID value so we can insert our multi-rows
+				if( !$eoi_id ) {
+					$application_id = $wpdb->insert_id;
+				} else {
+					$application_id = $eoi_id;
+				}
+				// Insert each one of our Service Records for NEW applications, not updates
+				if( !$eoi_id ) {
+					foreach( $_POST as $field => $value ) {
+						if( substr( $field, 0, strlen( 'service_cadet_unit_id_') ) == "service_cadet_unit_id_" && $_POST[$field] ) {
+							$tmpid = str_replace( 'service_cadet_unit_id_', '', $field );
+							$wpdb->replace( 
+								$wpdb->prefix."wpnzcfcn_vacancy_application_service", 
+								array( 
+									'application_id' => $eoi_id, 
+									'cadet_unit_id' => (int)$_POST['service_cadet_unit_id_'.$tmpid], 
+									'start_date' => date('Y-m-d', strtotime($_POST['service_start_date_'.$tmpid])), 
+									'end_date' => ($_POST['service_end_date_'.$tmpid]?date('Y-m-d', strtotime($_POST['service_end_date_'.$tmpid])):null), 
+									'appointments_held' => $_POST['service_appointments_held_'.$tmpid]
+								) 
+							);
+						}
+					}
+					// Insert each one of our courses attended
+					foreach( $_POST as $field => $value) {
+						if( substr( $field, 0, strlen( 'course_qual_id_') ) == "course_qual_id_" && $_POST[$field] ) {
+							$tmpid = str_replace( 'course_qual_id_', '', $field );
+							$wpdb->replace( 
+								$wpdb->prefix."wpnzcfcn_vacancy_application_course", 
+								array( 
+									'application_id' => $eoi_id, 
+									'course_id' => (int)$_POST['course_qual_id_'.$tmpid], 
+									'attended_date' => date('Y-m-d', strtotime($_POST['course_date_'.$tmpid]))
+								) 
+							);
+						}
+					}
+					// Insert each one of our courses staffed
+					foreach( $_POST as $field => $value ) {
+						if( substr( $field, 0, strlen( 'course_staffed_id_') ) == "course_staffed_id_" && $_POST[$field] ) {
+							$tmpid = str_replace( 'course_staffed_id_', '', $field );
+							$wpdb->replace( 
+								$wpdb->prefix."wpnzcfcn_vacancy_application_course", 
+								array( 
+									'application_id' => $eoi_id, 
+									'course_id' => (int)$_POST['course_staffed_id_'.$tmpid], 
+									'times_staffed' => date('Y-m-d', strtotime($_POST['course_staffed_qty_'.$tmpid]))
+								) 
+							);
+						}
+					}
+				}
 				
 			} catch( Exception $ex ) {
 				header("HTTP/1.0 500 Unhandled error");
 			}
+			
 			header("HTTP/1.0 200 ".__('Saved','nzcf-cadet-net'));
 			echo '<p>';
 			echo __('Application saved. You can now close this window','nzcf-cadet-net');
@@ -148,6 +162,7 @@
 				'cucdr_recommendation' => '',
 				'cucdr_comment' => '',
 				'cucdr_rank' => '',
+				'cucdr_rank_id' => '',
 				'cucdr_name' => '',
 				'cucdr_date' => ''
 			),
@@ -155,6 +170,7 @@
 				'aso_recommendation' => '',
 				'aso_comment' => '',
 				'aso_rank' => '',
+				'aso_rank_id' => '',
 				'aso_name' => '',
 				'aso_date' => ''
 			),
@@ -162,6 +178,7 @@
 				'ac_recommendation' => '',
 				'ac_comment' => '',
 				'ac_rank' => '',
+				'ac_rank_id' => '',
 				'ac_name' => '',
 				'ac_date' => ''
 			),
@@ -169,12 +186,14 @@
 				'comdt_recommendation' => '',
 				'comdt_comment' => '',
 				'comdt_rank' => '',
+				'comdt_rank_id' => '',
 				'comdt_name' => '',
 				'comdt_date' => ''
 			)
 		);
 
 		// Populate the structure from the DB
+		// TODO - check for capability for the relevnt parts
 		$response = $wpdb->get_results( $wpdb->prepare(
 			"
 			SELECT 
@@ -220,6 +239,8 @@
 					*
 				FROM 
 					".$wpdb->prefix."wpnzcfcn_vacancy_application_service
+					INNER JOIN ".$wpdb->prefix."wpnzcfcn_unit
+						ON ".$wpdb->prefix."wpnzcfcn_vacancy_application_service.cadet_unit_id = ".$wpdb->prefix."wpnzcfcn_unit.unit_id
 				WHERE
 					application_id = %d;",
 				$eoi_id
@@ -228,7 +249,8 @@
 			foreach( $subquery as $subrow ) {
 				$i++;
 				$application['part3']['service'][] = array(
-					'service_cadet_unit_'.$i => $subrow->cadet_unit_id,
+					'service_cadet_unit_id_'.$i => $subrow->cadet_unit_id,
+					'service_cadet_unit_'.$i => $subrow->unit_name,
 					'service_start_date_'.$i => $subrow->start_date,
 					'service_end_date_'.$i => $subrow->end_date,
 					'service_appointments_held_'.$i => $subrow->appointments_held
@@ -242,6 +264,8 @@
 					*
 				FROM 
 					".$wpdb->prefix."wpnzcfcn_vacancy_application_course
+					INNER JOIN ".$wpdb->prefix."wpnzcfcn_course
+						ON ".$wpdb->prefix."wpnzcfcn_vacancy_application_course.course_id = ".$wpdb->prefix."wpnzcfcn_course.course_id
 				WHERE
 					application_id = %d
 					AND times_staffed=0;",
@@ -252,7 +276,7 @@
 				$i++;
 				$application['part3']['course'][] = array(
 					'course_qual_id_'.$i => $subrow->course_id,
-					'course_qual_'.$i => "TODO",
+					'course_qual_'.$i => $subrow->course_name,
 					'course_date_'.$i => $subrow->attended_date
 				);
 			}
@@ -264,6 +288,8 @@
 					*
 				FROM 
 					".$wpdb->prefix."wpnzcfcn_vacancy_application_course
+					INNER JOIN ".$wpdb->prefix."wpnzcfcn_course
+						ON ".$wpdb->prefix."wpnzcfcn_vacancy_application_course.course_id = ".$wpdb->prefix."wpnzcfcn_course.course_id
 				WHERE
 					application_id = %d
 					AND times_staffed>0;",
@@ -274,7 +300,7 @@
 				$i++;
 				$application['part3']['course_staffed'][] = array(
 					'course_staffed_id_'.$i => $subrow->course_id,
-					'course_staffed_'.$i => "TODO",
+					'course_staffed_'.$i => $subrow->course_name,
 					'course_staffed_qty_'.$i => $subrow->times_staffed
 				);
 			}
@@ -374,6 +400,41 @@
 	}
 	
 	
-	
+	// List EOI vacancy positions currently available
+	function wpnzcfcn_json_callback_eoi_positions() {
+		global $wpdb;
+	    $response = array();
+
+		// term is the partial text entered into a jQueryUI AutoComplete field & passed to us
+		$keywords = (isset($_GET['term'])?$_GET['term']:'');
+		// Never trust input from a user!
+		$keywords = wp_kses( strtolower($keywords), array() );
+        $response = $wpdb->get_results( $wpdb->prepare(
+			"
+			SELECT 
+				IF( ".$wpdb->prefix."wpnzcfcn_rank.nzcf_corps = ".$wpdb->prefix."wpnzcfcn_vacancy.nzcf_corps, ".$wpdb->prefix."wpnzcfcn_rank.rank, CONCAT( ".$wpdb->prefix."wpnzcfcn_rank.rank, ' (E)') ) AS ranks,
+				".$wpdb->prefix."wpnzcfcn_vacancy.*
+			FROM 
+				".$wpdb->prefix."wpnzcfcn_vacancy
+				INNER JOIN ".$wpdb->prefix."wpnzcfcn_rank
+					ON ".$wpdb->prefix."wpnzcfcn_rank.rank_id = ".$wpdb->prefix."wpnzcfcn_vacancy.min_rank_id
+			WHERE
+				LOWER(".$wpdb->prefix."wpnzcfcn_vacancy.short_desc) LIKE %s
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy.closing_date > now()
+			ORDER BY
+				LOWER(".$wpdb->prefix."wpnzcfcn_vacancy.short_desc) ASC;",
+			'%'.$wpdb->esc_like($keywords).'%'
+        ) );
+        // For our autocomplete jQueryUI boxes, simplify our value/label options
+		foreach( $response as $row ) {
+			$row->value = $row->vacancy_id;
+			$row->label = $row->short_desc;
+			$row->closing_date = date('Y-m-d',strtotime($row->closing_date))."";
+			unset($row->vacancy_id);
+		}
+ 	   // Never forget to exit or die on the end of a WordPress AJAX action!
+	    exit( json_encode( $response ) ); 
+	}
+
 	
 	

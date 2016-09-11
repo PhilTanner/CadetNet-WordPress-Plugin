@@ -67,7 +67,7 @@
 			</div>
 			<div class="container" id="service">
 				<div class="datarow" data-rownum="1">
-					<input type="text" name="service_cadet_unit_1_id" id="service_cadet_unit_1_id" data-name="service_cadet_unit_id_" />
+					<input type="hidden" name="service_cadet_unit_id_1" id="service_cadet_unit_id_1" data-name="service_cadet_unit_id_" />
 					<input type="text" name="service_cadet_unit_1" id="service_cadet_unit_1" class="cadet_unit" data-name="service_cadet_unit_" />
 					<input type="date" name="service_start_date_1" id="service_start_date_1" max="<?= date("%Y-%m-%d") ?>" data-name="service_start_date_" />
 					<input type="date" name="service_end_date_1" id="service_end_date_1" max="<?= date("%Y-%m-%d") ?>" data-name="service_end_date_" />
@@ -81,8 +81,8 @@
 			</div>
 			<div class="container" id="course">
 				<div class="datarow" data-rownum="1">
-					<input type="hidden" name="course_qual_id_1" id="course_qual_id_1" />
-					<input type="text" name="course_qual_1" id="course_qual_1" class="course" data-name="course_qual_" />
+					<input type="hidden" name="course_qual_id_1" id="course_qual_id_1"  data-name="course_qual_id_" />
+					<input type="text" name="course_qual_1" id="course_qual_1" class="course_type" data-name="course_qual_" />
 					<input type="date" name="course_date_1" id="course_date_1" max="<?= date('%Y-%m-%d') ?>" data-name="course_date_"  type="date" />
 				</div>
 			</div>
@@ -93,8 +93,8 @@
 			</div>
 			<div class="container" id="course_staffed">
 				<div class="datarow" data-rownum="1">
-					<input type="hidden" name="course_staffed_id_1" id="course_staffed_id_1" />
-					<input type="text" name="course_staffed_1" id="course_staffed_1" class="course" data-name="course_staffed_" />
+					<input type="hidden" name="course_staffed_id_1" id="course_staffed_id_1"  data-name="course_staffed_id_" />
+					<input type="text" name="course_staffed_1" id="course_staffed_1" class="course_type" data-name="course_staffed_" />
 					<input type="number" name="course_staffed_qty_1" id="course_staffed_qty_1" data-name="course_staffed_date_" />
 				</div>
 			</div>

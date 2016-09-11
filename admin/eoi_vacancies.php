@@ -206,7 +206,7 @@
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_area_'.$vacancy->vacancy_id.'_n" id="nzcf_area_'.$vacancy->vacancy_id.'_n" value="1" '.($vacancy->nzcf_area&WPNZCFCN_AREA_NORTHERN?' checked="checked"':'').' class="northern" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_area_'.$vacancy->vacancy_id.'_c" id="nzcf_area_'.$vacancy->vacancy_id.'_c" value="1" '.($vacancy->nzcf_area&WPNZCFCN_AREA_CENTRAL?' checked="checked"':'').' class="central" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_area_'.$vacancy->vacancy_id.'_s" id="nzcf_area_'.$vacancy->vacancy_id.'_s" value="1" '.($vacancy->nzcf_area&WPNZCFCN_AREA_SOUTHERN?' checked="checked"':'').' class="southern" /> </td>';
-								echo '	<td style="text-align:center"> '.$vacancy->applications.' </td>';
+								echo '	<td style="text-align:center"> <button type="button">'.$vacancy->applications.'</button> </td>';
 								echo '</tr>';
 							}
 							echo '<tr>';

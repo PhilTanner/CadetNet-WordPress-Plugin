@@ -27,7 +27,6 @@
 			$(this).html("<strong>Part "+i+":</strong> "+$(this).html());
 		});
 		
-		
 		// Make our appointments an autocomplete drop down
 		$('#vacancy_description').autocomplete({
 			source:"wp-admin/admin-ajax.php?action=eoi_positions",
@@ -55,69 +54,15 @@
 			}
 		});
 		
-		// Make our courses an autocomplete drop down
-		$('input.course').autocomplete({
-			source:[
-				{ value: 1, label: 'Commissioning Course' },
-				{ value: 2, label: 'ITTM Course' },
-				{ value: 3, label: 'Command Course' },
-				{ value: 4, label: 'Range Conducting Officer Course' },
-				{ value: 5, label: 'Officer Bushcraft Course' },
-				{ value: 6, label: 'Maring Safety Officer Course' }
-			],
-			minLength:0,
-			focus: function( event, ui ) {
-				$(this).val( ui.item.label );
-				return false;
-			},
-			select: function( event, ui ) {
-				// When we select an item from the list, put our friendly name in the box
-				$(this).val( ui.item.label );
-				// And store the value (db id) in a connected hidden form element
-				var rownum = $(this).parent().data('rownum');
-				$( "#"+$(this).data('name')+"id_"+rownum ).val( ui.item.value );
-				
-				return false;
-			},
-			// Restrict options to what's on the list
-			change: function(event,ui) {
-				if (ui.item==null) {
-					jQuery(this).val('').addClass('ui-state-error');
-					jQuery( "#"+jQuery(this).attr('id')+"_id" ).val( '' );
-					jQuery(this).focus();
-				} else {
-					jQuery(this).removeClass('ui-state-error');
-				}
-			}
-		});
-		
-		// Make our expanding containers "expand" when we enter data to provide new empty rows
-		$('div.container .datarow input[type=text]').change(function(){
-			// Only create a new row if the last row already there isn't blank
-			if( $(this).parent().parent().children('.datarow:last-child').children('input:first-child').val() != "" )
-			{
-				var newrownum = $(this).parent().parent().children('.datarow:last-child').data('rownum')+1;
-				// Do our duplication, updating our IDs and names, and resetting what we've entered into previous rows
-				$(this).parent().clone().attr('data-rownum', newrownum).appendTo( $(this).parent().parent() ).children('input').each(function(){
-					$(this).attr({ 
-						id: $(this).data('name')+newrownum,
-						name: $(this).data('name')+newrownum 
-					}).val("");
-					
-			// Create our new autocompletes
-			//autocomplete_inputs();
-					//alert($(this).attr('id'));
-				});
-			}
-		});
 		
 		// Take our data and put it into our form to allow the next stage editing
 		function populateFormValues( arr )
 		{
 			$.each(arr, function(key, value){
+				// Null values are empty placeholders, so nothing to do.
 				if( value == null ) return;
-					//$.each(value, function(key2,value2){ alert(key2+"=>"+value2) });
-				if( (typeof value === "object") && (value !== null) && !Array.isArray(value) ) {
+				// If we have an object, it's complex, so recursively call ourself
+				if( (typeof value === "object") && !Array.isArray(value) ) {
 					populateFormValues(value);
 				// We have an array object
 				} else if(Array.isArray(value) ) {
@@ -146,9 +91,6 @@
 			});
 		}
 		
-		window.onerror = function(msg,url,ln){ alert(msg +"\nLine "+ln); }
-		
-		// populateFormValues( currentdata );
 		
 		$.ajax({
 			url: 'wp-admin/admin-ajax.php?action=eoi_application&eoi_id='+eoi_id,
@@ -183,9 +125,7 @@
 					$(this).attr('disabled','disabled').removeAttr('readonly');
 				});
 			}
-			
-		}).fail(function( foo, text, error ){ alert(text+"\n"+error+"\nfoo="+foo.responseText); });
-		
+		});
 		
 		$('form[name=eoi]').on( "submit", function( event ) {
 			// stop the form submitting
@@ -197,7 +137,6 @@
 			$('form[name=eoi] input:hidden, form[name=eoi] textarea:hidden, form[name=eoi] select:hidden').not('[type=hidden]').attr('disabled','disabled');
 			var data = $(this).serialize();
 			disabled.attr('disabled','disabled').attr('readonly','readonly');
-			
 			
 			$.ajax({
 				url: 'wp-admin/admin-ajax.php?action=eoi_application&eoi_id='+eoi_id,
@@ -217,9 +156,6 @@
 			}).always( function(){ 
 				$('form[name=eoi] button[type="submit"]').removeAttr('disabled').removeClass('ui-state-disabled');
 			});
-			
-			
 		});
-		
 		
 	});

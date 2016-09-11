@@ -155,6 +155,68 @@
 			);
 		}
 		
+		$table = $wpdb->prefix."wpnzcfcn_course";
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Commissioning Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'Commissioning Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER | WPNZCFCN_PERSONNEL_GROUP_UNDER_OFFICER | WPNZCFCN_PERSONNEL_GROUP_CIVILIAN,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'ITTM Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'ITTM Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Command Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'Command Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Range Conducting Officer Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'Range Conducting Officer Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Officer Bushcraft Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'Officer Bushcraft Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Maring Safety Officer Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'Range Conducting Officer Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		
 	}
    	
 	// Create our database on plugin Activation/Installation 
@@ -347,7 +409,7 @@
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		
     	wp_enqueue_script( 
-			'cadetnet_admin_js', 
+			'cadetnet_js', 
 			plugins_url( '/js/nzcf-cadet-net.js', __FILE__ ), 
 			array('jquery','jquery-ui-core'), 
 			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/nzcf-cadet-net.js' )), 
@@ -362,7 +424,8 @@
   	  wp_enqueue_style ( 'eoi-css' ); 
 		
 	}
-	add_action('wp', 'wpnzcfcn_load_scripts');
+	add_action('wp_enqueue_scripts', 'wpnzcfcn_load_scripts');
+	add_action('admin_enqueue_scripts', 'wpnzcfcn_load_scripts');
 	
 	// Load our style sheets
 	function wpnzcfcn_load_styles($hook) {
@@ -383,7 +446,8 @@
 		);
   	  wp_enqueue_style ( 'nzcf-cadet-net' ); 
 	}
-	add_action('wp', 'wpnzcfcn_load_styles');
+	add_action('wp_enqueue_scripts', 'wpnzcfcn_load_styles');
+	add_action('admin_enqueue_scripts', 'wpnzcfcn_load_styles');
 	
 	// Plugin initialisation (loading)
 	function wpnzcfcn_register(){
@@ -394,11 +458,15 @@
     
         // Register our JSON callbacks
     	// http://bordoni.me/ajax-wordpress/
+    	// Logged in JSON queries
     	add_action( 'wp_ajax_rank', 			'wpnzcfcn_json_callback_rank' );
-		add_action( 'wp_ajax_nopriv_rank', 	'wpnzcfcn_json_callback_rank' ); 
 		add_action( 'wp_ajax_eoi_positions', 	'wpnzcfcn_json_callback_eoi_positions' ); 
 		add_action( 'wp_ajax_eoi_application', 	'wpnzcfcn_json_callback_eoi_application' ); 
 		add_action( 'wp_ajax_unit', 			'wpnzcfcn_json_callback_unit' );
+		add_action( 'wp_ajax_course_type', 	'wpnzcfcn_json_callback_course_type' );
+		
+		// Logged out/anonymous JSON queries
+		add_action( 'wp_ajax_nopriv_rank', 	'wpnzcfcn_json_callback_rank' ); 
 		add_action( 'wp_ajax_nopriv_unit', 	'wpnzcfcn_json_callback_unit' ); 
 		
 		add_action( 'wp', 'eoi_form' );

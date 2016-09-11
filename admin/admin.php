@@ -53,6 +53,7 @@
 			"cadet_net_menu_eoi_vacancies",  // Menu slug. 
 			"cadetnet_admin_menu_eoi_vacancies"
 		);
+		
 	}
 
 	function cadetnet_admin_menu() {
