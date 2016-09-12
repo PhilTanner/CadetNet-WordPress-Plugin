@@ -83,7 +83,7 @@
 							$wpdb->replace( 
 								$wpdb->prefix."wpnzcfcn_vacancy_application_service", 
 								array( 
-									'application_id' => $eoi_id, 
+									'application_id' => $application_id, 
 									'cadet_unit_id' => (int)$_POST['service_cadet_unit_id_'.$tmpid], 
 									'start_date' => date('Y-m-d', strtotime($_POST['service_start_date_'.$tmpid])), 
 									'end_date' => ($_POST['service_end_date_'.$tmpid]?date('Y-m-d', strtotime($_POST['service_end_date_'.$tmpid])):null), 
@@ -99,7 +99,7 @@
 							$wpdb->replace( 
 								$wpdb->prefix."wpnzcfcn_vacancy_application_course", 
 								array( 
-									'application_id' => $eoi_id, 
+									'application_id' => $application_id, 
 									'course_id' => (int)$_POST['course_qual_id_'.$tmpid], 
 									'attended_date' => date('Y-m-d', strtotime($_POST['course_date_'.$tmpid]))
 								) 
@@ -113,7 +113,7 @@
 							$wpdb->replace( 
 								$wpdb->prefix."wpnzcfcn_vacancy_application_course", 
 								array( 
-									'application_id' => $eoi_id, 
+									'application_id' => $application_id, 
 									'course_id' => (int)$_POST['course_staffed_id_'.$tmpid], 
 									'times_staffed' => date('Y-m-d', strtotime($_POST['course_staffed_qty_'.$tmpid]))
 								) 
@@ -399,6 +399,120 @@
 		
 	}
 	
+	// List EOI applications made
+	function wpnzcfcn_json_callback_eoi_application_list() {
+		global $wpdb;
+	    $response = array();
+	
+		// This is an admin only function
+		if ( !current_user_can( 'manage_options' ) )  {
+			header("HTTP/1.0 403 Unauthorised");
+			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+		}
+		
+		$vacancy_id = (isset($_GET['vacancy_id'])?(int)$_GET['vacancy_id']:0);
+		
+		// TODO - Permissions
+        $response['submitted'] = $wpdb->get_results( $wpdb->prepare(
+			"
+			SELECT 
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.application_id,
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.created,
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.name,
+				LEFT(".$wpdb->prefix."wpnzcfcn_vacancy_application.reasons_for_applying,66) AS reasons_for_applying,
+				".$wpdb->prefix."wpnzcfcn_rank.rank_shortname
+			FROM 
+				".$wpdb->prefix."wpnzcfcn_vacancy_application
+				INNER JOIN ".$wpdb->prefix."wpnzcfcn_rank
+					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.rank_id = ".$wpdb->prefix."wpnzcfcn_rank.rank_id
+			WHERE
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = %d
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.cucdr_recommendation IS NULL
+			ORDER BY
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.created ASC;",
+			$vacancy_id
+        ) );
+
+		// TODO - Permissions
+        $response['cucdr_reviewed'] = $wpdb->get_results( $wpdb->prepare(
+			"
+			SELECT 
+				*
+			FROM 
+				".$wpdb->prefix."wpnzcfcn_vacancy
+				INNER JOIN ".$wpdb->prefix."wpnzcfcn_vacancy_application
+					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = ".$wpdb->prefix."wpnzcfcn_vacancy.vacancy_id
+			WHERE
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = %d
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.cucdr_recommendation IS NOT NULL
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.aso_recommendation IS NOT NULL
+			ORDER BY
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.created ASC;",
+			$vacancy_id
+        ) );
+       
+		// TODO - Permissions 
+        $response['aso_reviewed'] = $wpdb->get_results( $wpdb->prepare(
+			"
+			SELECT 
+				*
+			FROM 
+				".$wpdb->prefix."wpnzcfcn_vacancy
+				INNER JOIN ".$wpdb->prefix."wpnzcfcn_vacancy_application
+					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = ".$wpdb->prefix."wpnzcfcn_vacancy.vacancy_id
+			WHERE
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = %d
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.cucdr_recommendation IS NOT NULL
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.aso_recommendation IS NOT NULL
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.ac_recommendation IS NULL
+			ORDER BY
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.created ASC;",
+			$vacancy_id
+        ) );
+  
+		// TODO - Permissions      
+        $response['ac_reviewed'] = $wpdb->get_results( $wpdb->prepare(
+			"
+			SELECT 
+				*
+			FROM 
+				".$wpdb->prefix."wpnzcfcn_vacancy
+				INNER JOIN ".$wpdb->prefix."wpnzcfcn_vacancy_application
+					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = ".$wpdb->prefix."wpnzcfcn_vacancy.vacancy_id
+			WHERE
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = %d
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.cucdr_recommendation IS NOT NULL
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.aso_recommendation IS NOT NULL
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.ac_recommendation IS NOT NULL
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.comdt_recommendation IS NULL
+			ORDER BY
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.created ASC;",
+			$vacancy_id
+        ) );
+
+		// TODO - Permissions
+        $response['completed'] = $wpdb->get_results( $wpdb->prepare(
+			"
+			SELECT 
+				*
+			FROM 
+				".$wpdb->prefix."wpnzcfcn_vacancy
+				INNER JOIN ".$wpdb->prefix."wpnzcfcn_vacancy_application
+					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = ".$wpdb->prefix."wpnzcfcn_vacancy.vacancy_id
+			WHERE
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.application_id = %d
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.cucdr_recommendation IS NOT NULL
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.aso_recommendation IS NOT NULL
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.ac_recommendation IS NOT NULL
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.comdt_recommendation IS NOT NULL
+			ORDER BY
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.created ASC;",
+			$vacancy_id
+        ) );
+ 	   // Never forget to exit or die on the end of a WordPress AJAX action!
+	    exit( json_encode( $response ) ); 
+	}
+
 	
 	// List EOI vacancy positions currently available
 	function wpnzcfcn_json_callback_eoi_positions() {

@@ -34,6 +34,7 @@
 		// so the DB pull will reflect what's actually in there
 		if( isset($_POST['vacancy_ids']) && is_array($_POST['vacancy_ids']) )
 		{
+			
 			foreach( $_POST['vacancy_ids'] as $vacancy_id ) {
 				// The nzcf_corps is a bitmask, so calculate it.
 				$nzcf_corps = 0;
@@ -79,53 +80,56 @@
 					array( '%d' ) 
 				);
 			}
-			if( strlen(trim($_POST['short_desc_0'])) && strtotime($_POST['closing_date_0']) )
-			{
-				// The nzcf_corps is a bitmask, so calculate it.
-				$nzcf_corps = 0;
-				if( isset($_POST['nzcf_corps_0_atc']) && $_POST['nzcf_corps_0_atc'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_ATC;
-				} 
-				if( isset($_POST['nzcf_corps_0_corps']) && $_POST['nzcf_corps_0_corps'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_CORPS;
-				} 
-				if( isset($_POST['nzcf_corps_0_sea']) && $_POST['nzcf_corps_0_sea'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SEA;
-				} 
-				// So is the nzcf_area...
-				$nzcf_area = 0;
-				if( isset($_POST['nzcf_area_0_n']) && $_POST['nzcf_area_0_n'] ) {
-					$nzcf_area = $nzcf_area | WPNZCFCN_AREA_NORTHERN;
-				} 
-				if( isset($_POST['nzcf_area_0_c']) && $_POST['nzcf_area_0_c'] ) {
-					$nzcf_area = $nzcf_area | WPNZCFCN_AREA_CENTRAL;
-				} 
-				if( isset($_POST['nzcf_area_0_s']) && $_POST['nzcf_area_0_s'] ) {
-					$nzcf_area = $nzcf_area | WPNZCFCN_AREA_SOUTHERN;
-				} 
-				
-				// User data handling done by the update function, not our problem.
-				$wpdb->insert( 
-					$wpdb->prefix."wpnzcfcn_vacancy", 
-					array( 
-						'short_desc' => $_POST['short_desc_0'],
-						'closing_date' => date('Y-m-d H:i:s', strtotime($_POST['closing_date_0'])),
-						'min_rank_id' => $_POST['min_rank_id_0'],
-						'nzcf_corps' => $nzcf_corps,
-						'nzcf_area' => $nzcf_area,
-						'posted_by_user_id' => get_current_user_id()
-					), 
-					array( 
-						'%s',
-						'%s',
-						'%d',
-						'%d',
-						'%d',
-						'%d'
-					)
-				);
-			}
 			echo '<h3>'.__('Saved','nzcf-cadet-net').'</h3>';
+		}
+		
+		if( isset($_POST['short_desc_0']) && strlen(trim($_POST['short_desc_0'])) && strtotime($_POST['closing_date_0']) )
+		{
+			// The nzcf_corps is a bitmask, so calculate it.
+			$nzcf_corps = 0;
+			if( isset($_POST['nzcf_corps_0_atc']) && $_POST['nzcf_corps_0_atc'] ) {
+				$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_ATC;
+			} 
+			if( isset($_POST['nzcf_corps_0_corps']) && $_POST['nzcf_corps_0_corps'] ) {
+				$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_CORPS;
+			} 
+			if( isset($_POST['nzcf_corps_0_sea']) && $_POST['nzcf_corps_0_sea'] ) {
+				$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SEA;
+			} 
+			// So is the nzcf_area...
+			$nzcf_area = 0;
+			if( isset($_POST['nzcf_area_0_n']) && $_POST['nzcf_area_0_n'] ) {
+				$nzcf_area = $nzcf_area | WPNZCFCN_AREA_NORTHERN;
+			} 
+			if( isset($_POST['nzcf_area_0_c']) && $_POST['nzcf_area_0_c'] ) {
+				$nzcf_area = $nzcf_area | WPNZCFCN_AREA_CENTRAL;
+			} 
+			if( isset($_POST['nzcf_area_0_s']) && $_POST['nzcf_area_0_s'] ) {
+				$nzcf_area = $nzcf_area | WPNZCFCN_AREA_SOUTHERN;
+			} 
+			
+			// User data handling done by the update function, not our problem.
+			$wpdb->insert( 
+				$wpdb->prefix."wpnzcfcn_vacancy", 
+				array( 
+					'short_desc' => $_POST['short_desc_0'],
+					'closing_date' => date('Y-m-d H:i:s', strtotime($_POST['closing_date_0'])),
+					'min_rank_id' => $_POST['min_rank_id_0'],
+					'nzcf_corps' => $nzcf_corps,
+					'nzcf_area' => $nzcf_area,
+					'posted_by_user_id' => get_current_user_id()
+				), 
+				array( 
+					'%s',
+					'%s',
+					'%d',
+					'%d',
+					'%d',
+					'%d'
+				)
+			);
+			
+			echo '<h3>'.__('Inserted','nzcf-cadet-net').'</h3>';
 		}
 		
 		
@@ -206,7 +210,7 @@
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_area_'.$vacancy->vacancy_id.'_n" id="nzcf_area_'.$vacancy->vacancy_id.'_n" value="1" '.($vacancy->nzcf_area&WPNZCFCN_AREA_NORTHERN?' checked="checked"':'').' class="northern" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_area_'.$vacancy->vacancy_id.'_c" id="nzcf_area_'.$vacancy->vacancy_id.'_c" value="1" '.($vacancy->nzcf_area&WPNZCFCN_AREA_CENTRAL?' checked="checked"':'').' class="central" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_area_'.$vacancy->vacancy_id.'_s" id="nzcf_area_'.$vacancy->vacancy_id.'_s" value="1" '.($vacancy->nzcf_area&WPNZCFCN_AREA_SOUTHERN?' checked="checked"':'').' class="southern" /> </td>';
-								echo '	<td style="text-align:center"> <button type="button">'.$vacancy->applications.'</button> </td>';
+								echo '	<td style="text-align:center"> <button type="button" class="eoi_applications" data-vacancy="'.$vacancy->vacancy_id.'" >'.$vacancy->applications.'</button> </td>';
 								echo '</tr>';
 							}
 							echo '<tr>';
@@ -237,6 +241,7 @@
 				<button type="submit" class="save"><?= __('Save Changes','nzcf-cadet-net') ?></button>
 				<button type="cancel" class="cancel"><?= __('Cancel','nzcf-cadet-net') ?></button>
 			</form>
+			
 		<?php
 	}
 	

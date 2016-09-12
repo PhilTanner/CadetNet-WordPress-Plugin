@@ -33,12 +33,14 @@
 				$('<div></div>').empty().html(text.responseText+"<pre>"+JSON.stringify(text)+"</pre>").dialog({
 					title: "Error: "+text.statusText,
 					modal: true,
+					width: "80%",
+					height:"70%",
 					close: function(){ $(this).dialog("destroy"); },
 					buttons: [{
 						text: 'OK',
 						click: function(){ $(this).dialog("destroy"); }
 					}] 
-				}).parent().children().filter('.ui-dialog-titlebar').addClass('ui-state-error');
+				}).parent().css({ zIndex:10000 }).children().filter('.ui-dialog-titlebar').addClass('ui-state-error');
 			}
 		});
 	});

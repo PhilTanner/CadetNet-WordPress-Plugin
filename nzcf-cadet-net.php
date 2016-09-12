@@ -411,10 +411,19 @@
     	wp_enqueue_script( 
 			'cadetnet_js', 
 			plugins_url( '/js/nzcf-cadet-net.js', __FILE__ ), 
-			array('jquery','jquery-ui-core'), 
+			array('jquery','jquery-ui-core','jquery-ui-button','jquery-ui-autocomplete','jquery-ui-dialog'), 
 			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/nzcf-cadet-net.js' )), 
 			true 
 		);
+		wp_enqueue_script( 
+			'jquery_touchscreen', 
+			plugins_url( '/js/touchpunch.furf.com_jqueryui-touch.js', __FILE__ ), 
+			array('jquery','jquery-ui-core'), 
+			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/touchpunch.furf.com_jqueryui-touch.js' )), 
+			true 
+		);
+		
+		
 		wp_register_style( 
 			'eoi-css',    
 			plugins_url( '/css/eoi.css', __FILE__ ), 
@@ -425,7 +434,37 @@
 		
 	}
 	add_action('wp_enqueue_scripts', 'wpnzcfcn_load_scripts');
-	add_action('admin_enqueue_scripts', 'wpnzcfcn_load_scripts');
+	
+	function wpnzcfcn_load_admin_scripts($hook) {
+		wpnzcfcn_load_scripts($hook);
+		
+		// Pass in PHP vars to JS:
+		// https://codex.wordpress.org/Function_Reference/wp_localize_script
+		wp_register_script( 
+			'cadetnet_admin_js', 
+			plugins_url( '/js/admin.js', __FILE__ ), 
+			array('jquery','jquery-ui-core','jquery-ui-button','jquery-ui-autocomplete','jquery-ui-dialog'), 
+			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/admin.js' )), 
+			true 
+		);
+		// Data we want to pass
+		// TODO i18n of the below
+		$translation_array = array(
+			'eoi_address' => site_url( '/?page_id='.get_option( 'wpnzcfcn_eoi_page_id' ), __FILE__ )
+		);
+		wp_localize_script( 'cadetnet_admin_js', 'object_name', $translation_array );
+		wp_enqueue_script( 'cadetnet_admin_js' );
+		/*
+    	wp_enqueue_script( 
+			'cadetnet_admin_js', 
+			plugins_url( '/js/admin.js', __FILE__ ), 
+			array('jquery','jquery-ui-core','jquery-ui-button','jquery-ui-autocomplete','jquery-ui-dialog'), 
+			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/admin.js' )), 
+			true 
+		);
+		*/
+	}
+	add_action('admin_enqueue_scripts', 'wpnzcfcn_load_admin_scripts');
 	
 	// Load our style sheets
 	function wpnzcfcn_load_styles($hook) {
@@ -459,11 +498,12 @@
         // Register our JSON callbacks
     	// http://bordoni.me/ajax-wordpress/
     	// Logged in JSON queries
-    	add_action( 'wp_ajax_rank', 			'wpnzcfcn_json_callback_rank' );
-		add_action( 'wp_ajax_eoi_positions', 	'wpnzcfcn_json_callback_eoi_positions' ); 
-		add_action( 'wp_ajax_eoi_application', 	'wpnzcfcn_json_callback_eoi_application' ); 
-		add_action( 'wp_ajax_unit', 			'wpnzcfcn_json_callback_unit' );
 		add_action( 'wp_ajax_course_type', 	'wpnzcfcn_json_callback_course_type' );
+		add_action( 'wp_ajax_eoi_application_list', 	'wpnzcfcn_json_callback_eoi_application_list' );
+		add_action( 'wp_ajax_eoi_application', 	'wpnzcfcn_json_callback_eoi_application' ); 
+		add_action( 'wp_ajax_eoi_positions', 	'wpnzcfcn_json_callback_eoi_positions' ); 
+    	add_action( 'wp_ajax_rank', 			'wpnzcfcn_json_callback_rank' );
+		add_action( 'wp_ajax_unit', 			'wpnzcfcn_json_callback_unit' );
 		
 		// Logged out/anonymous JSON queries
 		add_action( 'wp_ajax_nopriv_rank', 	'wpnzcfcn_json_callback_rank' ); 
