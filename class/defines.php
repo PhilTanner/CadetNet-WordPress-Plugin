@@ -22,14 +22,6 @@
 	// Stop direct URL access
 	defined( 'ABSPATH' ) or die( 'No script kiddies please!' );	
 	
-	define('WP_DEBUG', true); 
-	
-	$version = "0.01";
-	$db_version = "0.01";
-	
-	add_option( "wpnzcfcn_version", $version );
-	add_option( "wpnzcfcn_db_version", $db_version );
-	
 	
 	// Custom exceptions for error handling
 	class WPNZCFCNException extends Exception {

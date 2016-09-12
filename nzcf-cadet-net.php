@@ -43,6 +43,16 @@
     	http://bradsknutson.com/blog/custom-wordpress-page-template-custom-header-footer/
     	http://wordpress.stackexchange.com/questions/47265/google-apps-login-in-wordpress
 	*/	
+	
+	define('WP_DEBUG', true); 
+	
+	$version = "0.01";
+	$db_version = "0.01";
+	
+	add_option( "wpnzcfcn_version", $version );
+	add_option( "wpnzcfcn_db_version", $db_version );
+	
+	
 	require_once( dirname(__FILE__).'/class/defines.php' );
 	
 	// All our JSON outputter functions
