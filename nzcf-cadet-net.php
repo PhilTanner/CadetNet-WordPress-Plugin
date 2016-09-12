@@ -36,6 +36,7 @@
 		https://codex.wordpress.org/Creating_Tables_with_Plugins
 		http://blog.frontendfactory.com/how-to-create-front-end-page-from-your-wordpress-plugin/
 		http://bordoni.me/ajax-wordpress/
+		http://stackoverflow.com/a/17400906 
     
     	To do:    
     	https://make.wordpress.org/core/handbook/best-practices/inline-documentation-standards/php/
@@ -494,6 +495,10 @@
 	    if ( get_site_option( 'wpnzcfcn_db_version' ) != get_option('wpnzcfcn_db_version') ) {
      	   wpnzcfcn_db_install();
     	}
+    
+    	// Stop WordPress's Magic Quotes re-enabling madness - http://stackoverflow.com/a/17400906
+    	// TODO - make sure this only affects our plugin, not ALL plugis while we're enabled.
+		$_POST = array_map( 'stripslashes_deep', $_POST);
     
         // Register our JSON callbacks
     	// http://bordoni.me/ajax-wordpress/

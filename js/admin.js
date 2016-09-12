@@ -63,9 +63,10 @@
 					html += "	<tbody>";
 					for( var i=0; i< json['cucdr_reviewed'].length; i++ ) {	
 						html += "		<tr>";
-						html += "			<td>"+json['submitted'][i].created+"</td>";
-						html += "			<td>"+json['submitted'][i].name+"</td>";
-						html += "			<td>"+json['submitted'][i].reasons_for_applying+"</td>";
+						html += "			<td>"+json['cucdr_reviewed'][i].created+"</td>";
+						html += "			<td>"+json['cucdr_reviewed'][i].name+"</td>";
+						html += "			<td>"+json['cucdr_reviewed'][i].reasons_for_applying+"</td>";
+						html += "			<td><button type='button' class='external link' data-appid='"+json['cucdr_reviewed'][i].application_id+"'>View</button></td>";
 						html += "		</tr>";
 					}
 					html += "	</tbody>";
@@ -85,9 +86,10 @@
 					html += "	<tbody>";
 					for( var i=0; i< json['aso_reviewed'].length; i++ ) {	
 						html += "		<tr>";
-						html += "			<td>"+json['submitted'][i].created+"</td>";
-						html += "			<td>"+json['submitted'][i].name+"</td>";
-						html += "			<td>"+json['submitted'][i].reasons_for_applying+"</td>";
+						html += "			<td>"+json['aso_reviewed'][i].created+"</td>";
+						html += "			<td>"+json['aso_reviewed'][i].name+"</td>";
+						html += "			<td>"+json['aso_reviewed'][i].reasons_for_applying+"</td>";
+						html += "			<td><button type='button' class='external link' data-appid='"+json['aso_reviewed'][i].application_id+"'>View</button></td>";
 						html += "		</tr>";
 					}
 					html += "	</tbody>";
@@ -107,9 +109,10 @@
 					html += "	<tbody>";
 					for( var i=0; i< json['ac_reviewed'].length; i++ ) {
 						html += "		<tr>";
-						html += "			<td>"+json['submitted'][i].created+"</td>";
-						html += "			<td>"+json['submitted'][i].name+"</td>";
-						html += "			<td>"+json['submitted'][i].reasons_for_applying+"</td>";
+						html += "			<td>"+json['ac_reviewed'][i].created+"</td>";
+						html += "			<td>"+json['ac_reviewed'][i].name+"</td>";
+						html += "			<td>"+json['ac_reviewed'][i].reasons_for_applying+"</td>";
+						html += "			<td><button type='button' class='external link' data-appid='"+json['ac_reviewed'][i].application_id+"'>View</button></td>";
 						html += "		</tr>";
 					}
 					html += "	</tbody>";
@@ -129,9 +132,10 @@
 					html += "	<tbody>";
 					for( var i=0; i< json['completed'].length; i++ ) {
 						html += "		<tr>";
-						html += "			<td>"+json['submitted'][i].created+"</td>";
-						html += "			<td>"+json['submitted'][i].name+"</td>";
-						html += "			<td>"+json['submitted'][i].reasons_for_applying+"</td>";
+						html += "			<td>"+json['completed'][i].created+"</td>";
+						html += "			<td>"+json['completed'][i].name+"</td>";
+						html += "			<td>"+json['completed'][i].reasons_for_applying+"</td>";
+						html += "			<td><button type='button' class='external link' data-appid='"+json['completed'][i].application_id+"'>View</button></td>";
 						html += "		</tr>";
 					}
 					html += "	</tbody>";

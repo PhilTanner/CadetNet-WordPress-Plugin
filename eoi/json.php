@@ -197,7 +197,10 @@
 		$response = $wpdb->get_results( $wpdb->prepare(
 			"
 			SELECT 
-				*
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.*,
+				".$wpdb->prefix."wpnzcfcn_vacancy.*,
+				".$wpdb->prefix."wpnzcfcn_rank.rank,
+				".$wpdb->prefix."wpnzcfcn_rank.rank_shortname
 			FROM 
 				".$wpdb->prefix."wpnzcfcn_vacancy_application
 				INNER JOIN ".$wpdb->prefix."wpnzcfcn_vacancy
@@ -214,6 +217,7 @@
 			$application['part1']['vacancy_description'] = $row->short_desc;
 			$application['part1']['rank'] = $row->rank;
 			$application['part1']['application_closes'] = date('Y-m-d',strtotime($row->closing_date))."";
+			
 			$application['part2']['applicant_name'] = $row->name;
 			$application['part2']['service_number'] = $row->service_number;
 			
@@ -242,7 +246,10 @@
 					INNER JOIN ".$wpdb->prefix."wpnzcfcn_unit
 						ON ".$wpdb->prefix."wpnzcfcn_vacancy_application_service.cadet_unit_id = ".$wpdb->prefix."wpnzcfcn_unit.unit_id
 				WHERE
-					application_id = %d;",
+					application_id = %d
+				ORDER BY
+					start_date ASC, 
+					end_date ASC",
 				$eoi_id
    	     ) );
 			$i=0;
@@ -268,7 +275,9 @@
 						ON ".$wpdb->prefix."wpnzcfcn_vacancy_application_course.course_id = ".$wpdb->prefix."wpnzcfcn_course.course_id
 				WHERE
 					application_id = %d
-					AND times_staffed=0;",
+					AND times_staffed=0
+				ORDER BY
+					attended_date ASC;",
 				$eoi_id
    	     ) );
 			$i=0;
@@ -292,7 +301,9 @@
 						ON ".$wpdb->prefix."wpnzcfcn_vacancy_application_course.course_id = ".$wpdb->prefix."wpnzcfcn_course.course_id
 				WHERE
 					application_id = %d
-					AND times_staffed>0;",
+					AND times_staffed>0
+				ORDER BY
+					times_staffed DESC;",
 				$eoi_id
    	     ) );
 			$i=0;
@@ -437,15 +448,19 @@
         $response['cucdr_reviewed'] = $wpdb->get_results( $wpdb->prepare(
 			"
 			SELECT 
-				*
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.application_id,
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.created,
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.name,
+				LEFT(".$wpdb->prefix."wpnzcfcn_vacancy_application.reasons_for_applying,66) AS reasons_for_applying,
+				".$wpdb->prefix."wpnzcfcn_rank.rank_shortname
 			FROM 
-				".$wpdb->prefix."wpnzcfcn_vacancy
-				INNER JOIN ".$wpdb->prefix."wpnzcfcn_vacancy_application
-					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = ".$wpdb->prefix."wpnzcfcn_vacancy.vacancy_id
+				".$wpdb->prefix."wpnzcfcn_vacancy_application
+				INNER JOIN ".$wpdb->prefix."wpnzcfcn_rank
+					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.rank_id = ".$wpdb->prefix."wpnzcfcn_rank.rank_id
 			WHERE
 				".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = %d
 				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.cucdr_recommendation IS NOT NULL
-				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.aso_recommendation IS NOT NULL
+				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.aso_recommendation IS NULL
 			ORDER BY
 				".$wpdb->prefix."wpnzcfcn_vacancy_application.created ASC;",
 			$vacancy_id
@@ -455,11 +470,15 @@
         $response['aso_reviewed'] = $wpdb->get_results( $wpdb->prepare(
 			"
 			SELECT 
-				*
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.application_id,
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.created,
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.name,
+				LEFT(".$wpdb->prefix."wpnzcfcn_vacancy_application.reasons_for_applying,66) AS reasons_for_applying,
+				".$wpdb->prefix."wpnzcfcn_rank.rank_shortname
 			FROM 
-				".$wpdb->prefix."wpnzcfcn_vacancy
-				INNER JOIN ".$wpdb->prefix."wpnzcfcn_vacancy_application
-					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = ".$wpdb->prefix."wpnzcfcn_vacancy.vacancy_id
+				".$wpdb->prefix."wpnzcfcn_vacancy_application
+				INNER JOIN ".$wpdb->prefix."wpnzcfcn_rank
+					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.rank_id = ".$wpdb->prefix."wpnzcfcn_rank.rank_id
 			WHERE
 				".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = %d
 				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.cucdr_recommendation IS NOT NULL
@@ -474,11 +493,15 @@
         $response['ac_reviewed'] = $wpdb->get_results( $wpdb->prepare(
 			"
 			SELECT 
-				*
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.application_id,
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.created,
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.name,
+				LEFT(".$wpdb->prefix."wpnzcfcn_vacancy_application.reasons_for_applying,66) AS reasons_for_applying,
+				".$wpdb->prefix."wpnzcfcn_rank.rank_shortname
 			FROM 
-				".$wpdb->prefix."wpnzcfcn_vacancy
-				INNER JOIN ".$wpdb->prefix."wpnzcfcn_vacancy_application
-					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = ".$wpdb->prefix."wpnzcfcn_vacancy.vacancy_id
+				".$wpdb->prefix."wpnzcfcn_vacancy_application
+				INNER JOIN ".$wpdb->prefix."wpnzcfcn_rank
+					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.rank_id = ".$wpdb->prefix."wpnzcfcn_rank.rank_id
 			WHERE
 				".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = %d
 				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.cucdr_recommendation IS NOT NULL
@@ -494,11 +517,15 @@
         $response['completed'] = $wpdb->get_results( $wpdb->prepare(
 			"
 			SELECT 
-				*
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.application_id,
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.created,
+				".$wpdb->prefix."wpnzcfcn_vacancy_application.name,
+				LEFT(".$wpdb->prefix."wpnzcfcn_vacancy_application.reasons_for_applying,66) AS reasons_for_applying,
+				".$wpdb->prefix."wpnzcfcn_rank.rank_shortname
 			FROM 
-				".$wpdb->prefix."wpnzcfcn_vacancy
-				INNER JOIN ".$wpdb->prefix."wpnzcfcn_vacancy_application
-					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.vacancy_id = ".$wpdb->prefix."wpnzcfcn_vacancy.vacancy_id
+				".$wpdb->prefix."wpnzcfcn_vacancy_application
+				INNER JOIN ".$wpdb->prefix."wpnzcfcn_rank
+					ON ".$wpdb->prefix."wpnzcfcn_vacancy_application.rank_id = ".$wpdb->prefix."wpnzcfcn_rank.rank_id
 			WHERE
 				".$wpdb->prefix."wpnzcfcn_vacancy_application.application_id = %d
 				AND ".$wpdb->prefix."wpnzcfcn_vacancy_application.cucdr_recommendation IS NOT NULL
