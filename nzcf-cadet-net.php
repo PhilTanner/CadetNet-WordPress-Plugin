@@ -3,7 +3,7 @@
 		Plugin Name: NZCF Cadet Net 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
 		Description: WordPress NZCF Cadet Net
-		Version:     0.01
+		Version:     0.02
 		Author:      Phil Tanner
 		Author URI:  https://github.com/PhilTanner
 		License:     GPL3
@@ -46,7 +46,7 @@
 	
 	define('WP_DEBUG', true); 
 	
-	$version = "0.01";
+	$version = "0.02";
 	$db_version = "0.01";
 	
 	add_option( "wpnzcfcn_version", $version );
@@ -217,11 +217,11 @@
 				) 
 			);
 		}
-		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Maring Safety Officer Course'" ) === null ){
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Marine Safety Officer Course'" ) === null ){
 			$wpdb->insert( 
 				$table, 
 				array( 
-					'course_name' => 'Range Conducting Officer Course', 
+					'course_name' => 'Marine Safety Officer Course', 
 					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
 					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
 				) 
@@ -418,16 +418,17 @@
 		wp_enqueue_script( 'jquery-ui-autocomplete' );
 		wp_enqueue_script( 'jquery-ui-button' );
 		wp_enqueue_script( 'jquery-ui-dialog' );
+		wp_enqueue_script( 'jquery-ui-widget' );
+		wp_enqueue_script( 'jquery-ui-mouse' );
 		
-		/*
-    	wp_enqueue_script( 
-			'cadetnet_js', 
-			plugins_url( '/js/nzcf-cadet-net.js', __FILE__ ), 
-			array('jquery','jquery-ui-core','jquery-ui-button','jquery-ui-autocomplete','jquery-ui-dialog'), 
-			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/nzcf-cadet-net.js' )), 
+		wp_enqueue_script( 
+			'jquery_touchscreen', 
+			plugins_url( '/js/touchpunch.furf.com_jqueryui-touch.js', __FILE__ ), 
+			array('jquery','jquery-ui-core','jquery-ui-widget','jquery-ui-mouse'), 
+			"0.2.3", 
 			true 
 		);
-		*/
+		
 		// Pass in PHP vars to JS:
 		// https://codex.wordpress.org/Function_Reference/wp_localize_script
 		wp_register_script( 
@@ -440,20 +441,11 @@
 		// Data we want to pass
 		// TODO i18n of the below
 		$translation_array = array(
-			'site_url' => get_site_url()
+			'site_url' => get_site_url(),
+			'debug' => (int)WP_DEBUG
 		);
 		wp_localize_script( 'nzcf-cadet-net', 'WPURLs', $translation_array );
 		wp_enqueue_script( 'nzcf-cadet-net' );
-		
-		
-		wp_enqueue_script( 
-			'jquery_touchscreen', 
-			plugins_url( '/js/touchpunch.furf.com_jqueryui-touch.js', __FILE__ ), 
-			array('jquery','jquery-ui-core'), 
-			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/touchpunch.furf.com_jqueryui-touch.js' )), 
-			true 
-		);
-		
 		
 		wp_register_style( 
 			'eoi-css',    
@@ -485,15 +477,7 @@
 		);
 		wp_localize_script( 'cadetnet_admin_js', 'URLs', $translation_array );
 		wp_enqueue_script( 'cadetnet_admin_js' );
-		/*
-    	wp_enqueue_script( 
-			'cadetnet_admin_js', 
-			plugins_url( '/js/admin.js', __FILE__ ), 
-			array('jquery','jquery-ui-core','jquery-ui-button','jquery-ui-autocomplete','jquery-ui-dialog'), 
-			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/admin.js' )), 
-			true 
-		);
-		*/
+
 	}
 	add_action('admin_enqueue_scripts', 'wpnzcfcn_load_admin_scripts');
 	
