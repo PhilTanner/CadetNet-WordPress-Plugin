@@ -181,10 +181,12 @@
 		
 	}
 	
-	// General JavaScript error alert
-	window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
- 	   alert('Error: ' + errorMsg + '\nScript: ' + url + '\nLine: ' + lineNumber
-  	  + '\nColumn: ' + column + '\nStackTrace: ' +  errorObj);
+	if( parseInt(WPURLs.debug) ) {
+		// General JavaScript error alert
+		window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+ 		   alert('Error: ' + errorMsg + '\nScript: ' + url + '\nLine: ' + lineNumber
+  		  + '\nColumn: ' + column + '\nStackTrace: ' +  errorObj);
+		}
 	}
 	
 	
