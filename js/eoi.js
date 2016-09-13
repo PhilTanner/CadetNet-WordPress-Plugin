@@ -139,7 +139,7 @@
 			disabled.attr('disabled','disabled').attr('readonly','readonly');
 			
 			$.ajax({
-				url: site_url+'wp-admin/admin-ajax.php?action=eoi_application&eoi_id='+eoi_id,
+				url: site_url+'/wp-admin/admin-ajax.php?action=eoi_application&eoi_id='+eoi_id,
 				method: 'POST',
 				data: data
 			}).done( function(data, textStatus, jqXHR) {
