@@ -419,6 +419,7 @@
 		wp_enqueue_script( 'jquery-ui-button' );
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		
+		/*
     	wp_enqueue_script( 
 			'cadetnet_js', 
 			plugins_url( '/js/nzcf-cadet-net.js', __FILE__ ), 
@@ -426,6 +427,25 @@
 			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/nzcf-cadet-net.js' )), 
 			true 
 		);
+		*/
+		// Pass in PHP vars to JS:
+		// https://codex.wordpress.org/Function_Reference/wp_localize_script
+		wp_register_script( 
+			'nzcf-cadet-net', 
+			plugins_url( '/js/nzcf-cadet-net.js', __FILE__ ), 
+			array('jquery','jquery-ui-core','jquery-ui-button','jquery-ui-autocomplete','jquery-ui-dialog'), 
+			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/nzcf-cadet-net.js' )), 
+			true 
+		);
+		// Data we want to pass
+		// TODO i18n of the below
+		$translation_array = array(
+			'site_url' => get_site_url()
+		);
+		wp_localize_script( 'nzcf-cadet-net', 'WPURLs', $translation_array );
+		wp_enqueue_script( 'nzcf-cadet-net' );
+		
+		
 		wp_enqueue_script( 
 			'jquery_touchscreen', 
 			plugins_url( '/js/touchpunch.furf.com_jqueryui-touch.js', __FILE__ ), 
@@ -463,7 +483,7 @@
 		$translation_array = array(
 			'eoi_address' => site_url( '/?page_id='.get_option( 'wpnzcfcn_eoi_page_id' ), __FILE__ )
 		);
-		wp_localize_script( 'cadetnet_admin_js', 'object_name', $translation_array );
+		wp_localize_script( 'cadetnet_admin_js', 'URLs', $translation_array );
 		wp_enqueue_script( 'cadetnet_admin_js' );
 		/*
     	wp_enqueue_script( 

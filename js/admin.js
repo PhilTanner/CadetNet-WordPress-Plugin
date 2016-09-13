@@ -22,7 +22,7 @@
 		
 		$('button.eoi_applications').click(function(){
 			$.ajax({
-				url: 'admin-ajax.php?action=eoi_application_list&vacancy_id='+$(this).data('vacancy'),
+				url: site_url+'/wp-admin/admin-ajax.php?action=eoi_application_list&vacancy_id='+$(this).data('vacancy'),
 				dataType: 'json'
 			}).done( function(json, text) { 
 				var html = "";
@@ -144,7 +144,7 @@
 				
 				html += "<script>";
 				html += "	jQuery('button.external.link').button({ text:false, icons: { primary: 'ui-icon-extlink' } }).css({padding:'0px'}).click(function(){";
-				html += "		window.open('"+object_name.eoi_address+"&eoi_id='+jQuery(this).data('appid'), '_blank');";
+				html += "		window.open('"+URLs.eoi_address+"&eoi_id='+jQuery(this).data('appid'), '_blank');";
 				html += "	});";
 				html += "</script>";
 				
