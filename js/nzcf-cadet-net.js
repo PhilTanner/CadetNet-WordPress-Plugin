@@ -17,6 +17,8 @@
     	You should have received a copy of the GNU General Public License
     	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
+	
+	var site_url = WPURLs.site_url;
 
 	jQuery(document).ready( function($){
 	
@@ -53,7 +55,7 @@
 		
 		// Cadet units
 		jQuery('input[type=text].cadet_unit').autocomplete({
-			source: "wp-admin/admin-ajax.php?action=unit",  // Pull our options from our JSON API
+			source: site_url+"/wp-admin/admin-ajax.php?action=unit",  // Pull our options from our JSON API
 			minLength: 0, // allow users to see the full list by pressing down arrow, don't force them to type 3 matching chars (default)
 			focus: function( event, ui ) {
 				jQuery(this).val( ui.item.label );
@@ -94,7 +96,7 @@
 		
 		// Make our courses an autocomplete drop down
 		jQuery('input.course_type').autocomplete({
-			source: "wp-admin/admin-ajax.php?action=course_type",
+			source: site_url+"/wp-admin/admin-ajax.php?action=course_type",
 			minLength:0,
 			focus: function( event, ui ) {
 				jQuery(this).val( ui.item.label );
@@ -127,7 +129,7 @@
 		
 		// Make our text input entry rank fields a auto-complete drop down
 		jQuery('input[type=text].rank').autocomplete({
-			source: "wp-admin/admin-ajax.php?action=rank",
+			source: site_url+"/wp-admin/admin-ajax.php?action=rank",
 			minLength: 0,
 			focus: function( event, ui ) {
 				jQuery(this).val( ui.item.label );
@@ -181,8 +183,8 @@
 	
 	// General JavaScript error alert
 	window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
- 	   alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber
-  	  + ' Column: ' + column + ' StackTrace: ' +  errorObj);
+ 	   alert('Error: ' + errorMsg + '\nScript: ' + url + '\nLine: ' + lineNumber
+  	  + '\nColumn: ' + column + '\nStackTrace: ' +  errorObj);
 	}
 	
 	

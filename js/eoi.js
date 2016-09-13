@@ -29,7 +29,7 @@
 		
 		// Make our appointments an autocomplete drop down
 		$('#vacancy_description').autocomplete({
-			source:"wp-admin/admin-ajax.php?action=eoi_positions",
+			source:site_url+"/wp-admin/admin-ajax.php?action=eoi_positions",
 			minLength:0,
 			focus: function( event, ui ) {
 				$( "#vacancy_description" ).val( ui.item.label );
@@ -93,7 +93,7 @@
 		
 		
 		$.ajax({
-			url: 'wp-admin/admin-ajax.php?action=eoi_application&eoi_id='+eoi_id,
+			url: site_url+'/wp-admin/admin-ajax.php?action=eoi_application&eoi_id='+eoi_id,
 			dataType: 'json'
 		}).done( function(json, text) { 
 			
@@ -139,7 +139,7 @@
 			disabled.attr('disabled','disabled').attr('readonly','readonly');
 			
 			$.ajax({
-				url: 'wp-admin/admin-ajax.php?action=eoi_application&eoi_id='+eoi_id,
+				url: site_url+'wp-admin/admin-ajax.php?action=eoi_application&eoi_id='+eoi_id,
 				method: 'POST',
 				data: data
 			}).done( function(data, textStatus, jqXHR) {
