@@ -143,7 +143,8 @@
 				method: 'POST',
 				data: data
 			}).done( function(data, textStatus, jqXHR) {
-				
+				// Stop multiple submits, or edits per application, by making it now read only
+				$('form[name=eoi] input, form[name=eoi] select, form[name=eoi] textarea, form[name=eoi] button ').attr('disabled','disabled').attr('readonly','readonly').addClass('ui-state-disabled').rmeoveAttr('name');
 				$('<div></div>').empty().html(data).dialog({
 					title: "Saved",
 					modal: false,
