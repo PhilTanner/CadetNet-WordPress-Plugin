@@ -53,7 +53,7 @@
 				<input type="hidden" name="applicant_rank_id" id="applicant_rank_id" />
 				<input type="text" name="applicant_rank" id="applicant_rank" class="rank" />
 				<input type="text" name="applicant_name" id="applicant_name" />
-				<input type="number" name="service_number" id="service_number" />
+				<input type="text" name="service_number" id="service_number" />
 			</div>
 		</fieldset>
 		
