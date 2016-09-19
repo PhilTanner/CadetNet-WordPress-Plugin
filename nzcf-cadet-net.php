@@ -475,15 +475,12 @@
 	
 	// Load our style sheets
 	function wpnzcfcn_load_styles($hook) {
+		global $wp_scripts;
 		
- 	   wp_register_style( 
-			'jquery-ui-redmond',    
-			plugins_url( '/css/redmond/jquery-ui-1.9.2.custom.min.css', __FILE__ ), 
-			false,   
-			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/css/redmond/jquery-ui-1.9.2.custom.min.css' )  )
-		);
-  	  wp_enqueue_style ( 'jquery-ui-redmond' ); 
-  	
+		wp_enqueue_style(
+			'jquery-ui-redmond',
+			'http://ajax.googleapis.com/ajax/libs/jqueryui/'.$wp_scripts->registered['jquery-ui-core']->ver.'/themes/redmond/jquery-ui.min.css');
+		
 		wp_register_style( 
 			'eoi-css',    
 			plugins_url( '/css/eoi.css', __FILE__ ), 
