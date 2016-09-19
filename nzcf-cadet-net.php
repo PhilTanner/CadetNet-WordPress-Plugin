@@ -442,7 +442,7 @@
 		// TODO i18n of the below
 		$translation_array = array(
 			'site_url' => get_site_url(),
-			'debug' => WP_DEBUG
+			'debug' => (int)WP_DEBUG
 		);
 		wp_localize_script( 'nzcf-cadet-net', 'WPURLs', $translation_array );
 		wp_enqueue_script( 'nzcf-cadet-net' );

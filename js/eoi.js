@@ -72,8 +72,9 @@
 					
 				} else {
 					// Copy in our value
-					$('#'+key).val(value);
-					// If we have something in there, make the field display only, don't allow edits, and don't pass thru the data
+					$('#'+key).val(value).data('prepopulated_value', value);
+					// If we have something in there, make the field display only, don't allow edits
+					// We still need to pass thru the data to the submit function, otherwise the wp_replace funcion tries to update our fields in the DB to NULL
 					if(value!="null" && ( value.length || value )) {
 						$('#'+key).attr('readonly','readonly').attr('disabled','disabled');
 					}

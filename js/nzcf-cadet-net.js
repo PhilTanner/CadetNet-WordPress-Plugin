@@ -165,12 +165,20 @@
 				url: site_url+'/wp-admin/admin-ajax.php?action=rank',
 				dataType: 'json'
 			}).done( function(json, text) { 
-				jQuery('select.rank').empty().each(function(){
+				jQuery('select.rank').each(function(){
 					var select = jQuery(this);
-					select.append('<option value=""></option>');
-					jQuery.each( json, function(i, item){
-						select.append('<option value="' + json[i].value + '">'+ json[i].label + '</option>');
-					});
+					// If we've already selected something in this list, don't clear & reset it
+					if( select.val() === null ) {
+						select.empty();
+						select.append('<option value=""></option>');
+						jQuery.each( json, function(i, item){
+							select.append('<option value="' + json[i].value + '">'+ json[i].label + '</option>');
+						});
+						// If we've already populated our form data before this point, update this input to match
+						if( select.data('prepopulated_value') ) {
+							select.val(select.data('prepopulated_value'));
+						}
+					}
 				});
 			});
 		}
@@ -195,6 +203,7 @@
 		
 	}
 	
+	// If we're in debug mode....
 	if( parseInt(WPURLs.debug) ) {
 		// General JavaScript error alert
 		window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
