@@ -3,7 +3,7 @@
 		Plugin Name: NZCF Cadet Net 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
 		Description: WordPress NZCF Cadet Net
-		Version:     0.02
+		Version:     0.03
 		Author:      Phil Tanner
 		Author URI:  https://github.com/PhilTanner
 		License:     GPL3
@@ -46,7 +46,7 @@
 	
 	define('WP_DEBUG', true); 
 	
-	$version = "0.02";
+	$version = "0.03";
 	$db_version = "0.01";
 	
 	add_option( "wpnzcfcn_version", $version );
@@ -442,18 +442,10 @@
 		// TODO i18n of the below
 		$translation_array = array(
 			'site_url' => get_site_url(),
-			'debug' => (int)WP_DEBUG
+			'debug' => WP_DEBUG
 		);
 		wp_localize_script( 'nzcf-cadet-net', 'WPURLs', $translation_array );
 		wp_enqueue_script( 'nzcf-cadet-net' );
-		
-		wp_register_style( 
-			'eoi-css',    
-			plugins_url( '/css/eoi.css', __FILE__ ), 
-			false,   
-			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/css/eoi.css' )  )
-		);
-  	  wp_enqueue_style ( 'eoi-css' ); 
 		
 	}
 	add_action('wp_enqueue_scripts', 'wpnzcfcn_load_scripts');
@@ -492,6 +484,14 @@
 		);
   	  wp_enqueue_style ( 'jquery-ui-redmond' ); 
   	
+		wp_register_style( 
+			'eoi-css',    
+			plugins_url( '/css/eoi.css', __FILE__ ), 
+			false,   
+			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/css/eoi.css' )  )
+		);
+  	  wp_enqueue_style ( 'eoi-css' ); 
+  
  	   wp_register_style( 
 			'nzcf-cadet-net',    
 			plugins_url( '/css/nzcf-cadet-net.css', __FILE__ ), 
@@ -499,6 +499,9 @@
 			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/css/nzcf-cadet-net.css' )  )
 		);
   	  wp_enqueue_style ( 'nzcf-cadet-net' ); 
+  
+		
+		
 	}
 	add_action('wp_enqueue_scripts', 'wpnzcfcn_load_styles');
 	add_action('admin_enqueue_scripts', 'wpnzcfcn_load_styles');

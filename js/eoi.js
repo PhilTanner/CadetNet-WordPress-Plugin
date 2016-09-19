@@ -27,34 +27,24 @@
 			$(this).html("<strong>Part "+i+":</strong> "+$(this).html());
 		});
 		
-		// Make our appointments an autocomplete drop down
-		$('#vacancy_description').autocomplete({
-			source:site_url+"/wp-admin/admin-ajax.php?action=eoi_positions",
-			minLength:0,
-			focus: function( event, ui ) {
-				$( "#vacancy_description" ).val( ui.item.label );
-				return false;
-			},
-			select: function( event, ui ) {
-				$( "#vacancy_description" ).val( ui.item.label );
-				$( "#vacancy_id" ).val( ui.item.value );
-				$( "#rank" ).val( ui.item.ranks );
-				$( "#application_closes").val( ui.item.closing_date );
-				return false;
-			},
-			// Restrict options to what's on the list
-			change: function(event,ui) {
-				if (ui.item==null) {
-					jQuery(this).val('').addClass('ui-state-error');
-					jQuery( "#"+jQuery(this).attr('id')+"_id" ).val( '' );
-					jQuery(this).focus();
-				} else {
-					jQuery(this).removeClass('ui-state-error');
-				}
-			}
+		// Populate our appointments drop down
+		jQuery.ajax({
+			url: site_url+'/wp-admin/admin-ajax.php?action=eoi_positions',
+			dataType: 'json'
+		}).done( function(json, text) { 
+			jQuery('#vacancy_id').empty().each(function(){
+				var select = jQuery(this);
+				select.append('<option value=""></option>');
+				jQuery.each( json, function(i, item){
+					select.append('<option value="' + json[i].value + '" data-minrank="'+json[i].ranks+'" data-closingdate="'+json[i].closing_date+'">'+ json[i].label + '</option>');
+				});
+			}).change(function(){
+				var opt = jQuery('#vacancy_id option:selected');
+				jQuery('#rank').val(opt.data('minrank'));
+				jQuery('#application_closes').val(opt.data('closingdate'));
+			});
 		});
-		
-		
+			
 		// Take our data and put it into our form to allow the next stage editing
 		function populateFormValues( arr )
 		{
@@ -91,7 +81,6 @@
 			});
 		}
 		
-		
 		$.ajax({
 			url: site_url+'/wp-admin/admin-ajax.php?action=eoi_application&eoi_id='+eoi_id,
 			dataType: 'json'
@@ -109,7 +98,7 @@
 				var showsection=false;
 			
 				parts.eq(i).find('input,textarea,select').each(function(){
-					if( $(this).val().length ) {
+					if( $(this).val() && $(this).val().length ) {
 						showsection=true;
 						return false;
 					}
@@ -143,7 +132,8 @@
 				method: 'POST',
 				data: data
 			}).done( function(data, textStatus, jqXHR) {
-				
+				// Stop multiple submits, or edits per application, by making it now read only
+				$('form[name=eoi] input, form[name=eoi] select, form[name=eoi] textarea, form[name=eoi] button ').attr('disabled','disabled').attr('readonly','readonly').addClass('ui-state-disabled').rmeoveAttr('name');
 				$('<div></div>').empty().html(data).dialog({
 					title: "Saved",
 					modal: false,

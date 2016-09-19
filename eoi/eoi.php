@@ -36,8 +36,12 @@
 				<label for="rank" class="rank"><?= __('Rank','nzcf-cadet-net') ?></label>
 				<label for="application_closes" type="date"><?= __('Closing date','nzcf-cadet-net') ?></label>
 				<br />
+				<!--
 				<input type="hidden" name="vacancy_id" id="vacancy_id" value="" />
 				<input type="text" name="vacancy_description" id="vacancy_description" required="required" />
+				-->
+				<select name="vacancy_id" id="vacancy_id" required="required">
+				</select>
 				<input type="text" name="rank" id="rank" readonly="readonly" class="rank" />
 				<input type="date" name="application_closes" id="application_closes" readonly="readonly" />
 			</div>
@@ -50,10 +54,14 @@
 				<label for="applicant_name"> <?= __('Initials and Surname','nzcf-cadet-net') ?> </label>
 				<label for="service_number"> <?= __('Service number','nzcf-cadet-net') ?> </label>
 				<br />
+				<!--
 				<input type="hidden" name="applicant_rank_id" id="applicant_rank_id" />
 				<input type="text" name="applicant_rank" id="applicant_rank" class="rank" />
-				<input type="text" name="applicant_name" id="applicant_name" />
-				<input type="number" name="service_number" id="service_number" />
+				-->
+				<select name="applicant_rank_id" id="applicant_rank_id" required="required" class="rank">
+				</select>
+				<input type="text" name="applicant_name" id="applicant_name" required="required" />
+				<input type="text" name="service_number" id="service_number" />
 			</div>
 		</fieldset>
 		
@@ -134,8 +142,12 @@
 				<label for="cucdr_date" type="date"> <?= __('Date','nzcf-cadet-net') ?> </label>
 			</div>
 			<div>
+				<!--
 				<input type="hidden" name="cucdr_rank_id" id="cucdr_rank_id" />
 				<input type="text" class="rank" name="cucdr_rank" id="cucdr_rank" required="required" />
+				-->
+				<select name="cucdr_rank_id" id="cucdr_rank_id" required="required" class="rank">
+				</select>
 				<input type="text" name="cucdr_name" id="cucdr_name" required="required" />
 				<input type="date" name="cucdr_date" id="cucdr_date" required="required"  />
 			</div>
@@ -160,8 +172,12 @@
 			<label for="aso_date" type="date"> <?= __('Date','nzcf-cadet-net') ?> </label>
 			<br />
 			<div>
+				<!--
 				<input type="hidden" name="aso_rank_id" id="aso_rank_id" />
 				<input type="text" class="rank" name="aso_rank" id="aso_rank" required="required" />
+				-->
+				<select name="aso_rank_id" id="aso_rank_id" class="rank" required="required">
+				</select>
 				<input type="text" name="aso_name" id="aso_name" required="required" />
 				<input type="date" name="aso_date" id="aso_date" required="required" />
 			</div>
@@ -185,8 +201,12 @@
 			<label for="ac_date" type="date"> <?= __('Date','nzcf-cadet-net') ?> </label>
 			<br />
 			<div>
+				<!--
 				<input type="hidden" name="ac_rank_id" id="ac_rank_id" />
 				<input type="text" class="rank" name="ac_rank" id="ac_rank" required="required" />
+				-->
+				<select name="ac_rank_id" id="ac_rank_id" class="rank" required="requried">
+				</select>
 				<input type="text" name="ac_name" id="ac_name" required="required" />
 				<input type="date" name="ac_date" id="ac_date" required="required" />
 			</div>
@@ -209,9 +229,13 @@
 			<label for="comdt_date" type="date"> <?= __('Date','nzcf-cadet-net') ?> </label>
 			<br />
 			<div>
+				<!--
 				<input type="hidden" name="comdt_rank_id" id="comdt_rank_id" />
 				<input type="text" class="rank" name="comdt_rank" id="comdt_rank" required="required" />
-				<input type="text" name="ac_name" id="comdt_name" required="required" />
+				-->
+				<select name="comdt_rank_id" id="comdt_rank_id" class="rank" required="required">
+				</select>
+				<input type="text" name="comdt_name" id="comdt_name" required="required" />
 				<input type="date" name="comdt_date" id="comdt_date" required="required" />
 			</div>
 		</fieldset>
@@ -222,6 +246,7 @@
 	
 	<script>
 		var eoi_id = <?= (isset($_GET['eoi_id'])?(int)$_GET['eoi_id']:0)?>;
+		//alert(eoi_id);
 	</script>
 	
 	<?= get_footer() ?>
