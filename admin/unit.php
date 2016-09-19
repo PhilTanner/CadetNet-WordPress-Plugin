@@ -43,6 +43,12 @@
 				} 
 				if( isset($_POST['nzcf_corps_'.$unit_id.'_sea']) && $_POST['nzcf_corps_'.$unit_id.'_sea'] ) {
 					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SEA;
+				}  
+				if( isset($_POST['nzcf_corps_'.$unit_id.'_civ']) && $_POST['nzcf_corps_'.$unit_id.'_civ'] ) {
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_CIVILIAN;
+				} 
+				if( isset($_POST['nzcf_corps_'.$unit_id.'_rf']) && $_POST['nzcf_corps_'.$unit_id.'_rf'] ) {
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_REGULAR_SERVICE;
 				} 
 				
 				$parade_night = 0;
@@ -73,6 +79,7 @@
 					$wpdb->prefix."wpnzcfcn_unit", 
 					array( 
 						'unit_name' => $_POST['unit_name_'.$unit_id],
+						'address' => $_POST['address_'.$unit_id],
 						'phone' => $_POST['phone_'.$unit_id],
 						'email' => $_POST['email_'.$unit_id],
 						'latitude' => $_POST['latitude_'.$unit_id],
@@ -106,6 +113,12 @@
 				} 
 				if( isset($_POST['nzcf_corps_0_sea']) && $_POST['nzcf_corps_0_sea'] ) {
 					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SEA;
+				}  
+				if( isset($_POST['nzcf_corps_0_civ']) && $_POST['nzcf_corps_0_civ'] ) {
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_CIVILIAN;
+				} 
+				if( isset($_POST['nzcf_corps_0_rf']) && $_POST['nzcf_corps_0_rf'] ) {
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_REGULAR_SERVICE;
 				} 
 				
 				$parade_night = 0;
@@ -183,7 +196,7 @@
 							<th rowspan="2"> <?= __('Email','nzcf-cadet-net') ?> </th>
 							<th colspan="2"> <?= __('Location','nzcf-cadet-net') ?> </th>
 							<th rowspan="2"> <?= __('Website','nzcf-cadet-net') ?> </th>
-							<th colspan="3"> <?= __('Corps','nzcf-cadet-net') ?> </th>
+							<th colspan="5"> <?= __('Corps','nzcf-cadet-net') ?> </th>
 							<th colspan="7"> <?= __('Parade Nights','nzcf-cadet-net') ?> </th>
 						</tr>
 						<tr>
@@ -193,6 +206,8 @@
 							<th> <?= __('Cadet','nzcf-cadet-net') ?> </th>
 							<th> <?= __('ATC','nzcf-cadet-net') ?> </th>
 							<th> <?= __('Sea','nzcf-cadet-net') ?> </th>
+							<th> <?= __('Civ','nzcf-cadet-net') ?> </th>
+							<th> <?= __('Reg. F','nzcf-cadet-net') ?> </th>
 							
 							<th> <?= __('S','nzcf-cadet-net') ?> </th>
 							<th> <?= __('M','nzcf-cadet-net') ?> </th>
@@ -212,7 +227,7 @@
 								echo '		<input type="text" name="unit_name_'.$row->unit_id.'" value="'.htmlentities($row->unit_name).'" class="unit_name" maxlength="255" />';
 								echo '	</td>';
 								echo '	<td>';
-								echo '		<input type="text" name="address_'.$row->address_id.'" id="address_'.$row->unit_id.'" value="'.htmlentities($row->address).'" maxlength="255" />';
+								echo '		<input type="text" name="address_'.$row->unit_id.'" id="address_'.$row->unit_id.'" value="'.htmlentities($row->address).'" maxlength="255" />';
 								echo '	</td>';
 								echo '	<td> <input type="tel" name="phone_'.$row->unit_id.'" id="phone_'.$row->unit_id.'" value="'.htmlentities($row->phone).'" maxlength="255" /> </td>';
 								echo '	<td> <input type="email" name="email_'.$row->unit_id.'" id="email_'.$row->unit_id.'" value="'.htmlentities($row->email).'" maxlength="255" /> </td>';
@@ -223,6 +238,8 @@
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_corps" id="nzcf_corps_'.$row->unit_id.'_corps" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_CORPS?' checked="checked"':'').' class="corps" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_atc" id="nzcf_corps_'.$row->unit_id.'_atc" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_ATC?' checked="checked"':'').' class="atc" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_sea" id="nzcf_corps_'.$row->unit_id.'_sea" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_SEA?' checked="checked"':'').' class="sea" /> </td>';
+								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_civ" id="nzcf_corps_'.$row->unit_id.'_civ" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_CIVILIAN?' checked="checked"':'').' class="civilian" /> </td>';
+								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_rf" id="nzcf_corps_'.$row->unit_id.'_rf" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_REGULAR_SERVICE?' checked="checked"':'').' class="regularforces" /> </td>';
 
 
 								echo '	<td align="center"> <input type="checkbox" name="parade_night_'.$row->unit_id.'_sun" id="parade_night_'.$row->unit_id.'_sun" value="1" '.($row->parade_night&WPNZCFCN_DAY_SUNDAY?' checked="checked"':'').' class="sunday" /> </td>';
@@ -247,6 +264,8 @@
 							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_corps" id="nzcf_corps_0_corps" value="1" class="corps" /> </td>';
 							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_atc" id="nzcf_corps_0_atc" value="1" class="atc" /> </td>';
 							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_sea" id="nzcf_corps_0_sea" value="1" class="sea" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_civ" id="nzcf_corps_0_civ" value="1" class="civilian" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_rf" id="nzcf_corps_0_rf" value="1" class="regularforces" /> </td>';
 
 							echo '	<td align="center"> <input type="checkbox" name="parade_night_0_sun" id="parade_night_0_sun" value="1" class="sunday" /> </td>';
 							echo '	<td align="center"> <input type="checkbox" name="parade_night_0_mon" id="parade_night_0_mon" value="1" class="monday" /> </td>';
