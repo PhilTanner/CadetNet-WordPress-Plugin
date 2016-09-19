@@ -27,6 +27,7 @@
 			$(this).html("<strong>Part "+i+":</strong> "+$(this).html());
 		});
 		
+		/*
 		// Make our appointments an autocomplete drop down
 		$('#vacancy_description').autocomplete({
 			source:site_url+"/wp-admin/admin-ajax.php?action=eoi_positions",
@@ -53,8 +54,25 @@
 				}
 			}
 		});
-		
-		
+		*/
+		// And our select versions
+			jQuery.ajax({
+				url: site_url+'/wp-admin/admin-ajax.php?action=eoi_positions',
+				dataType: 'json'
+			}).done( function(json, text) { 
+				jQuery('#vacancy_id').empty().each(function(){
+					var select = jQuery(this);
+					select.append('<option value=""></option>');
+					jQuery.each( json, function(i, item){
+						select.append('<option value="' + json[i].value + '" data-minrank="'+json[i].ranks+'" data-closingdate="'+json[i].closing_date+'">'+ json[i].label + '</option>');
+					});
+				}).change(function(){
+					var opt = jQuery('#vacancy_id option:selected');
+					jQuery('#rank').val(opt.data('minrank'));
+					jQuery('#application_closes').val(opt.data('closingdate'));
+				});
+			});
+			
 		// Take our data and put it into our form to allow the next stage editing
 		function populateFormValues( arr )
 		{
@@ -91,7 +109,6 @@
 			});
 		}
 		
-		
 		$.ajax({
 			url: site_url+'/wp-admin/admin-ajax.php?action=eoi_application&eoi_id='+eoi_id,
 			dataType: 'json'
@@ -109,7 +126,7 @@
 				var showsection=false;
 			
 				parts.eq(i).find('input,textarea,select').each(function(){
-					if( $(this).val().length ) {
+					if( $(this).val() && $(this).val().length ) {
 						showsection=true;
 						return false;
 					}

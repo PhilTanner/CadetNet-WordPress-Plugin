@@ -44,6 +44,6 @@ input,select,textarea {
 input[type=date],label[type=date] {
 	width: 8em;
 }
-input[type=text].rank,label.rank {
+input[type=text].rank,label.rank,select.rank {
 	width: 13em;
 }

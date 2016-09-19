@@ -159,7 +159,21 @@
 				}
 			}
 		});
-		
+		// And our select versions
+		if( jQuery('select.rank').length ) {
+			jQuery.ajax({
+				url: site_url+'/wp-admin/admin-ajax.php?action=rank',
+				dataType: 'json'
+			}).done( function(json, text) { 
+				jQuery('select.rank').empty().each(function(){
+					var select = jQuery(this);
+					select.append('<option value=""></option>');
+					jQuery.each( json, function(i, item){
+						select.append('<option value="' + json[i].value + '">'+ json[i].label + '</option>');
+					});
+				});
+			});
+		}
 		
 		// Make our expanding containers "expand" when we enter data to provide new empty rows
 		jQuery('div.container .datarow input, div.container .datarow textarea, div.container .datarow select').change(function(){
