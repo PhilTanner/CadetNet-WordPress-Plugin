@@ -3,7 +3,7 @@
 		Plugin Name: NZCF Cadet Net 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
 		Description: WordPress NZCF Cadet Net
-		Version:     0.02
+		Version:     0.03
 		Author:      Phil Tanner
 		Author URI:  https://github.com/PhilTanner
 		License:     GPL3
@@ -46,7 +46,7 @@
 	
 	define('WP_DEBUG', true); 
 	
-	$version = "0.02";
+	$version = "0.03";
 	$db_version = "0.01";
 	
 	add_option( "wpnzcfcn_version", $version );
