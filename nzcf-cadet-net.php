@@ -78,6 +78,68 @@
 		global $wpdb;
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		
+		$table = $wpdb->prefix."wpnzcfcn_course";
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Commissioning Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'Commissioning Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER | WPNZCFCN_PERSONNEL_GROUP_UNDER_OFFICER | WPNZCFCN_PERSONNEL_GROUP_CIVILIAN,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'ITTM Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'ITTM Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Command Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'Command Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Range Conducting Officer Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'Range Conducting Officer Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Officer Bushcraft Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'Officer Bushcraft Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Marine Safety Officer Course'" ) === null ){
+			$wpdb->insert( 
+				$table, 
+				array( 
+					'course_name' => 'Marine Safety Officer Course', 
+					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+				) 
+			);
+		}
+		
 		$table = $wpdb->prefix."wpnzcfcn_rank";
 		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'WGCDR'" ) === null ){
 			$wpdb->insert( 
@@ -162,68 +224,6 @@
 					'website' => 'http://www.49squadron.org.nz', 
 					'nzcf_corps' => WPNZCFCN_CADETS_ATC,
 					'parade_night' => WPNZCFCN_DAY_WEDNESDAY
-				) 
-			);
-		}
-		
-		$table = $wpdb->prefix."wpnzcfcn_course";
-		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Commissioning Course'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'course_name' => 'Commissioning Course', 
-					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER | WPNZCFCN_PERSONNEL_GROUP_UNDER_OFFICER | WPNZCFCN_PERSONNEL_GROUP_CIVILIAN,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'ITTM Course'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'course_name' => 'ITTM Course', 
-					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Command Course'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'course_name' => 'Command Course', 
-					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Range Conducting Officer Course'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'course_name' => 'Range Conducting Officer Course', 
-					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Officer Bushcraft Course'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'course_name' => 'Officer Bushcraft Course', 
-					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT course_id FROM $table WHERE course_name = 'Marine Safety Officer Course'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'course_name' => 'Marine Safety Officer Course', 
-					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
 				) 
 			);
 		}
