@@ -32,7 +32,7 @@
 			"manage_options", // Capability required (Needed to save option changes to system)
 			"cadet_net_menu", // Menu slug (unique name)
 			"cadetnet_admin_menu", // Function to be called when displaying content
-			plugins_url( '/img/wpnzcfcn.png', __FILE__ ) // The url to the icon to be used for this menu. This parameter is optional.
+			plugins_url( '/../img/wpnzcfcn.png', __FILE__ ) // The url to the icon to be used for this menu. This parameter is optional.
 		);
 		
 		// Add sub menu items (Order will be the display order in the menu):
