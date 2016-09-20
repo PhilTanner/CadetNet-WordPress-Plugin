@@ -369,7 +369,7 @@
     	add_option("wpnzcfcn_eoi_page_id", '0', '', 'yes');
 
 	    $eoi_page = get_page_by_title( get_option("wpnzcfcn_eoi_page_title") );
-	    if ( ! $the_page ) {
+	    if ( !$eoi_page ) {
 	        // Create post object
  	       $_p = array();
   	      $_p['post_title'] = get_option("wpnzcfcn_eoi_page_title");
