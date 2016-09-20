@@ -139,7 +139,7 @@
 				) 
 			);
 		}
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'CIVILIAN'" ) === null ){
+		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'CIV'" ) === null ){
 			$wpdb->insert( 
 				$table, 
 				array( 
