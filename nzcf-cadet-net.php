@@ -247,7 +247,7 @@
   course_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   course_name varchar(70) NOT NULL,
   personnel tinyint(5) NOT NULL,
-  nzcf_corps tinyint(3) unsigned NOT NULL,
+  nzcf_corps tinyint(5) unsigned NOT NULL,
   UNIQUE KEY course_id (course_id)
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
@@ -258,7 +258,7 @@
   rank_shortname varchar(10) NOT NULL,
   ordering mediumint(8) unsigned NOT NULL,
   nzcf20_order mediumint(8) unsigned NOT NULL,  
-  nzcf_corps tinyint(3) unsigned NOT NULL,
+  nzcf_corps tinyint(5) unsigned NOT NULL,
   UNIQUE KEY rank_id (rank_id)
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
@@ -272,7 +272,7 @@
   latitude float(10,6),
   longitude float(10,6),
   website varchar(150),
-  nzcf_corps tinyint(3) unsigned NOT NULL,
+  nzcf_corps tinyint(5) unsigned NOT NULL,
   parade_night tinyint(7) unsigned,
   UNIQUE KEY unit_id (unit_id)
 ) ".$wpdb->get_charset_collate().";";
@@ -286,7 +286,7 @@
   posted_by_user_id mediumint(9) unsigned NOT NULL,
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   nzcf_area tinyint(3) unsigned NOT NULL,
-  nzcf_corps tinyint(3) unsigned NOT NULL,
+  nzcf_corps tinyint(5) unsigned NOT NULL,
   UNIQUE KEY vacancy_id (vacancy_id)
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
@@ -442,7 +442,7 @@
 		// TODO i18n of the below
 		$translation_array = array(
 			'site_url' => get_site_url(),
-			'debug' => WP_DEBUG
+			'debug' => (int)WP_DEBUG
 		);
 		wp_localize_script( 'nzcf-cadet-net', 'WPURLs', $translation_array );
 		wp_enqueue_script( 'nzcf-cadet-net' );

@@ -111,13 +111,13 @@
 		<fieldset>
 			<legend> <?= __('Reasons for applying','nzcf-cadet-net') ?> </legend>
 			<p class="instruction"><?= __('In your own words, describe why you would be the best candidate for this role','nzcf-cadet-net') ?> </p>
-			<textarea name="best_candidate_response" id="best_candidate_response"></textarea>
+			<textarea name="best_candidate_response" id="best_candidate_response" required="required"></textarea>
 		</fieldset>
 		
 		<fieldset>
 			<legend> <?= __('Curriculum Vitae','nzcf-cadet-net') ?> </legend>
 			<p class="instruction"> <?= __('Provide a short summary of your NZCF and professional work history including any civilian qualifications that will assist you in this appointment.','nzcf-cadet-net') ?></p>
-			<textarea name="cv" id="cv"></textarea>
+			<textarea name="cv" id="cv" requried="required"></textarea>
 			<p class="notice"><?= __('As necessary, the AC, the Asst COMDT or COMDT may conduct further inquiries as to your suitability for the appointment.','nzcf-cadet-net') ?> </p>
 		</fieldset>
 

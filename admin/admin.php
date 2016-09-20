@@ -39,6 +39,15 @@
 		
 		add_submenu_page( 
 			"cadet_net_menu", 
+			__("NZCF CadetNet - Course", 'nzcf-cadet-net'), // Page title
+			__("Courses", 'nzcf-cadet-net'),       // Menu text
+			"manage_options", // Req capability 
+			"cadet_net_menu_course",  // Menu slug. 
+			"cadetnet_admin_menu_course"
+		);
+		
+		add_submenu_page( 
+			"cadet_net_menu", 
 			__("NZCF CadetNet - EOI Vacancies", 'nzcf-cadet-net'), // Page title
 			__("EOI Vacancies", 'nzcf-cadet-net'),       // Menu text
 			"manage_options", // Req capability 
@@ -76,6 +85,7 @@
 		echo "<p>Congratulations on being trusted enough to be an admin ;) </p>";
 	}
 	
+	require_once( dirname(__FILE__).'/course.php' );
 	require_once( dirname(__FILE__).'/eoi_vacancies.php' );
 	require_once( dirname(__FILE__).'/ranks.php' );
 	require_once( dirname(__FILE__).'/unit.php' );

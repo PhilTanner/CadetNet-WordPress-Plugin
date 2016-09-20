@@ -75,14 +75,19 @@
 				LOWER(rank_shortname) LIKE %s 
 				OR LOWER(rank) LIKE %s
 			ORDER BY 
-				ordering ASC;",
+				ordering ASC,
+				rank ASC;",
 			'%'.$wpdb->esc_like($keywords).'%',
 			'%'.$wpdb->esc_like($keywords).'%'
         ) );
         // For our autocomplete jQueryUI boxes, simplify our value/label options
 		foreach( $response as $rank ) {
 			$rank->value = $rank->rank_id;
-			$rank->label = $rank->rank." (".$rank->rank_shortname.")";
+			if( $rank->rank != $rank->rank_shortname ) {
+				$rank->label = $rank->rank." (".$rank->rank_shortname.")";
+			} else {
+				$rank->label = $rank->rank;
+			}
 		}
  	   // Never forget to exit or die on the end of a WordPress AJAX action!
 	    exit( json_encode( $response ) ); 
