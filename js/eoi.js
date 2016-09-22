@@ -69,6 +69,8 @@
 					for( var i=0; i<value.length; i++ ) {
 						populateFormValues(value[i]);
 					}
+					// and finally, remove the addrow functionality from the rows we've output
+					$('#'+key+' .datarow button.new').remove();
 					
 				} else {
 					// Copy in our value
