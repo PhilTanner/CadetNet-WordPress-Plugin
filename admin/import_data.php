@@ -87,8 +87,20 @@
 									throw new WPNZCFCNExceptionBadData(sprintf(__('Wrong data type for column: "%s" expecting number, got "%s" (line %d)','nzcf-cadet-net'), $col, $row[$col], $rowcounter));
 								}
 							}
-							// Data looks OK - lets do an import.
-							
+							break;
+						default:
+							throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s"','nzcf-cadet-net'),$_POST['datatype']));
+					}
+					$rowcounter++;
+				}
+				// Data looks OK (i.e. we've not thrown an error & aborted yet - lets do an import.
+				if( strtolower($_POST['datatype']) == 'ranks' ) {
+					// Clear our DB table first
+					$wpdb->query('TRUNCATE '.$wpdb->prefix."wpnzcfcn_rank");
+				}
+				foreach( $csv as $row ){
+					switch( strtolower($_POST['datatype']) ) {
+						case 'ranks':
 							// First off, calculate our rank bitmask
 							$rank_corps_bitmask = 0;
 							if( (bool)$row['rank_scc'] ) {
@@ -119,12 +131,26 @@
 								$rank_corps_bitmask = $rank_corps_bitmask | WPNZCFCN_RANK_CIVILIAN;
 							}
 							
+							$wpdb->insert( 
+								$wpdb->prefix."wpnzcfcn_rank", 
+								array( 
+									'rank_sort' => (int)$row['rank_sort'], 
+									'rank_eqv' => (int)$row['rank_eqv'], 
+									'rank_short' => $row['rank_short'], 
+									'rank_long' => $row['rank_long'],
+									'rank_applies_to' => $rank_corps_bitmask,
+									'rank_status' => (int)$row['rank_status']
+								) 
+							);
+							
+							
 							break;
 						default:
 							throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s"','nzcf-cadet-net'),$_POST['datatype']));
 					}
-					$rowcounter++;
+					echo '<h3>'.__('Import complete','nzcf-cadet-net').'</h3>';
 				}
+				
 				
 				
 			} catch( Exception $Ex ) {
