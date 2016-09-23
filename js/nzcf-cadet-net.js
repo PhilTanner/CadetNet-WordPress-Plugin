@@ -191,8 +191,9 @@
 				duplicateparentaldatarow( jQuery(this) );
 			}
 		});
-		// Give the add button the same abilities
-		jQuery('.datarow button[type=button].new').click(function(){ duplicateparentaldatarow( jQuery(this) ); });		
+		// Give the add button the same abilities (and re-show the last row's add new row button)
+		jQuery('.datarow button[type=button].new').click(function(){ duplicateparentaldatarow( jQuery(this) ); }).show();
+		
 	}
 	
 	function duplicateparentaldatarow( object ) {
@@ -204,8 +205,8 @@
 				name: ""+jQuery(this).data('name')+newrownum 
 			}).val('');
 		});
-		// Remove the Add New row functionality button from everything except the last row.
-		object.parent().children('button.new').remove();
+		// Remove the Add New row functionality button
+		object.parent().children('button.new').hide();
 				
 		// Create our new autocompletes
 		autocomplete_inputs();
