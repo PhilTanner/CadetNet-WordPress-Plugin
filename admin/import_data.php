@@ -1,6 +1,6 @@
 <?php
 	/*			
-		Plugin Name: NZCF Cadet Net 
+		Plugin Name: NZCF CadetNet 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
         
         Copyright (C) 2016 Phil Tanner
@@ -89,7 +89,7 @@
 							}
 							// Data looks OK - lets do an import.
 							
-							// First off, our rank bitmask
+							// First off, calculate our rank bitmask
 							$rank_corps_bitmask = 0;
 							if( (bool)$row['rank_scc'] ) {
 								$rank_corps_bitmask = $rank_corps_bitmask | WPNZCFCN_CADETS_SCC;
