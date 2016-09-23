@@ -25,6 +25,7 @@
 		// Make any buttons ... buttons
 		$('button').button().filter('[type=submit]').button({ icons: {primary: 'ui-icon-disk' } }).css({ float:'right', marginRight:'1em' });
 		$('button[type=button].edit').button({ icons: {primary: 'ui-icon-pencil' }, text:false });
+		$('button[type=button].new').button({ icons: {primary: 'ui-icon-plus' }, text:false });
 
 		autocomplete_inputs();
 		
@@ -187,20 +188,27 @@
 		jQuery('div.container .datarow input, div.container .datarow textarea, div.container .datarow select').change(function(){
 			// Only create a new row if the last row already there isn't blank
 			if( jQuery(this).parent().parent().children('.datarow:last-child').children('input:first-child').val() != "" ) {
-				var newrownum = jQuery(this).parent().parent().children('.datarow:last-child').data('rownum')+1;
-				// Do our duplication, updating our IDs and names, and resetting what we've entered into previous rows
-				jQuery(this).parent().clone().attr('data-rownum', newrownum).appendTo( jQuery(this).parent().parent() ).children('input').each(function(){
-					jQuery(this).attr({ 
-						id: ""+jQuery(this).data('name')+newrownum,
-						name: ""+jQuery(this).data('name')+newrownum 
-					}).val('');
-				});
-				
-				// Create our new autocompletes
-				autocomplete_inputs();
+				duplicateparentaldatarow( jQuery(this) );
 			}
 		});
-		
+		// Give the add button the same abilities
+		jQuery('.datarow button[type=button].new').click(function(){ duplicateparentaldatarow( jQuery(this) ); });		
+	}
+	
+	function duplicateparentaldatarow( object ) {
+		var newrownum = object.parent().parent().children('.datarow:last-child').data('rownum')+1;
+		// Do our duplication, updating our IDs and names, and resetting what we've entered into previous rows
+		object.parent().clone().attr('data-rownum', newrownum).appendTo( object.parent().parent() ).children('input, select, textarea').each(function(){
+			jQuery(this).attr({ 
+				id: ""+jQuery(this).data('name')+newrownum,
+				name: ""+jQuery(this).data('name')+newrownum 
+			}).val('');
+		});
+		// Remove the Add New row functionality button from everything except the last row.
+		object.parent().children('button.new').remove();
+				
+		// Create our new autocompletes
+		autocomplete_inputs();
 	}
 	
 	// If we're in debug mode....

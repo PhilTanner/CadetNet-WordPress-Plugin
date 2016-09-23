@@ -80,6 +80,7 @@
 					<input type="date" name="service_start_date_1" id="service_start_date_1" max="<?= date("%Y-%m-%d") ?>" data-name="service_start_date_" />
 					<input type="date" name="service_end_date_1" id="service_end_date_1" max="<?= date("%Y-%m-%d") ?>" data-name="service_end_date_" />
 					<input type="text" name="service_appointments_held_1" id="service_appointments_held_1" data-name="service_appointments_held_" />
+					<button type="button" class="new">Add row</button>
 				</div>
 			</div>
 			&nbsp;
@@ -92,6 +93,7 @@
 					<input type="hidden" name="course_qual_id_1" id="course_qual_id_1"  data-name="course_qual_id_" />
 					<input type="text" name="course_qual_1" id="course_qual_1" class="course_type" data-name="course_qual_" />
 					<input type="date" name="course_date_1" id="course_date_1" max="<?= date('%Y-%m-%d') ?>" data-name="course_date_"  type="date" />
+					<button type="button" class="new">Add row</button>
 				</div>
 			</div>
 			<div>
@@ -104,6 +106,7 @@
 					<input type="hidden" name="course_staffed_id_1" id="course_staffed_id_1"  data-name="course_staffed_id_" />
 					<input type="text" name="course_staffed_1" id="course_staffed_1" class="course_type" data-name="course_staffed_" />
 					<input type="number" name="course_staffed_qty_1" id="course_staffed_qty_1" data-name="course_staffed_date_" />
+					<button type="button" class="new">Add row</button>
 				</div>
 			</div>
 		</fieldset>
