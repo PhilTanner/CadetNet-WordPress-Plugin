@@ -46,7 +46,7 @@
 	
 	define('WP_DEBUG', true); 
 	
-	$version = "0.03";
+	$version = "0.04";
 	$db_version = "0.02";
 	
 	add_option( "wpnzcfcn_version", $version );
@@ -139,83 +139,7 @@
 				) 
 			);
 		}
-		
-		/*
-		$table = $wpdb->prefix."wpnzcfcn_rank";
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'WGCDR'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Wing Commander', 
-					'rank_shortname' => 'WGCDR', 
-					'ordering' => 20, 
-					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'SQNLDR'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Squadron Leader', 
-					'rank_shortname' => 'SQNLDR', 
-					'ordering' => 30, 
-					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'FLTLT'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Flight Lieutenant', 
-					'rank_shortname' => 'FLTLT', 
-					'ordering' => 30, 
-					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'PLTOFF'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Pilot Officer', 
-					'rank_shortname' => 'PLTOFF', 
-					'ordering' => 40, 
-					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'A/PLTOFF'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Acting Pilot Officer', 
-					'rank_shortname' => 'A/PLTOFF', 
-					'ordering' => 41, 
-					'nzcf20_order' => 50,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC
-				) 
-			);
-		}
-		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'CIV'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'rank' => 'Civilian', 
-					'rank_shortname' => 'CIV', 
-					'ordering' => 99, 
-					'nzcf20_order' => 99,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_NZCC | WPNZCFCN_CADETS_SCC 
-				) 
-			);
-		}
-		*/
-		
+				
 		$table = $wpdb->prefix."wpnzcfcn_unit";
 		if( $wpdb->get_var( "SELECT unit_id FROM $table WHERE unit_name = 'No 49 (District of Kāpiti) Squadron, Air Training Corps'" ) === null ){
 			$wpdb->insert( 
@@ -254,18 +178,6 @@
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
 		
-/*
-		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_rank (
-  rank_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  rank varchar(70) NOT NULL,
-  rank_shortname varchar(10) NOT NULL,
-  ordering mediumint(8) unsigned NOT NULL,
-  nzcf20_order mediumint(8) unsigned NOT NULL,  
-  nzcf_corps tinyint(5) unsigned NOT NULL,
-  UNIQUE KEY rank_id (rank_id)
-) ".$wpdb->get_charset_collate().";";
-		dbDelta( $sql );
-*/
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_rank (
   rank_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   rank_sort smallint(6) NOT NULL,
