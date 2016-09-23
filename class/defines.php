@@ -1,6 +1,6 @@
 <?php
 	/*			
-		Plugin Name: NZCF Cadet Net 
+		Plugin Name: NZCF CadetNet 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
         
         Copyright (C) 2016 Phil Tanner
@@ -68,17 +68,19 @@
 	define( 'WPNZCFCN_CADETS_ATC',				1	);
 	define( 'WPNZCFCN_CADETS_NZCC',				1 << 1	);
 	define( 'WPNZCFCN_CADETS_SCC',				1 << 2	);
+	define( 'WPNZCFCN_CADETS_FORCES',			WPNZCFCN_CADETS_SCC | WPNZCFCN_CADETS_NZCC | WPNZCFCN_CADETS_ATC );
 	// These need to continue, as they're used in rank calculations
 	define( 'WPNZCFCN_REGULAR_FORCE_NAVY',			1 << 3	);
 	define( 'WPNZCFCN_REGULAR_FORCE_ARMY',			1 << 4	);
 	define( 'WPNZCFCN_REGULAR_FORCE_RNZAF',			1 << 5	);
+	define( 'WPNZCFCN_REGULAR_FORCES',			WPNZCFCN_REGULAR_FORCE_NAVY | WPNZCFCN_REGULAR_FORCE_ARMY | WPNZCFCN_REGULAR_FORCE_RNZAF );
 	// These also need to continue, as used in rank calculations
 	define( 'WPNZCFCN_RANK_OFFICER',			1 << 6	);
 	define( 'WPNZCFCN_RANK_CADET',				1 << 7	);
 	define( 'WPNZCFCN_RANK_CIVILIAN',			1 << 8	);
 	
-	//define( 'WPNZCFCN_CADETS_CIVILIAN',			1 << 3	);
-	//define( 'WPNZCFCN_CADETS_REGULAR_SERVICE',		1 << 4	);
+	//define( 'WPNZCFCN_RANK_CIVILIAN',			1 << 3	);
+	//define( 'WPNZCFCN_REGULAR_FORCES',		1 << 4	);
 	
 	// New Zealand Cadet Forces Areas, as a bitmask
 	define( 'WPNZCFCN_AREA_NORTHERN',			1	);
@@ -103,9 +105,11 @@
 	define( 'WPNZCFCN_DAY_FRIDAY',				1 << 5	);
 	define( 'WPNZCFCN_DAY_SATURDAY',			1 << 6	);
 	
-	// Statuses
-	define( 'WPNZCFCN_STATUS_DISBANDED',			 -2	);
-	define( 'WPNZCFCN_STATUS_RECESS',			 -1	);
+	// Statuses - Negative values are "disabled", positive "enabled".
+	define( 'WPNZCFCN_STATUS_RETIRED',			 -4	);
+	define( 'WPNZCFCN_STATUS_DISBANDED',			 -3	);
+	define( 'WPNZCFCN_STATUS_RECESS',			 -2	);
+	define( 'WPNZCFCN_STATUS_INACTIVE',			 -1	);
 	define( 'WPNZCFCN_STATUS_UNDEFINED',			  0	);
 	define( 'WPNZCFCN_STATUS_ACTIVE',			  1	);
 	define( 'WPNZCFCN_STATUS_PENDING',			  2	);

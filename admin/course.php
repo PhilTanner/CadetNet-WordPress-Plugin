@@ -1,6 +1,6 @@
 <?php
 	/*			
-		Plugin Name: NZCF Cadet Net 
+		Plugin Name: NZCF CadetNet 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
         
         Copyright (C) 2016 Phil Tanner
@@ -45,10 +45,10 @@
 					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SCC;
 				}  
 				if( isset($_POST['nzcf_corps_'.$course_id.'_civ']) && $_POST['nzcf_corps_'.$course_id.'_civ'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_CIVILIAN;
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_RANK_CIVILIAN;
 				} 
 				if( isset($_POST['nzcf_corps_'.$course_id.'_rf']) && $_POST['nzcf_corps_'.$course_id.'_rf'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_REGULAR_SERVICE;
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_REGULAR_FORCES;
 				} 
 				
 				$personnel = 0;
@@ -104,10 +104,10 @@
 					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SCC;
 				}  
 				if( isset($_POST['nzcf_corps_0_civ']) && $_POST['nzcf_corps_0_civ'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_CIVILIAN;
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_RANK_CIVILIAN;
 				} 
 				if( isset($_POST['nzcf_corps_0_rf']) && $_POST['nzcf_corps_0_rf'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_REGULAR_SERVICE;
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_REGULAR_FORCES;
 				} 
 				
 				$personnel = 0;
@@ -201,8 +201,8 @@
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_corps" id="nzcf_corps_'.$row->course_id.'_corps" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_NZCC?' checked="checked"':'').' class="corps" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_atc" id="nzcf_corps_'.$row->course_id.'_atc" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_ATC?' checked="checked"':'').' class="atc" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_sea" id="nzcf_corps_'.$row->course_id.'_sea" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_SCC?' checked="checked"':'').' class="sea" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_civ" id="nzcf_corps_'.$row->course_id.'_civ" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_CIVILIAN?' checked="checked"':'').' class="civilian" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_rf" id="nzcf_corps_'.$row->course_id.'_rf" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_REGULAR_SERVICE?' checked="checked"':'').' class="regularforces" /> </td>';
+								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_civ" id="nzcf_corps_'.$row->course_id.'_civ" value="1" '.($row->nzcf_corps&WPNZCFCN_RANK_CIVILIAN?' checked="checked"':'').' class="civilian" /> </td>';
+								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_rf" id="nzcf_corps_'.$row->course_id.'_rf" value="1" '.($row->nzcf_corps&WPNZCFCN_REGULAR_FORCES?' checked="checked"':'').' class="regularforces" /> </td>';
 
 
 								echo '	<td align="center"> <input type="checkbox" name="personnel_'.$row->course_id.'_officer" id="personnel_'.$row->course_id.'_officer" value="1" '.($row->personnel&WPNZCFCN_PERSONNEL_GROUP_OFFICER?' checked="checked"':'').' class="officer" /> </td>';

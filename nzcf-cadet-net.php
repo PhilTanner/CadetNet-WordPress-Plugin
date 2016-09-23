@@ -1,8 +1,8 @@
 <?php
 	/*			
-		Plugin Name: NZCF Cadet Net 
+		Plugin Name: NZCF CadetNet 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
-		Description: WordPress NZCF Cadet Net
+		Description: WordPress NZCF CadetNet
 		Version:     0.03
 		Author:      Phil Tanner
 		Author URI:  https://github.com/PhilTanner
@@ -47,7 +47,7 @@
 	define('WP_DEBUG', true); 
 	
 	$version = "0.03";
-	$db_version = "0.01";
+	$db_version = "0.02";
 	
 	add_option( "wpnzcfcn_version", $version );
 	add_option( "wpnzcfcn_db_version", $db_version );
@@ -268,11 +268,11 @@
 */
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_rank (
   rank_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  rank_sort smallint( NOT NULL,
-  rank_eqv NOT NULL,
+  rank_sort smallint(6) NOT NULL,
+  rank_eqv smallint(5) NOT NULL,
   rank_short varchar(10) NOT NULL,
   rank_long varchar(64) NOT NULL,
-  nzcf_corps tinyint(5) unsigned NOT NULL,
+  rank_applies_to smallint(5) unsigned NOT NULL,
   rank_status tinyint(5) NOT NULL,
   UNIQUE KEY rank_id (rank_id)
 ) ".$wpdb->get_charset_collate().";";
@@ -310,7 +310,7 @@
 		dbDelta( $sql );
 		
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_vacancy_application (
-  application_id mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  application_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   vacancy_id mediumint(9) unsigned NOT NULL,
   user_id bigint(20) unsigned NOT NULL COMMENT 'WordPress user ID',
   rank_id mediumint(9) unsigned NOT NULL COMMENT 'Applicant rank at time of application',
@@ -344,7 +344,7 @@
 		dbDelta( $sql );
 		
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_vacancy_application_service (
-  vacancy_service_id mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  vacancy_service_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   application_id mediumint(9) unsigned NOT NULL,
   cadet_unit_id mediumint(9) unsigned NOT NULL,
   start_date date NOT NULL,
