@@ -148,10 +148,8 @@
 						default:
 							throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s"','nzcf-cadet-net'),$_POST['datatype']));
 					}
-					echo '<h3>'.__('Import complete','nzcf-cadet-net').'</h3>';
 				}
-				
-				
+				echo '<p>'.__('Import complete','nzcf-cadet-net').'</p>';
 				
 			} catch( Exception $Ex ) {
 				echo '<h2>'.__('Bad upload', 'nzcf-cadet-net').'</h2>';
