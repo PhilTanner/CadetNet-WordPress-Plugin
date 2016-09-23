@@ -1,6 +1,6 @@
 <?php
 	/*			
-		Plugin Name: NZCF Cadet Net 
+		Plugin Name: NZCF CadetNet 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
         
         Copyright (C) 2016 Phil Tanner
@@ -23,7 +23,7 @@
 	
 	// Based on code located at:
 	// http://bordoni.me/ajax-wordpress/
-	// JSON URIs defined in ../nzcf-cadet-net.php -> wpnzcfcn_register()
+	// JSON URIs defined in ../nzcf-cadetnet.php -> wpnzcfcn_register()
 	
 	// $_GET['term'] is the partial text entered into a jQueryUI AutoComplete field & passed to us
 	

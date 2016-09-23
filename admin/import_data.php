@@ -1,6 +1,6 @@
 <?php
 	/*			
-		Plugin Name: NZCF Cadet Net 
+		Plugin Name: NZCF CadetNet 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
         
         Copyright (C) 2016 Phil Tanner
@@ -25,7 +25,7 @@
 		if ( !current_user_can( 'manage_options' ) )  {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
-		echo '<h2>'.__('Import Data','nzcf-cadet-net').'</h2>';
+		echo '<h2>'.__('Import Data','nzcf-cadetnet').'</h2>';
 		
 		global $wpdb;
 		
@@ -33,16 +33,16 @@
 		if( !isset($_FILES['fileupload']) ) {
 		?>
 			<form method="post" enctype="multipart/form-data" style="width:30em;">
-				<label for="fileupload"><?= __('File to upload', 'nzcf-cadet-net') ?></label>
+				<label for="fileupload"><?= __('File to upload', 'nzcf-cadetnet') ?></label>
 				<input type="file" name="fileupload" id="fileupload" required="required" />
 				<hr />
-				<label for="datatype"><?= __('Data type', 'nzcf-cadet-net') ?></label>
+				<label for="datatype"><?= __('Data type', 'nzcf-cadetnet') ?></label>
 				<select name="datatype" id="datatype" required="required">
 					<option value="">
-					<option value="ranks"><?=__('Ranks','nzcf-cadet-net')?></option>
+					<option value="ranks"><?=__('Ranks','nzcf-cadetnet')?></option>
 				</select>
 				<hr />
-				<button type="submit"><?=__('Upload','nzcf-cadet-net')?></button>
+				<button type="submit"><?=__('Upload','nzcf-cadetnet')?></button>
 			</form>
 			<p style="clear:both;">
 				<?= __('<strong>Note:</strong> Files should be in CSV (Comma Separated Value) format, with a header row containing the names of the fields', 'nzcdf-cadet-net') ?>
@@ -54,7 +54,7 @@
 				$tmp_filename = $_FILES["fileupload"]["tmp_name"];
 				// We only want to allow CSV file type uploads
 				if( array_search($_FILES["fileupload"]["type"], array('text/csv','application/csv','application/vnd.ms-excel')) === false ) {
-					throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s".','nzcf-cadet-net'),$_FILES["fileupload"]["type"]));
+					throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s".','nzcf-cadetnet'),$_FILES["fileupload"]["type"]));
 				}
 				// Read in our CSV into a named array (adjusted from from http://php.net/manual/en/function.str-getcsv.php#117692 )
 				$csv = array_map('str_getcsv', file($tmp_filename));
@@ -77,19 +77,31 @@
 							$required_cols = array( 'rank_sort','rank_eqv','rank_short','rank_long','rank_scc','rank_nzcc','rank_atc','rank_rnzn','rank_army','rank_rnzaf','rank_off','rank_cdt','rank_civ','rank_status' );
 							foreach($required_cols as $col ) {
 								if( !isset($row[$col]) ) { 
-									throw new WPNZCFCNExceptionBadData(sprintf(__('Missing required column: "%s" (line %d)','nzcf-cadet-net'), $col, $rowcounter));
+									throw new WPNZCFCNExceptionBadData(sprintf(__('Missing required column: "%s" (line %d)','nzcf-cadetnet'), $col, $rowcounter));
 								}
 							}
 							// Make sure we're not getting text where we expect to be receiving numbers
 							$number_cols = array( 'rank_sort','rank_eqv','rank_scc','rank_nzcc','rank_atc','rank_rnzn','rank_army','rank_rnzaf','rank_off','rank_cdt','rank_civ' );
 							foreach($required_cols as $col ) {
 								if( (int)$row[$col] != $row[$col] ) { 
-									throw new WPNZCFCNExceptionBadData(sprintf(__('Wrong data type for column: "%s" expecting number, got "%s" (line %d)','nzcf-cadet-net'), $col, $row[$col], $rowcounter));
+									throw new WPNZCFCNExceptionBadData(sprintf(__('Wrong data type for column: "%s" expecting number, got "%s" (line %d)','nzcf-cadetnet'), $col, $row[$col], $rowcounter));
 								}
 							}
-							// Data looks OK - lets do an import.
-							
-							// First off, our rank bitmask
+							break;
+						default:
+							throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s"','nzcf-cadetnet'),$_POST['datatype']));
+					}
+					$rowcounter++;
+				}
+				// Data looks OK (i.e. we've not thrown an error & aborted yet - lets do an import.
+				if( strtolower($_POST['datatype']) == 'ranks' ) {
+					// Clear our DB table first
+					$wpdb->query('TRUNCATE '.$wpdb->prefix."wpnzcfcn_rank");
+				}
+				foreach( $csv as $row ){
+					switch( strtolower($_POST['datatype']) ) {
+						case 'ranks':
+							// First off, calculate our rank bitmask
 							$rank_corps_bitmask = 0;
 							if( (bool)$row['rank_scc'] ) {
 								$rank_corps_bitmask = $rank_corps_bitmask | WPNZCFCN_CADETS_SCC;
@@ -119,17 +131,29 @@
 								$rank_corps_bitmask = $rank_corps_bitmask | WPNZCFCN_RANK_CIVILIAN;
 							}
 							
+							$wpdb->insert( 
+								$wpdb->prefix."wpnzcfcn_rank", 
+								array( 
+									'rank_sort' => (int)$row['rank_sort'], 
+									'rank_eqv' => (int)$row['rank_eqv'], 
+									'rank_short' => $row['rank_short'], 
+									'rank_long' => $row['rank_long'],
+									'rank_applies_to' => $rank_corps_bitmask,
+									'rank_status' => (int)$row['rank_status']
+								) 
+							);
+							
+							
 							break;
 						default:
-							throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s"','nzcf-cadet-net'),$_POST['datatype']));
+							throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s"','nzcf-cadetnet'),$_POST['datatype']));
 					}
-					$rowcounter++;
 				}
-				
+				echo '<p>'.__('Import complete','nzcf-cadetnet').'</p>';
 				
 			} catch( Exception $Ex ) {
-				echo '<h2>'.__('Bad upload', 'nzcf-cadet-net').'</h2>';
-				echo '<p>'.__('Server reported:','nzcf-cadet-net').'</pre>';
+				echo '<h2>'.__('Bad upload', 'nzcf-cadetnet').'</h2>';
+				echo '<p>'.__('Server reported:','nzcf-cadetnet').'</pre>';
 				echo '<pre>'.$Ex->toString().'</pre>';
 			} 
 		}

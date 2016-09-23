@@ -1,6 +1,6 @@
 <?php
 	/*			
-		Plugin Name: NZCF Cadet Net 
+		Plugin Name: NZCF CadetNet 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
         
         Copyright (C) 2016 Phil Tanner
@@ -126,9 +126,9 @@
 				header("HTTP/1.0 500 Unhandled error");
 			}
 			
-			header("HTTP/1.0 200 ".__('Saved','nzcf-cadet-net'));
+			header("HTTP/1.0 200 ".__('Saved','nzcf-cadetnet'));
 			echo '<p>';
-			echo __('Application saved. You can now close this window','nzcf-cadet-net');
+			echo __('Application saved. You can now close this window','nzcf-cadetnet');
 			echo '</p>';
 			exit();
 		
