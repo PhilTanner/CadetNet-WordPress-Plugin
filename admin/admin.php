@@ -57,6 +57,15 @@
 		
 		add_submenu_page( 
 			"cadet_net_menu", 
+			__("NZCF CadetNet - Import Data", 'nzcf-cadet-net'), // Page title
+			__("Import data", 'nzcf-cadet-net'),       // Menu text
+			"manage_options", // Req capability 
+			"cadet_net_menu_import_data",  // Menu slug. 
+			"cadetnet_admin_menu_import_data"
+		);
+		
+		add_submenu_page( 
+			"cadet_net_menu", 
 			__("NZCF CadetNet - Ranks", 'nzcf-cadet-net'), // Page title
 			__("Ranks", 'nzcf-cadet-net'),       // Menu text
 			"manage_options", // Req capability 
@@ -87,6 +96,7 @@
 	
 	require_once( dirname(__FILE__).'/course.php' );
 	require_once( dirname(__FILE__).'/eoi_vacancies.php' );
+	require_once( dirname(__FILE__).'/import_data.php' );
 	require_once( dirname(__FILE__).'/ranks.php' );
 	require_once( dirname(__FILE__).'/unit.php' );
 	
