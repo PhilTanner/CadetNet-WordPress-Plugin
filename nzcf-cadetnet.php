@@ -3,7 +3,7 @@
 		Plugin Name: NZCF CadetNet 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
 		Description: WordPress NZCF CadetNet
-		Version:     0.03
+		Version:     0.05
 		Author:      Phil Tanner
 		Author URI:  https://github.com/PhilTanner
 		License:     GPL3
@@ -46,7 +46,7 @@
 	
 	define('WP_DEBUG', true); 
 	
-	$version = "0.04";
+	$version = "0.05";
 	$db_version = "0.02";
 	
 	add_option( "wpnzcfcn_version", $version );
@@ -188,10 +188,16 @@
   rank_status tinyint(5) NOT NULL,
   UNIQUE KEY rank_id (rank_id)
 ) ".$wpdb->get_charset_collate().";";
-		dbDelta( $sql );
+		dbDelta( $sql );												
 
-		$required_cols = array( 'rank_sort','rank_equiv','rank_short','rank_long','rank_scc','rank_nzcc','rank_atc','rank_rnzn','rank_army','rank_rnzaf','rank_off','rank_cdt','rank_civ','rank_status' );
-												
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_relationship (
+  relationship_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  relationship_sort smallint(6) NOT NULL,
+  relationship_relationship varchar(20) NOT NULL,
+  relationship_status tinyint(5) NOT NULL,
+  UNIQUE KEY relationship_id (relationship_id)
+) ".$wpdb->get_charset_collate().";";
+		dbDelta( $sql );
 		
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_unit (
   unit_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,

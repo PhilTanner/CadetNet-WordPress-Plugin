@@ -60,43 +60,45 @@
 	// List the NZCF ranks
 	function wpnzcfcn_json_callback_rank() {
 		global $wpdb;
-	    $response = array();
-
+		$response = array();
+		
 		$keywords = (isset($_GET['term'])?$_GET['term']:'');
 		// Never trust input from a user!
 		$keywords = wp_kses( strtolower($keywords), array() );
 		$response = $wpdb->get_results( $wpdb->prepare(
 			"
-			SELECT 
-				* 
-			FROM 
-				".$wpdb->prefix."wpnzcfcn_rank 
-			WHERE 
-				LOWER(rank_shortname) LIKE %s 
-				OR LOWER(rank) LIKE %s
-			ORDER BY 
-				ordering ASC,
-				rank ASC;",
-			'%'.$wpdb->esc_like($keywords).'%',
-			'%'.$wpdb->esc_like($keywords).'%'
-        ) );
-        // For our autocomplete jQueryUI boxes, simplify our value/label options
+				SELECT 
+					* 
+				FROM 
+					".$wpdb->prefix."wpnzcfcn_rank 
+				WHERE 
+					(
+						LOWER(rank_short) LIKE %s 
+						OR LOWER(rank_long) LIKE %s
+					) 
+					AND rank_status > 0
+				ORDER BY 
+					rank_sort ASC;",
+				'%'.$wpdb->esc_like($keywords).'%',
+				'%'.$wpdb->esc_like($keywords).'%'
+			) );
+		// For our autocomplete jQueryUI boxes, simplify our value/label options
 		foreach( $response as $rank ) {
 			$rank->value = $rank->rank_id;
-			if( $rank->rank != $rank->rank_shortname ) {
-				$rank->label = $rank->rank." (".$rank->rank_shortname.")";
+			if( $rank->rank != $rank->rank_short ) {
+				$rank->label = $rank->rank_long." (".$rank->rank_short.")";
 			} else {
-				$rank->label = $rank->rank;
+				$rank->label = $rank->rank_long;
 			}
 		}
- 	   // Never forget to exit or die on the end of a WordPress AJAX action!
-	    exit( json_encode( $response ) ); 
+		// Never forget to exit or die on the end of a WordPress AJAX action!
+		exit( json_encode( $response ) ); 
 	}
 
 	// List the units
 	function wpnzcfcn_json_callback_unit() {
 		global $wpdb;
-	    $response = array();
+		$response = array();
 
 		$keywords = (isset($_GET['term'])?$_GET['term']:'');
 		// Never trust input from a user!

@@ -40,6 +40,7 @@
 				<select name="datatype" id="datatype" required="required">
 					<option value="">
 					<option value="ranks"><?=__('Ranks','nzcf-cadetnet')?></option>
+					<option value="relationships"><?=__('Relationships','nzcf-cadetnet')?></option>
 				</select>
 				<hr />
 				<button type="submit"><?=__('Upload','nzcf-cadetnet')?></button>
@@ -88,15 +89,35 @@
 								}
 							}
 							break;
+							
+						case 'relationships':
+							// Make sure we have the data we're expecting to receive.
+							$required_cols = array( 'relationship_sort','relationship_relationship','relationship_status' );
+							foreach($required_cols as $col ) {
+								if( !isset($row[$col]) ) { 
+									throw new WPNZCFCNExceptionBadData(sprintf(__('Missing required column: "%s" (line %d)','nzcf-cadetnet'), $col, $rowcounter));
+								}
+							}
+							// Make sure we're not getting text where we expect to be receiving numbers
+							$number_cols = array( 'relationship_sort','relationship_status' );
+							foreach($required_cols as $col ) {
+								if( (int)$row[$col] != $row[$col] ) { 
+									throw new WPNZCFCNExceptionBadData(sprintf(__('Wrong data type for column: "%s" expecting number, got "%s" (line %d)','nzcf-cadetnet'), $col, $row[$col], $rowcounter));
+								}
+							}
+							break;
+						
 						default:
 							throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s"','nzcf-cadetnet'),$_POST['datatype']));
 					}
 					$rowcounter++;
 				}
 				// Data looks OK (i.e. we've not thrown an error & aborted yet - lets do an import.
+				// Clear our DB table first
 				if( strtolower($_POST['datatype']) == 'ranks' ) {
-					// Clear our DB table first
 					$wpdb->query('TRUNCATE '.$wpdb->prefix."wpnzcfcn_rank");
+				} else if( strtolower($_POST['datatype']) == 'relationships' ) {
+					$wpdb->query('TRUNCATE '.$wpdb->prefix."wpnzcfcn_relationship");
 				}
 				foreach( $csv as $row ){
 					switch( strtolower($_POST['datatype']) ) {
@@ -143,7 +164,16 @@
 								) 
 							);
 							
-							
+							break;
+						case 'relationships':
+							$wpdb->insert( 
+								$wpdb->prefix."wpnzcfcn_relationship", 
+								array( 
+									'relationship_sort' => (int)$row['relationship_sort'], 
+									'relationship_relationship' => $row['relationship_relationship'], 
+									'relationship_status' => (int)$row['relationship_status']
+								) 
+							);
 							break;
 						default:
 							throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s"','nzcf-cadetnet'),$_POST['datatype']));
