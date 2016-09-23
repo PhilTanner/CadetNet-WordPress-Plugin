@@ -27,8 +27,8 @@
 	function nzcf_cadet_net_plugin_menu(){
 		// Add a new main menu level for CadetNet Admin
 		add_menu_page( 
-			__("NZCF CadetNet", 'nzcf-cadet-net'), // Page title
-			__("CadetNet", 'nzcf-cadet-net'),       // Menu text
+			__("NZCF CadetNet", 'nzcf-cadetnet'), // Page title
+			__("CadetNet", 'nzcf-cadetnet'),       // Menu text
 			"manage_options", // Capability required (Needed to save option changes to system)
 			"cadet_net_menu", // Menu slug (unique name)
 			"cadetnet_admin_menu", // Function to be called when displaying content
@@ -39,8 +39,8 @@
 		
 		add_submenu_page( 
 			"cadet_net_menu", 
-			__("NZCF CadetNet - Course", 'nzcf-cadet-net'), // Page title
-			__("Courses", 'nzcf-cadet-net'),       // Menu text
+			__("NZCF CadetNet - Course", 'nzcf-cadetnet'), // Page title
+			__("Courses", 'nzcf-cadetnet'),       // Menu text
 			"manage_options", // Req capability 
 			"cadet_net_menu_course",  // Menu slug. 
 			"cadetnet_admin_menu_course"
@@ -48,8 +48,8 @@
 		
 		add_submenu_page( 
 			"cadet_net_menu", 
-			__("NZCF CadetNet - EOI Vacancies", 'nzcf-cadet-net'), // Page title
-			__("EOI Vacancies", 'nzcf-cadet-net'),       // Menu text
+			__("NZCF CadetNet - EOI Vacancies", 'nzcf-cadetnet'), // Page title
+			__("EOI Vacancies", 'nzcf-cadetnet'),       // Menu text
 			"manage_options", // Req capability 
 			"cadet_net_menu_eoi_vacancies",  // Menu slug. 
 			"cadetnet_admin_menu_eoi_vacancies"
@@ -57,8 +57,8 @@
 		
 		add_submenu_page( 
 			"cadet_net_menu", 
-			__("NZCF CadetNet - Import Data", 'nzcf-cadet-net'), // Page title
-			__("Import data", 'nzcf-cadet-net'),       // Menu text
+			__("NZCF CadetNet - Import Data", 'nzcf-cadetnet'), // Page title
+			__("Import data", 'nzcf-cadetnet'),       // Menu text
 			"manage_options", // Req capability 
 			"cadet_net_menu_import_data",  // Menu slug. 
 			"cadetnet_admin_menu_import_data"
@@ -66,8 +66,8 @@
 		
 		add_submenu_page( 
 			"cadet_net_menu", 
-			__("NZCF CadetNet - Ranks", 'nzcf-cadet-net'), // Page title
-			__("Ranks", 'nzcf-cadet-net'),       // Menu text
+			__("NZCF CadetNet - Ranks", 'nzcf-cadetnet'), // Page title
+			__("Ranks", 'nzcf-cadetnet'),       // Menu text
 			"manage_options", // Req capability 
 			"cadet_net_menu_ranks",  // Menu slug. 
 			"cadetnet_admin_menu_ranks"
@@ -75,8 +75,8 @@
 		
 		add_submenu_page( 
 			"cadet_net_menu", 
-			__("NZCF CadetNet - Units", 'nzcf-cadet-net'), // Page title
-			__("Units", 'nzcf-cadet-net'),       // Menu text
+			__("NZCF CadetNet - Units", 'nzcf-cadetnet'), // Page title
+			__("Units", 'nzcf-cadetnet'),       // Menu text
 			"manage_options", // Req capability 
 			"cadet_net_menu_units",  // Menu slug. 
 			"cadetnet_admin_menu_units"
@@ -89,7 +89,7 @@
 		if ( !current_user_can( "manage_options" ) )  {
 			wp_die( __( "You do not have sufficient permissions to access this page." ) );
 		}
-		echo "<h2>" . __("New Zealand Cadet Forces - CadetNet v".$version." - db v".$db_version, "nzcf-cadet-net") . " </h2>";
+		echo "<h2>" . __("New Zealand Cadet Forces - CadetNet v".$version." - db v".$db_version, "nzcf-cadetnet") . " </h2>";
 		echo "<p>Welcome to the CadetNet WordPress plugin options. </p>";
 		echo "<p>Congratulations on being trusted enough to be an admin ;) </p>";
 	}

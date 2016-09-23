@@ -1,6 +1,6 @@
 <?php
 	/*			
-		Plugin Name: NZCF Cadet Net 
+		Plugin Name: NZCF CadetNet 
 		Plugin URI:  https://github.com/PhilTanner/CadetNet-WordPress-Plugin.git
         
         Copyright (C) 2016 Phil Tanner
@@ -25,7 +25,7 @@
 		if ( !current_user_can( 'manage_options' ) )  {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
-		echo '<h2>'.__('Units','nzcf-cadet-net').'</h2>';
+		echo '<h2>'.__('Units','nzcf-cadetnet').'</h2>';
 		
 		global $wpdb;
 		
@@ -45,10 +45,10 @@
 					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SCC;
 				}  
 				if( isset($_POST['nzcf_corps_'.$unit_id.'_civ']) && $_POST['nzcf_corps_'.$unit_id.'_civ'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_CIVILIAN;
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_RANK_CIVILIAN;
 				} 
 				if( isset($_POST['nzcf_corps_'.$unit_id.'_rf']) && $_POST['nzcf_corps_'.$unit_id.'_rf'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_REGULAR_SERVICE;
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_REGULAR_FORCES;
 				} 
 				
 				$parade_night = 0;
@@ -115,10 +115,10 @@
 					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SCC;
 				}  
 				if( isset($_POST['nzcf_corps_0_civ']) && $_POST['nzcf_corps_0_civ'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_CIVILIAN;
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_RANK_CIVILIAN;
 				} 
 				if( isset($_POST['nzcf_corps_0_rf']) && $_POST['nzcf_corps_0_rf'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_REGULAR_SERVICE;
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_REGULAR_FORCES;
 				} 
 				
 				$parade_night = 0;
@@ -170,7 +170,7 @@
 					)
 				);
 			}
-			echo '<h3>'.__('Saved','nzcf-cadet-net').'</h3>';
+			echo '<h3>'.__('Saved','nzcf-cadetnet').'</h3>';
 		}
 		
 		
@@ -190,32 +190,32 @@
 				<table>
 					<thead>	
 						<tr>
-							<th rowspan="2"> <?= __('Unit Name','nzcf-cadet-net') ?> </th>
-							<th rowspan="2"> <?= __('Address','nzcf-cadet-net') ?> </th>
-							<th rowspan="2"> <?= __('Phone','nzcf-cadet-net') ?> </th>
-							<th rowspan="2"> <?= __('Email','nzcf-cadet-net') ?> </th>
-							<th colspan="2"> <?= __('Location','nzcf-cadet-net') ?> </th>
-							<th rowspan="2"> <?= __('Website','nzcf-cadet-net') ?> </th>
-							<th colspan="5"> <?= __('Corps','nzcf-cadet-net') ?> </th>
-							<th colspan="7"> <?= __('Parade Nights','nzcf-cadet-net') ?> </th>
+							<th rowspan="2"> <?= __('Unit Name','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Address','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Phone','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Email','nzcf-cadetnet') ?> </th>
+							<th colspan="2"> <?= __('Location','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Website','nzcf-cadetnet') ?> </th>
+							<th colspan="5"> <?= __('Corps','nzcf-cadetnet') ?> </th>
+							<th colspan="7"> <?= __('Parade Nights','nzcf-cadetnet') ?> </th>
 						</tr>
 						<tr>
-							<th> <?= __('Lat','nzcf-cadet-net') ?> </th>
-							<th> <?= __('Lng','nzcf-cadet-net') ?> </th>
+							<th> <?= __('Lat','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Lng','nzcf-cadetnet') ?> </th>
 							
-							<th> <?= __('Cadet','nzcf-cadet-net') ?> </th>
-							<th> <?= __('ATC','nzcf-cadet-net') ?> </th>
-							<th> <?= __('Sea','nzcf-cadet-net') ?> </th>
-							<th> <?= __('Civ','nzcf-cadet-net') ?> </th>
-							<th> <?= __('Reg. F','nzcf-cadet-net') ?> </th>
+							<th> <?= __('Cadet','nzcf-cadetnet') ?> </th>
+							<th> <?= __('ATC','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Sea','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Civ','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Reg. F','nzcf-cadetnet') ?> </th>
 							
-							<th> <?= __('S','nzcf-cadet-net') ?> </th>
-							<th> <?= __('M','nzcf-cadet-net') ?> </th>
-							<th> <?= __('T','nzcf-cadet-net') ?> </th>
-							<th> <?= __('W','nzcf-cadet-net') ?> </th>
-							<th> <?= __('T','nzcf-cadet-net') ?> </th>
-							<th> <?= __('F','nzcf-cadet-net') ?> </th>
-							<th> <?= __('S','nzcf-cadet-net') ?> </th>
+							<th> <?= __('S','nzcf-cadetnet') ?> </th>
+							<th> <?= __('M','nzcf-cadetnet') ?> </th>
+							<th> <?= __('T','nzcf-cadetnet') ?> </th>
+							<th> <?= __('W','nzcf-cadetnet') ?> </th>
+							<th> <?= __('T','nzcf-cadetnet') ?> </th>
+							<th> <?= __('F','nzcf-cadetnet') ?> </th>
+							<th> <?= __('S','nzcf-cadetnet') ?> </th>
 						</tr>
 					</thead>
 					<tbody>
@@ -238,8 +238,8 @@
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_corps" id="nzcf_corps_'.$row->unit_id.'_corps" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_NZCC?' checked="checked"':'').' class="corps" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_atc" id="nzcf_corps_'.$row->unit_id.'_atc" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_ATC?' checked="checked"':'').' class="atc" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_sea" id="nzcf_corps_'.$row->unit_id.'_sea" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_SCC?' checked="checked"':'').' class="sea" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_civ" id="nzcf_corps_'.$row->unit_id.'_civ" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_CIVILIAN?' checked="checked"':'').' class="civilian" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_rf" id="nzcf_corps_'.$row->unit_id.'_rf" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_REGULAR_SERVICE?' checked="checked"':'').' class="regularforces" /> </td>';
+								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_civ" id="nzcf_corps_'.$row->unit_id.'_civ" value="1" '.($row->nzcf_corps&WPNZCFCN_RANK_CIVILIAN?' checked="checked"':'').' class="civilian" /> </td>';
+								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_rf" id="nzcf_corps_'.$row->unit_id.'_rf" value="1" '.($row->nzcf_corps&WPNZCFCN_REGULAR_FORCES?' checked="checked"':'').' class="regularforces" /> </td>';
 
 
 								echo '	<td align="center"> <input type="checkbox" name="parade_night_'.$row->unit_id.'_sun" id="parade_night_'.$row->unit_id.'_sun" value="1" '.($row->parade_night&WPNZCFCN_DAY_SUNDAY?' checked="checked"':'').' class="sunday" /> </td>';
@@ -279,8 +279,8 @@
 						?>
 					</tbody>
 				</table>
-				<button type="submit" class="save"><?= __('Save Changes','nzcf-cadet-net') ?></button>
-				<button type="cancel" class="cancel"><?= __('Cancel','nzcf-cadet-net') ?></button>
+				<button type="submit" class="save"><?= __('Save Changes','nzcf-cadetnet') ?></button>
+				<button type="cancel" class="cancel"><?= __('Cancel','nzcf-cadetnet') ?></button>
 			</form>
 		<?php
 	}

@@ -23,7 +23,7 @@
 	
 	// Based on code located at:
 	// http://bordoni.me/ajax-wordpress/
-	// JSON URIs defined in ../nzcf-cadet-net.php -> wpnzcfcn_register()
+	// JSON URIs defined in ../nzcf-cadetnet.php -> wpnzcfcn_register()
 	
 	// $_GET['term'] is the partial text entered into a jQueryUI AutoComplete field & passed to us
 	

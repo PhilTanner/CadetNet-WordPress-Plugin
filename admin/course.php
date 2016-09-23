@@ -25,7 +25,7 @@
 		if ( !current_user_can( 'manage_options' ) )  {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
-		echo '<h2>'.__('Courses','nzcf-cadet-net').'</h2>';
+		echo '<h2>'.__('Courses','nzcf-cadetnet').'</h2>';
 		
 		global $wpdb;
 		
@@ -149,7 +149,7 @@
 					)
 				);
 			}
-			echo '<h3>'.__('Saved','nzcf-cadet-net').'</h3>';
+			echo '<h3>'.__('Saved','nzcf-cadetnet').'</h3>';
 		}
 		
 		
@@ -169,24 +169,24 @@
 				<table>
 					<thead>	
 						<tr>
-							<th rowspan="2"> <?= __('Course Name','nzcf-cadet-net') ?> </th>
-							<th colspan="5"> <?= __('Corps','nzcf-cadet-net') ?> </th>
-							<th colspan="7"> <?= __('Available for','nzcf-cadet-net') ?> </th>
+							<th rowspan="2"> <?= __('Course Name','nzcf-cadetnet') ?> </th>
+							<th colspan="5"> <?= __('Corps','nzcf-cadetnet') ?> </th>
+							<th colspan="7"> <?= __('Available for','nzcf-cadetnet') ?> </th>
 						</tr>
 						<tr>
-							<th> <?= __('Cadet','nzcf-cadet-net') ?> </th>
-							<th> <?= __('ATC','nzcf-cadet-net') ?> </th>
-							<th> <?= __('Sea','nzcf-cadet-net') ?> </th>
-							<th> <?= __('Civ','nzcf-cadet-net') ?> </th>
-							<th> <?= __('Reg. F','nzcf-cadet-net') ?> </th>
+							<th> <?= __('Cadet','nzcf-cadetnet') ?> </th>
+							<th> <?= __('ATC','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Sea','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Civ','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Reg. F','nzcf-cadetnet') ?> </th>
 							
-							<th> <?= __('OFF','nzcf-cadet-net') ?> </th>
-							<th> <?= __('U/O','nzcf-cadet-net') ?> </th>
-							<th> <?= __('NCO','nzcf-cadet-net') ?> </th>
-							<th> <?= __('CDT','nzcf-cadet-net') ?> </th>
-							<th> <?= __('CIV','nzcf-cadet-net') ?> </th>
-							<th> <?= __('JNR','nzcf-cadet-net') ?> </th>
-							<th> <?= __('SNR','nzcf-cadet-net') ?> </th>
+							<th> <?= __('OFF','nzcf-cadetnet') ?> </th>
+							<th> <?= __('U/O','nzcf-cadetnet') ?> </th>
+							<th> <?= __('NCO','nzcf-cadetnet') ?> </th>
+							<th> <?= __('CDT','nzcf-cadetnet') ?> </th>
+							<th> <?= __('CIV','nzcf-cadetnet') ?> </th>
+							<th> <?= __('JNR','nzcf-cadetnet') ?> </th>
+							<th> <?= __('SNR','nzcf-cadetnet') ?> </th>
 						</tr>
 					</thead>
 					<tbody>
@@ -236,8 +236,8 @@
 						?>
 					</tbody>
 				</table>
-				<button type="submit" class="save"><?= __('Save Changes','nzcf-cadet-net') ?></button>
-				<button type="cancel" class="cancel"><?= __('Cancel','nzcf-cadet-net') ?></button>
+				<button type="submit" class="save"><?= __('Save Changes','nzcf-cadetnet') ?></button>
+				<button type="cancel" class="cancel"><?= __('Cancel','nzcf-cadetnet') ?></button>
 			</form>
 		<?php
 	}

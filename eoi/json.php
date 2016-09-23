@@ -126,9 +126,9 @@
 				header("HTTP/1.0 500 Unhandled error");
 			}
 			
-			header("HTTP/1.0 200 ".__('Saved','nzcf-cadet-net'));
+			header("HTTP/1.0 200 ".__('Saved','nzcf-cadetnet'));
 			echo '<p>';
-			echo __('Application saved. You can now close this window','nzcf-cadet-net');
+			echo __('Application saved. You can now close this window','nzcf-cadetnet');
 			echo '</p>';
 			exit();
 		

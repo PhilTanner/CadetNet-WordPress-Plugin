@@ -9,7 +9,7 @@
 		License:     GPL3
 		License URI: http://www.gnu.org/licenses/gpl.html
 		Domain Path: /languages
-		Text Domain: nzcf-cadet-net
+		Text Domain: nzcf-cadetnet
         
         Copyright (C) 2016 Phil Tanner
 
@@ -452,10 +452,10 @@
 		// Pass in PHP vars to JS:
 		// https://codex.wordpress.org/Function_Reference/wp_localize_script
 		wp_register_script( 
-			'nzcf-cadet-net', 
-			plugins_url( '/js/nzcf-cadet-net.js', __FILE__ ), 
+			'nzcf-cadetnet', 
+			plugins_url( '/js/nzcf-cadetnet.js', __FILE__ ), 
 			array('jquery','jquery-ui-core','jquery-ui-button','jquery-ui-autocomplete','jquery-ui-dialog'), 
-			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/nzcf-cadet-net.js' )), 
+			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/nzcf-cadetnet.js' )), 
 			true 
 		);
 		// Data we want to pass
@@ -464,8 +464,8 @@
 			'site_url' => get_site_url(),
 			'debug' => (int)WP_DEBUG
 		);
-		wp_localize_script( 'nzcf-cadet-net', 'WPURLs', $translation_array );
-		wp_enqueue_script( 'nzcf-cadet-net' );
+		wp_localize_script( 'nzcf-cadetnet', 'WPURLs', $translation_array );
+		wp_enqueue_script( 'nzcf-cadetnet' );
 		
 	}
 	add_action('wp_enqueue_scripts', 'wpnzcfcn_load_scripts');
@@ -510,12 +510,12 @@
 		wp_enqueue_style ( 'eoi-css' ); 
 		
 		wp_register_style( 
-			'nzcf-cadet-net',    
-			plugins_url( '/css/nzcf-cadet-net.css', __FILE__ ), 
+			'nzcf-cadetnet',    
+			plugins_url( '/css/nzcf-cadetnet.css', __FILE__ ), 
 			false,   
-			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/css/nzcf-cadet-net.css' )  )
+			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/css/nzcf-cadetnet.css' )  )
 		);
-		wp_enqueue_style ( 'nzcf-cadet-net' ); 
+		wp_enqueue_style ( 'nzcf-cadetnet' ); 
 	}
 	add_action('wp_enqueue_scripts', 'wpnzcfcn_load_styles');
 	add_action('admin_enqueue_scripts', 'wpnzcfcn_load_styles');
