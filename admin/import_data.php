@@ -74,14 +74,14 @@
 					switch( strtolower($_POST['datatype']) ) {
 						case 'ranks':
 							// Make sure we have the data we're expecting to receive.
-							$required_cols = array( 'rank_sort','rank_equiv','rank_short','rank_long','rank_scc','rank_nzcc','rank_atc','rank_rnzn','rank_army','rank_rnzaf','rank_off','rank_cdt','rank_civ','rank_status' );
+							$required_cols = array( 'rank_sort','rank_eqv','rank_short','rank_long','rank_scc','rank_nzcc','rank_atc','rank_rnzn','rank_army','rank_rnzaf','rank_off','rank_cdt','rank_civ','rank_status' );
 							foreach($required_cols as $col ) {
 								if( !isset($row[$col]) ) { 
 									throw new WPNZCFCNExceptionBadData(sprintf(__('Missing required column: "%s" (line %d)','nzcf-cadet-net'), $col, $rowcounter));
 								}
 							}
 							// Make sure we're not getting text where we expect to be receiving numbers
-							$number_cols = array( 'rank_sort','rank_equiv','rank_scc','rank_nzcc','rank_atc','rank_rnzn','rank_army','rank_rnzaf','rank_off','rank_cdt','rank_civ' );
+							$number_cols = array( 'rank_sort','rank_eqv','rank_scc','rank_nzcc','rank_atc','rank_rnzn','rank_army','rank_rnzaf','rank_off','rank_cdt','rank_civ' );
 							foreach($required_cols as $col ) {
 								if( (int)$row[$col] != $row[$col] ) { 
 									throw new WPNZCFCNExceptionBadData(sprintf(__('Wrong data type for column: "%s" expecting number, got "%s" (line %d)','nzcf-cadet-net'), $col, $row[$col], $rowcounter));

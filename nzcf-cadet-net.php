@@ -140,6 +140,7 @@
 			);
 		}
 		
+		/*
 		$table = $wpdb->prefix."wpnzcfcn_rank";
 		if( $wpdb->get_var( "SELECT rank_id FROM $table WHERE rank_shortname = 'WGCDR'" ) === null ){
 			$wpdb->insert( 
@@ -213,6 +214,7 @@
 				) 
 			);
 		}
+		*/
 		
 		$table = $wpdb->prefix."wpnzcfcn_unit";
 		if( $wpdb->get_var( "SELECT unit_id FROM $table WHERE unit_name = 'No 49 (District of Kāpiti) Squadron, Air Training Corps'" ) === null ){
@@ -252,6 +254,7 @@
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
 		
+/*
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_rank (
   rank_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   rank varchar(70) NOT NULL,
@@ -262,6 +265,21 @@
   UNIQUE KEY rank_id (rank_id)
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
+*/
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_rank (
+  rank_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  rank_sort smallint( NOT NULL,
+  rank_eqv NOT NULL,
+  rank_short varchar(10) NOT NULL,
+  rank_long varchar(64) NOT NULL,
+  nzcf_corps tinyint(5) unsigned NOT NULL,
+  rank_status tinyint(5) NOT NULL,
+  UNIQUE KEY rank_id (rank_id)
+) ".$wpdb->get_charset_collate().";";
+		dbDelta( $sql );
+
+		$required_cols = array( 'rank_sort','rank_equiv','rank_short','rank_long','rank_scc','rank_nzcc','rank_atc','rank_rnzn','rank_army','rank_rnzaf','rank_off','rank_cdt','rank_civ','rank_status' );
+												
 		
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_unit (
   unit_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
