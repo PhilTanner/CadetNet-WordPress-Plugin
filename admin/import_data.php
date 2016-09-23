@@ -92,10 +92,10 @@
 							// First off, our rank bitmask
 							$rank_corps_bitmask = 0;
 							if( (bool)$row['rank_scc'] ) {
-								$rank_corps_bitmask = $rank_corps_bitmask | WPNZCFCN_CADETS_SEA;
+								$rank_corps_bitmask = $rank_corps_bitmask | WPNZCFCN_CADETS_SCC;
 							}
 							if( (bool)$row['rank_nzcc'] ) {
-								$rank_corps_bitmask = $rank_corps_bitmask | WPNZCFCN_CADETS_CORPS;
+								$rank_corps_bitmask = $rank_corps_bitmask | WPNZCFCN_CADETS_NZCC;
 							}
 							if( (bool)$row['rank_atc'] ) {
 								$rank_corps_bitmask = $rank_corps_bitmask | WPNZCFCN_CADETS_ATC;

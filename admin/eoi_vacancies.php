@@ -42,10 +42,10 @@
 					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_ATC;
 				} 
 				if( isset($_POST['nzcf_corps_'.$vacancy_id.'_corps']) && $_POST['nzcf_corps_'.$vacancy_id.'_corps'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_CORPS;
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_NZCC;
 				} 
 				if( isset($_POST['nzcf_corps_'.$vacancy_id.'_sea']) && $_POST['nzcf_corps_'.$vacancy_id.'_sea'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SEA;
+					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SCC;
 				} 
 				// So is the nzcf_area...
 				$nzcf_area = 0;
@@ -91,10 +91,10 @@
 				$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_ATC;
 			} 
 			if( isset($_POST['nzcf_corps_0_corps']) && $_POST['nzcf_corps_0_corps'] ) {
-				$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_CORPS;
+				$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_NZCC;
 			} 
 			if( isset($_POST['nzcf_corps_0_sea']) && $_POST['nzcf_corps_0_sea'] ) {
-				$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SEA;
+				$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SCC;
 			} 
 			// So is the nzcf_area...
 			$nzcf_area = 0;
@@ -204,9 +204,9 @@
 								echo '	<td>';
 								echo '		<input type="datetime-local" name="closing_date_'.$vacancy->vacancy_id.'" id="closing_date_'.$vacancy->vacancy_id.'" value="'.date('Y-m-d\TH:i:s',strtotime($vacancy->closing_date)).'" />';
 								echo '	</td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$vacancy->vacancy_id.'_corps" id="nzcf_corps_'.$vacancy->vacancy_id.'_corps" value="1" '.($vacancy->nzcf_corps&WPNZCFCN_CADETS_CORPS?' checked="checked"':'').' class="corps" /> </td>';
+								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$vacancy->vacancy_id.'_corps" id="nzcf_corps_'.$vacancy->vacancy_id.'_corps" value="1" '.($vacancy->nzcf_corps&WPNZCFCN_CADETS_NZCC?' checked="checked"':'').' class="corps" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$vacancy->vacancy_id.'_atc" id="nzcf_corps_'.$vacancy->vacancy_id.'_atc" value="1" '.($vacancy->nzcf_corps&WPNZCFCN_CADETS_ATC?' checked="checked"':'').' class="atc" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$vacancy->vacancy_id.'_sea" id="nzcf_corps_'.$vacancy->vacancy_id.'_sea" value="1" '.($vacancy->nzcf_corps&WPNZCFCN_CADETS_SEA?' checked="checked"':'').' class="sea" /> </td>';
+								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$vacancy->vacancy_id.'_sea" id="nzcf_corps_'.$vacancy->vacancy_id.'_sea" value="1" '.($vacancy->nzcf_corps&WPNZCFCN_CADETS_SCC?' checked="checked"':'').' class="sea" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_area_'.$vacancy->vacancy_id.'_n" id="nzcf_area_'.$vacancy->vacancy_id.'_n" value="1" '.($vacancy->nzcf_area&WPNZCFCN_AREA_NORTHERN?' checked="checked"':'').' class="northern" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_area_'.$vacancy->vacancy_id.'_c" id="nzcf_area_'.$vacancy->vacancy_id.'_c" value="1" '.($vacancy->nzcf_area&WPNZCFCN_AREA_CENTRAL?' checked="checked"':'').' class="central" /> </td>';
 								echo '	<td align="center"> <input type="checkbox" name="nzcf_area_'.$vacancy->vacancy_id.'_s" id="nzcf_area_'.$vacancy->vacancy_id.'_s" value="1" '.($vacancy->nzcf_area&WPNZCFCN_AREA_SOUTHERN?' checked="checked"':'').' class="southern" /> </td>';

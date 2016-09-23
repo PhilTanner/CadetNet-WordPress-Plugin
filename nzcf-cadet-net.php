@@ -31,12 +31,12 @@
     	Useful links:
     	Done:
     	https://codex.wordpress.org/Writing_a_Plugin
-		https://codex.wordpress.org/Adding_Administration_Menus
+	https://codex.wordpress.org/Adding_Administration_Menus
     	https://developer.wordpress.org/reference/functions/wp_enqueue_script/
-		https://codex.wordpress.org/Creating_Tables_with_Plugins
-		http://blog.frontendfactory.com/how-to-create-front-end-page-from-your-wordpress-plugin/
-		http://bordoni.me/ajax-wordpress/
-		http://stackoverflow.com/a/17400906 
+	https://codex.wordpress.org/Creating_Tables_with_Plugins
+	http://blog.frontendfactory.com/how-to-create-front-end-page-from-your-wordpress-plugin/
+	http://bordoni.me/ajax-wordpress/
+	http://stackoverflow.com/a/17400906 
     
     	To do:    
     	https://make.wordpress.org/core/handbook/best-practices/inline-documentation-standards/php/
@@ -85,7 +85,7 @@
 				array( 
 					'course_name' => 'Commissioning Course', 
 					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER | WPNZCFCN_PERSONNEL_GROUP_UNDER_OFFICER | WPNZCFCN_PERSONNEL_GROUP_CIVILIAN,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_NZCC | WPNZCFCN_CADETS_SCC
 				) 
 			);
 		}
@@ -95,7 +95,7 @@
 				array( 
 					'course_name' => 'ITTM Course', 
 					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_NZCC | WPNZCFCN_CADETS_SCC
 				) 
 			);
 		}
@@ -105,7 +105,7 @@
 				array( 
 					'course_name' => 'Command Course', 
 					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_NZCC | WPNZCFCN_CADETS_SCC
 				) 
 			);
 		}
@@ -115,7 +115,7 @@
 				array( 
 					'course_name' => 'Range Conducting Officer Course', 
 					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_NZCC | WPNZCFCN_CADETS_SCC
 				) 
 			);
 		}
@@ -125,7 +125,7 @@
 				array( 
 					'course_name' => 'Officer Bushcraft Course', 
 					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_NZCC | WPNZCFCN_CADETS_SCC
 				) 
 			);
 		}
@@ -135,7 +135,7 @@
 				array( 
 					'course_name' => 'Marine Safety Officer Course', 
 					'personnel' => WPNZCFCN_PERSONNEL_GROUP_OFFICER,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_NZCC | WPNZCFCN_CADETS_SCC
 				) 
 			);
 		}
@@ -209,7 +209,7 @@
 					'rank_shortname' => 'CIV', 
 					'ordering' => 99, 
 					'nzcf20_order' => 99,
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_CORPS | WPNZCFCN_CADETS_SEA 
+					'nzcf_corps' => WPNZCFCN_CADETS_ATC | WPNZCFCN_CADETS_NZCC | WPNZCFCN_CADETS_SCC 
 				) 
 			);
 		}
