@@ -391,12 +391,20 @@
 	function wpnzcfcn_load_admin_scripts($hook) {
 		wpnzcfcn_load_scripts($hook);
 		
+		wp_enqueue_script( 
+			'jquery_tablesorter', 
+			plugins_url( '/js/tablesorter/jquery.tablesorter.min.js', __FILE__ ), 
+			array('jquery'), 
+			"2.0.5b", 
+			true 
+		);
+		
 		// Pass in PHP vars to JS:
 		// https://codex.wordpress.org/Function_Reference/wp_localize_script
 		wp_register_script( 
 			'cadetnet_admin_js', 
 			plugins_url( '/js/admin.js', __FILE__ ), 
-			array('jquery','jquery-ui-core','jquery-ui-button','jquery-ui-autocomplete','jquery-ui-dialog'), 
+			array('jquery','jquery-ui-core','jquery-ui-button','jquery-ui-autocomplete','jquery-ui-dialog','jquery_tablesorter'), 
 			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/admin.js' )), 
 			true 
 		);

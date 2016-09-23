@@ -162,4 +162,9 @@
 				
 			});
 		});
+		
+		//jQuery('table').tablesorter();
+		jQuery("thead th").button().removeClass("ui-corner-all").css({ display: "table-cell" });
+		jQuery("tbody tr:odd").not(".ui-state-highlight, .ui-state-error").addClass("evenrow");
+		jQuery("table").tablesorter().on("sortStart", function(){ jQuery("tbody tr").removeClass("evenrow"); }).on("sortEnd", function(){ jQuery("tbody tr:odd").not(".ui-state-highlight, .ui-state-error").addClass("evenrow"); });
 	});
