@@ -376,38 +376,40 @@
 		add_site_option( "wpnzcfcn_version", $version );
 		
 		// Create an Expression of Interest page holder
-	    // the menu entry...
- 	   delete_option("wpnzcfcn_eoi_page_title");
-    	add_option("wpnzcfcn_eoi_page_title", 'Expressions of Interest', '', 'yes');
-    	// the slug...
-    	delete_option("wpnzcfcn_eoi_page_name");
-    	add_option("wpnzcfcn_eoi_page_name", 'eoi', '', 'yes');
-    	// the id...
-    	delete_option("wpnzcfcn_eoi_page_id");
-    	add_option("wpnzcfcn_eoi_page_id", '0', '', 'yes');
-
-	    $eoi_page = get_page_by_title( get_option("wpnzcfcn_eoi_page_title") );
-	    if ( !$eoi_page ) {
-	        // Create post object
- 	       $_p = array();
-  	      $_p['post_title'] = get_option("wpnzcfcn_eoi_page_title");
-   	     $_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
-    	    $_p['post_status'] = 'private'; // Need to be logged in
-     	   $_p['post_type'] = 'page';
-      	  $_p['comment_status'] = 'closed';
-       	 $_p['ping_status'] = 'closed';
-        	$_p['post_category'] = array(1); // the default 'Uncatrgorised'
-	        // Insert the post into the database
-  	      $eoi_page_id = wp_insert_post( $_p );
-	    } else {
-	        // the plugin may have been previously active and the page may just be trashed...
-	        $eoi_page_id = $eoi_page->ID;
-	        //make sure the page is not trashed...
-  	      $eoi_page->post_status = 'publish';
-   	     $eoi_page_id = wp_update_post( $eoi_page );
-    	}
-	    delete_option( 'wpnzcfcn_eoi_page_id' );
- 	   add_option( 'wpnzcfcn_eoi_page_id', $eoi_page_id );
+		// Taken from: http://blog.frontendfactory.com/how-to-create-front-end-page-from-your-wordpress-plugin/
+	
+		// the menu entry...
+		delete_option("wpnzcfcn_eoi_page_title");
+		add_option("wpnzcfcn_eoi_page_title", 'Expressions of Interest', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_eoi_page_name");
+		add_option("wpnzcfcn_eoi_page_name", 'eoi', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_eoi_page_id");
+		add_option("wpnzcfcn_eoi_page_id", '0', '', 'yes');
+		
+		$eoi_page = get_page_by_title( get_option("wpnzcfcn_eoi_page_title") );
+		if ( !$eoi_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_eoi_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			// Insert the post into the database
+			$eoi_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$eoi_page_id = $eoi_page->ID;
+			//make sure the page is not trashed...
+			$eoi_page->post_status = 'publish';
+			$eoi_page_id = wp_update_post( $eoi_page );
+		}
+		delete_option( 'wpnzcfcn_eoi_page_id' );
+		add_option( 'wpnzcfcn_eoi_page_id', $eoi_page_id );
 	}
 	
 	// Allow users to access the EOI submission form
@@ -432,7 +434,7 @@
 	// Taken from https://developer.wordpress.org/reference/functions/wp_enqueue_script/
 	function wpnzcfcn_load_scripts($hook) {
 		wp_enqueue_script( 'jquery' );
-   	 wp_enqueue_script( 'jquery-ui-core' );
+		wp_enqueue_script( 'jquery-ui-core' );
 		wp_enqueue_script( 'jquery-ui-autocomplete' );
 		wp_enqueue_script( 'jquery-ui-button' );
 		wp_enqueue_script( 'jquery-ui-dialog' );
@@ -505,18 +507,15 @@
 			false,   
 			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/css/eoi.css' )  )
 		);
-  	  wp_enqueue_style ( 'eoi-css' ); 
-  
- 	   wp_register_style( 
+		wp_enqueue_style ( 'eoi-css' ); 
+		
+		wp_register_style( 
 			'nzcf-cadet-net',    
 			plugins_url( '/css/nzcf-cadet-net.css', __FILE__ ), 
 			false,   
 			date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) .'/css/nzcf-cadet-net.css' )  )
 		);
-  	  wp_enqueue_style ( 'nzcf-cadet-net' ); 
-  
-		
-		
+		wp_enqueue_style ( 'nzcf-cadet-net' ); 
 	}
 	add_action('wp_enqueue_scripts', 'wpnzcfcn_load_styles');
 	add_action('admin_enqueue_scripts', 'wpnzcfcn_load_styles');
@@ -524,36 +523,36 @@
 	// Plugin initialisation (loading)
 	function wpnzcfcn_register(){
 		// We've got an updated plugin version installed, which needs updates to the DB
-	    if ( get_site_option( 'wpnzcfcn_db_version' ) != get_option('wpnzcfcn_db_version') ) {
-     	   wpnzcfcn_db_install();
-    	}
+		if ( get_site_option( 'wpnzcfcn_db_version' ) != get_option('wpnzcfcn_db_version') ) {
+			wpnzcfcn_db_install();
+		}
     
-    	// Stop WordPress's Magic Quotes re-enabling madness - http://stackoverflow.com/a/17400906
-    	// TODO - make sure this only affects our plugin, not ALL plugis while we're enabled.
+		// Stop WordPress's Magic Quotes re-enabling madness - http://stackoverflow.com/a/17400906
+		// TODO - make sure this only affects our plugin, not ALL plugis while we're enabled.
 		$_POST = array_map( 'stripslashes_deep', $_POST);
     
-        // Register our JSON callbacks
-    	// http://bordoni.me/ajax-wordpress/
-    	// Logged in JSON queries
-		add_action( 'wp_ajax_course_type', 	'wpnzcfcn_json_callback_course_type' );
+		// Register our JSON callbacks
+		// http://bordoni.me/ajax-wordpress/
+		// Logged in JSON queries
+		add_action( 'wp_ajax_course_type', 		'wpnzcfcn_json_callback_course_type' );
 		add_action( 'wp_ajax_eoi_application_list', 	'wpnzcfcn_json_callback_eoi_application_list' );
-		add_action( 'wp_ajax_eoi_application', 	'wpnzcfcn_json_callback_eoi_application' ); 
-		add_action( 'wp_ajax_eoi_positions', 	'wpnzcfcn_json_callback_eoi_positions' ); 
-    	add_action( 'wp_ajax_rank', 			'wpnzcfcn_json_callback_rank' );
+		add_action( 'wp_ajax_eoi_application', 		'wpnzcfcn_json_callback_eoi_application' ); 
+		add_action( 'wp_ajax_eoi_positions', 		'wpnzcfcn_json_callback_eoi_positions' ); 
+		add_action( 'wp_ajax_rank', 			'wpnzcfcn_json_callback_rank' );
 		add_action( 'wp_ajax_unit', 			'wpnzcfcn_json_callback_unit' );
 		
 		// Logged out/anonymous JSON queries
-		add_action( 'wp_ajax_nopriv_rank', 	'wpnzcfcn_json_callback_rank' ); 
-		add_action( 'wp_ajax_nopriv_unit', 	'wpnzcfcn_json_callback_unit' ); 
+		add_action( 'wp_ajax_nopriv_rank', 		'wpnzcfcn_json_callback_rank' ); 
+		add_action( 'wp_ajax_nopriv_unit', 		'wpnzcfcn_json_callback_unit' ); 
 		
 		add_action( 'wp', 'eoi_form' );
 	}
 	
 	// Plugin uninstall/deactivations
 	function wpnzcfcn_uninstall(){
-      	// If uninstall is not called from WordPress (i.e. is called via URL or command line)
+		// If uninstall is not called from WordPress (i.e. is called via URL or command line)
 		if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-          exit();
+			exit();
 		}	
  
 		// Delete our saved options
@@ -567,16 +566,15 @@
 		//$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}mytable" );
 		
 		// Clear the EOI page
-    	$the_page_id = get_option( 'wpnzcfcn_eoi_page_id' );
-    	if( $the_page_id ) {
-        	wp_delete_post( $the_page_id ); // this will trash, not delete
-    	}
-
-	    delete_option("wpnzcfcn_eoi_page_title");
-	    delete_option("wpnzcfcn_eoi_page_name");
- 	   delete_option("wpnzcfcn_eoi_page_id");
+		$the_page_id = get_option( 'wpnzcfcn_eoi_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
 		
-    }
+		delete_option("wpnzcfcn_eoi_page_title");
+		delete_option("wpnzcfcn_eoi_page_name");
+		delete_option("wpnzcfcn_eoi_page_id");
+	}
     
 	function wpnzcfcn_footer() {
 		// Add jQueryUI dialog box element placeholder to text pages
@@ -584,6 +582,4 @@
 	}
 	add_action( 'wp_footer', 'wpnzcfcn_footer' );
 
-	
-	
 	
