@@ -39,8 +39,10 @@
 				<label for="datatype"><?= __('Data type', 'nzcf-cadetnet') ?></label>
 				<select name="datatype" id="datatype" required="required">
 					<option value=""></option>
+					<option value="courses"><?=__('Courses','nzcf-cadetnet')?></option>
 					<option value="ranks"><?=__('Ranks','nzcf-cadetnet')?></option>
 					<option value="relationships"><?=__('Relationships','nzcf-cadetnet')?></option>
+					<option value="schools"><?=__('Schools','nzcf-cadetnet')?></option>
 					<option value="units"><?=__('Units','nzcf-cadetnet')?></option>
 				</select>
 				<hr />
@@ -74,6 +76,23 @@
 				// Loop through our CSV array to "do stuff"
 				foreach( $csv as $row ){
 					switch( strtolower($_POST['datatype']) ) {
+						case 'courses':
+							// Make sure we have the data we're expecting to receive.
+							$required_cols = array( 'course_sort','course_short','course_long','course_status' );
+							foreach($required_cols as $col ) {
+								if( !isset($row[$col]) ) { 
+									throw new WPNZCFCNExceptionBadData(sprintf(__('Missing required column: "%s" (line %d)','nzcf-cadetnet'), $col, $rowcounter));
+								}
+							}
+							// Make sure we're not getting text where we expect to be receiving numbers
+							$number_cols = array( 'course_sort','lead_self','lead_team','lead_leaders','lead_capability','lead_systems','course_jnco','course_snco','course_rank_eqv','course_duration','course_sail1','course_sail2','course_dayskip','course_fore','course_main','course_tiller','course_bow' );
+							foreach($required_cols as $col ) {
+								if( (int)$row[$col] != $row[$col] ) { 
+									throw new WPNZCFCNExceptionBadData(sprintf(__('Wrong data type for column: "%s" expecting number, got "%s" (line %d)','nzcf-cadetnet'), $col, $row[$col], $rowcounter));
+								}
+							}
+							break;
+							
 						case 'ranks':
 							// Make sure we have the data we're expecting to receive.
 							$required_cols = array( 'rank_sort','rank_eqv','rank_short','rank_long','rank_scc','rank_nzcc','rank_atc','rank_rnzn','rank_army','rank_rnzaf','rank_off','rank_cdt','rank_civ','rank_status' );
@@ -108,6 +127,22 @@
 							}
 							break;
 						
+						case 'schools':
+							$required_cols = array( 'school_id','school_name' );
+							foreach($required_cols as $col ) {
+								if( !isset($row[$col]) ) { 
+									throw new WPNZCFCNExceptionBadData(sprintf(__('Missing required column: "%s" (line %d)','nzcf-cadetnet'), $col, $rowcounter));
+								}
+							}
+							// Make sure we're not getting text where we expect to be receiving numbers
+							$number_cols = array( 'school_id' );
+							foreach($required_cols as $col ) {
+								if( (int)$row[$col] != $row[$col] ) { 
+									throw new WPNZCFCNExceptionBadData(sprintf(__('Wrong data type for column: "%s" expecting number, got "%s" (line %d)','nzcf-cadetnet'), $col, $row[$col], $rowcounter));
+								}
+							}
+							break;
+						
 						case 'units':
 							$required_cols = array( 'unit_sort','unit_short','unit_medium','unit_long','unit_n','unit_c','unit_s','unit_scc','unit_nzcc','unit_atc','unit_status' );
 							foreach($required_cols as $col ) {
@@ -131,15 +166,50 @@
 				}
 				// Data looks OK (i.e. we've not thrown an error & aborted yet - lets do an import.
 				// Clear our DB table first
-				if( strtolower($_POST['datatype']) == 'ranks' ) {
+				if( strtolower($_POST['datatype']) == 'courses' ) {
+					$wpdb->query('TRUNCATE '.$wpdb->prefix."wpnzcfcn_course");
+				} elseif( strtolower($_POST['datatype']) == 'ranks' ) {
 					$wpdb->query('TRUNCATE '.$wpdb->prefix."wpnzcfcn_rank");
-				} else if( strtolower($_POST['datatype']) == 'relationships' ) {
+				} elseif( strtolower($_POST['datatype']) == 'relationships' ) {
 					$wpdb->query('TRUNCATE '.$wpdb->prefix."wpnzcfcn_relationship");
-				} else if( strtolower($_POST['datatype']) == 'units' ) {
+				} elseif( strtolower($_POST['datatype']) == 'schools' ) {
+					$wpdb->query('UPDATE '.$wpdb->prefix."wpnzcfcn_school SET school_status=".WPNZCFCN_STATUS_INACTIVE);
+				} elseif( strtolower($_POST['datatype']) == 'units' ) {
 					$wpdb->query('TRUNCATE '.$wpdb->prefix."wpnzcfcn_unit");
 				}
 				foreach( $csv as $row ){
 					switch( strtolower($_POST['datatype']) ) {
+						case 'courses':
+							$wpdb->insert( 
+								$wpdb->prefix."wpnzcfcn_course", 
+								array( 
+									'course_sort'		=> (int)$row['course_sort'],
+									'course_short'		=> $row['course_short'],
+									'course_long'		=> $row['course_long'],
+									'lead_self'		=> (int)$row['lead_self'],
+									'lead_team'		=> (int)$row['lead_team'],
+									'lead_leaders'		=> (int)$row['lead_leaders'],
+									'lead_capability'	=> (int)$row['lead_capability'],
+									'lead_systems'		=> (int)$row['lead_systems'],
+									'course_jnco'		=> (int)$row['course_jnco'],
+  									'course_snco'		=> (int)$row['course_snco'],
+									'course_rank_eqv'	=> (int)$row['course_rank_eqv'],
+									'course_duration'	=> (int)$row['course_duration'],
+									'course_sail1'		=> (int)$row['course_sail1'],
+									'course_sail2'		=> (int)$row['course_sail2'],
+									'course_dayskip'	=> (int)$row['course_dayskip'],
+									'course_fore'		=> (int)$row['course_fore'],
+									'course_main'		=> (int)$row['relationship_sort'],
+									'course_tiller'		=> (int)$row['course_tiller'],
+									'course_bow'		=> (int)$row['course_bow'],
+									'course_age_min'	=> (int)$row['course_age_min'],
+									'course_age_max'	=> (int)$row['course_age_max'],
+									'course_attendance'	=> (int)$row['course_attendance'],
+									'course_status'		=> (int)$row['course_status']
+								) 
+							);
+							break;
+							
 						case 'ranks':
 							// First off, calculate our rank bitmask
 							$rank_corps_bitmask = 0;
@@ -182,8 +252,8 @@
 									'rank_status' => (int)$row['rank_status']
 								) 
 							);
-							
 							break;
+							
 						case 'relationships':
 							$wpdb->insert( 
 								$wpdb->prefix."wpnzcfcn_relationship", 
@@ -194,6 +264,30 @@
 								) 
 							);
 							break;
+							
+						case 'schools':
+							$wpdb->replace( 
+								$wpdb->prefix."wpnzcfcn_school", 
+								array( 
+									'school_id' 		=> (int)$row['school_id'],
+									'school_name' 		=> $row['school_name'],
+									'school_number'		=> $row['school_number'],
+									'school_fax'		=> $row['school_fax'],
+									'school_email' 		=> $row['school_email'],
+									'school_principle' 	=> $row['school_principle'],
+									'school_website' 	=> $row['school_website'],
+									'school_address1' 	=> $row['school_address1'],
+									'school_address2' 	=> $row['school_address2'],
+									'school_address3' 	=> $row['school_address3'],
+									'school_postal1' 	=> $row['school_postal1'],
+									'school_postal2' 	=> $row['school_postal2'],
+									'school_postal3' 	=> $row['school_postal3'],
+									'school_postcode' 	=> $row['school_postcode'],
+									'school_status' 	=> WPNZCFCN_STATUS_ACTIVE
+								) 
+							);
+							break;
+							
 						case 'units':
 							// First off, calculate our rank bitmask
 							$unit_area_bitmask = 0;
@@ -232,6 +326,7 @@
 								) 
 							);
 							break;
+							
 						default:
 							throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s"','nzcf-cadetnet'),$_POST['datatype']));
 					}

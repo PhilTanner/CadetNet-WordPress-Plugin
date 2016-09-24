@@ -186,7 +186,7 @@
 					<tbody>
 						<?php
 							foreach( $response as $rank ) {
-								echo '<tr>';
+								echo '<tr'.($rank->rank_status<1?' class="inactive"':'').'>';
 								echo '	<td data-col="rank_sort" class="number"> '.$rank->rank_sort.' </td>';
 								echo '	<td data-col="rank_eqv" class="number"> '.$rank->rank_eqv.' </td>';
 								echo '	<td data-col="rank_short"> '.htmlentities($rank->rank_short).' </td>';

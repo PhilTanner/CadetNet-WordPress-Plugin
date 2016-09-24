@@ -164,7 +164,7 @@
 		});
 		
 		//jQuery('table').tablesorter();
-		jQuery("thead th").button().removeClass("ui-corner-all").css({ display: "table-cell" });
+		jQuery("table:not('.wp-list-table') thead th").button().removeClass("ui-corner-all").css({ display: "table-cell" });
 		jQuery("tbody tr:odd").not(".ui-state-highlight, .ui-state-error").addClass("evenrow");
-		jQuery("table").addClass('tablesorter').tablesorter({cssInfoBlock: 'avoid-sort'}).on("sortStart", function(){ jQuery("tbody tr").removeClass("evenrow"); }).on("sortEnd", function(){ jQuery("tbody tr:odd").not(".ui-state-highlight, .ui-state-error").addClass("evenrow"); });
+		jQuery("table").not('.wp-list-table').addClass('tablesorter').tablesorter({cssInfoBlock: 'avoid-sort'}).on("sortStart", function(){ jQuery("tbody tr").removeClass("evenrow"); }).on("sortEnd", function(){ jQuery("tbody tr:odd").not(".ui-state-highlight, .ui-state-error").addClass("evenrow"); });
 	});

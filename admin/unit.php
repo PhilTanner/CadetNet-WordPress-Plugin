@@ -196,7 +196,7 @@
 					<tbody>
 						<?php
 							foreach( $response as $unit ) {
-								echo '<tr'.($unit->unit_status<0?' class="inactive"':'').'>';
+								echo '<tr'.($unit->unit_status<1?' class="inactive"':'').'>';
 								echo '	<td data-col="unit_sort" class="number"> '.$unit->unit_sort.' </td>';
 								echo '	<td data-col="unit_short"> '.htmlentities($unit->unit_short).' </td>';
 								echo '	<td data-col="unit_medium"> '.htmlentities($unit->unit_medium).' </td>';
