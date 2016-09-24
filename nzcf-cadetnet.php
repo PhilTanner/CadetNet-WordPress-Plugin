@@ -296,6 +296,9 @@
 		// Create an Expression of Interest page holder
 		// Taken from: http://blog.frontendfactory.com/how-to-create-front-end-page-from-your-wordpress-plugin/
 	
+
+
+
 		// the menu entry...
 		delete_option("wpnzcfcn_eoi_page_title");
 		add_option("wpnzcfcn_eoi_page_title", 'Expressions of Interest', '', 'yes');
@@ -323,11 +326,409 @@
 			// the plugin may have been previously active and the page may just be trashed...
 			$eoi_page_id = $eoi_page->ID;
 			//make sure the page is not trashed...
-			$eoi_page->post_status = 'publish';
+			$eoi_page->post_status = 'private';
 			$eoi_page_id = wp_update_post( $eoi_page );
 		}
 		delete_option( 'wpnzcfcn_eoi_page_id' );
 		add_option( 'wpnzcfcn_eoi_page_id', $eoi_page_id );
+
+
+
+
+
+		// the menu entry...
+		delete_option("wpnzcfcn_cadetnet_page_title");
+		add_option("wpnzcfcn_cadetnet_page_title", 'CadetNET', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_cadetnet_page_name");
+		add_option("wpnzcfcn_cadetnet_page_name", 'cadetnet', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_cadetnet_page_id");
+		add_option("wpnzcfcn_cadetnet_page_id", '0', '', 'yes');
+		
+		$cadetnet_page = get_page_by_title( get_option("wpnzcfcn_cadetnet_page_title") );
+		if ( !$cadetnet_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_cadetnet_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			// Insert the post into the database
+			$cadetnet_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$cadetnet_page_id = $cadetnet_page->ID;
+			//make sure the page is not trashed...
+			$cadetnet_page->post_status = 'private';
+			$cadetnet_page_id = wp_update_post( $cadetnet_page );
+		}
+		delete_option( 'wpnzcfcn_cadetnet_page_id' );
+		add_option( 'wpnzcfcn_cadetnet_page_id', $cadetnet_page_id );
+
+		
+
+
+		// the menu entry...
+		delete_option("wpnzcfcn_cadetnet_admin_page_title");
+		add_option("wpnzcfcn_cadetnet_admin_page_title", 'Admin', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_cadetnet_admin_page_name");
+		add_option("wpnzcfcn_cadetnet_admin_page_name", 'admin', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_cadetnet_admin_page_id");
+		add_option("wpnzcfcn_cadetnet_admin_page_id", '0', '', 'yes');
+		
+		$cadetnet_admin_page = get_page_by_title( get_option("wpnzcfcn_cadetnet_admin_page_title") );
+		if ( !$cadetnet_admin_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_cadetnet_admin_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			$_p['post_parent'] = $cadetnet_page_id;
+			// Insert the post into the database
+			$cadetnet_admin_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$cadetnet_admin_page_id = $cadetnet_admin_page->ID;
+			//make sure the page is not trashed...
+			$cadetnet_admin_page->post_status = 'private';
+			$cadetnet_admin_page_id = wp_update_post( $cadetnet_admin_page );
+		}
+		delete_option( 'wpnzcfcn_cadetnet_admin_page_id' );
+		add_option( 'wpnzcfcn_cadetnet_admin_page_id', $cadetnet_admin_page_id );
+		
+
+
+
+		// the menu entry...
+		delete_option("wpnzcfcn_cadetnet_camps_page_title");
+		add_option("wpnzcfcn_cadetnet_camps_page_title", 'Camps', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_cadetnet_camps_page_name");
+		add_option("wpnzcfcn_cadetnet_camps_page_name", 'camps', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_cadetnet_camps_page_id");
+		add_option("wpnzcfcn_cadetnet_camps_page_id", '0', '', 'yes');
+		
+		$cadetnet_camps_page = get_page_by_title( get_option("wpnzcfcn_cadetnet_camps_page_title") );
+		if ( !$cadetnet_camps_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_cadetnet_camps_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			$_p['post_parent'] = $cadetnet_page_id;
+			// Insert the post into the database
+			$cadetnet_camps_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$cadetnet_camps_page_id = $cadetnet_camps_page->ID;
+			//make sure the page is not trashed...
+			$cadetnet_camps_page->post_status = 'private';
+			$cadetnet_camps_page_id = wp_update_post( $cadetnet_camps_page );
+		}
+		delete_option( 'wpnzcfcn_cadetnet_camps_page_id' );
+		add_option( 'wpnzcfcn_cadetnet_camps_page_id', $cadetnet_camps_page_id );
+
+
+
+		// the menu entry...
+		delete_option("wpnzcfcn_cadetnet_profile_page_title");
+		add_option("wpnzcfcn_cadetnet_profile_page_title", 'Profile', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_cadetnet_profile_page_name");
+		add_option("wpnzcfcn_cadetnet_profile_page_name", 'profile', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_cadetnet_profile_page_id");
+		add_option("wpnzcfcn_cadetnet_profile_page_id", '0', '', 'yes');
+		
+		$cadetnet_profile_page = get_page_by_title( get_option("wpnzcfcn_cadetnet_profile_page_title") );
+		if ( !$cadetnet_profile_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_cadetnet_profile_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			$_p['post_parent'] = $cadetnet_page_id;
+			// Insert the post into the database
+			$cadetnet_profile_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$cadetnet_profile_page_id = $cadetnet_profile_page->ID;
+			//make sure the page is not trashed...
+			$cadetnet_profile_page->post_status = 'private';
+			$cadetnet_profile_page_id = wp_update_post( $cadetnet_profile_page );
+		}
+		delete_option( 'wpnzcfcn_cadetnet_profile_page_id' );
+		add_option( 'wpnzcfcn_cadetnet_profile_page_id', $cadetnet_profile_page_id );
+		
+
+
+		// the menu entry...
+		delete_option("wpnzcfcn_cadetnet_profile_awards_page_title");
+		add_option("wpnzcfcn_cadetnet_profile_awards_page_title", 'Awards', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_cadetnet_profile_awards_page_name");
+		add_option("wpnzcfcn_cadetnet_profile_awards_page_name", 'awards', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_cadetnet_profile_awards_page_id");
+		add_option("wpnzcfcn_cadetnet_profile_awards_page_id", '0', '', 'yes');
+		
+		$cadetnet_profile_awards_page = get_page_by_title( get_option("wpnzcfcn_cadetnet_profile_awards_page_title") );
+		if ( !$cadetnet_profile_awards_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_cadetnet_profile_awards_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			$_p['post_parent'] = $cadetnet_profile_page_id;
+			// Insert the post into the database
+			$cadetnet_profile_awards_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$cadetnet_profile_awards_page_id = $cadetnet_profile_awards_page->ID;
+			//make sure the page is not trashed...
+			$cadetnet_profile_awards_page->post_status = 'private';
+			$cadetnet_profile_awards_page_id = wp_update_post( $cadetnet_profile_awards_page );
+		}
+		delete_option( 'wpnzcfcn_cadetnet_profile_awards_page_id' );
+		add_option( 'wpnzcfcn_cadetnet_profile_awards_page_id', $cadetnet_profile_awards_page_id );
+
+
+		// the menu entry...
+		delete_option("wpnzcfcn_cadetnet_profile_contact_page_title");
+		add_option("wpnzcfcn_cadetnet_profile_contact_page_title", 'Contact', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_cadetnet_profile_contact_page_name");
+		add_option("wpnzcfcn_cadetnet_profile_contact_page_name", 'contact', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_cadetnet_profile_contact_page_id");
+		add_option("wpnzcfcn_cadetnet_profile_contact_page_id", '0', '', 'yes');
+		
+		$cadetnet_profile_contact_page = get_page_by_title( get_option("wpnzcfcn_cadetnet_profile_contact_page_title") );
+		if ( !$cadetnet_profile_contact_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_cadetnet_profile_contact_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			$_p['post_parent'] = $cadetnet_profile_page_id;
+			// Insert the post into the database
+			$cadetnet_profile_contact_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$cadetnet_profile_contact_page_id = $cadetnet_profile_contact_page->ID;
+			//make sure the page is not trashed...
+			$cadetnet_profile_contact_page->post_status = 'private';
+			$cadetnet_profile_contact_page_id = wp_update_post( $cadetnet_profile_contact_page );
+		}
+		delete_option( 'wpnzcfcn_cadetnet_profile_contact_page_id' );
+		add_option( 'wpnzcfcn_cadetnet_profile_contact_page_id', $cadetnet_profile_contact_page_id );
+
+		
+
+		// the menu entry...
+		delete_option("wpnzcfcn_cadetnet_profile_courses_page_title");
+		add_option("wpnzcfcn_cadetnet_profile_courses_page_title", 'Courses', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_cadetnet_profile_courses_page_name");
+		add_option("wpnzcfcn_cadetnet_profile_courses_page_name", 'courses', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_cadetnet_profile_courses_page_id");
+		add_option("wpnzcfcn_cadetnet_profile_courses_page_id", '0', '', 'yes');
+		
+		$cadetnet_profile_courses_page = get_page_by_title( get_option("wpnzcfcn_cadetnet_profile_courses_page_title") );
+		if ( !$cadetnet_profile_courses_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_cadetnet_profile_courses_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			$_p['post_parent'] = $cadetnet_profile_page_id;
+			// Insert the post into the database
+			$cadetnet_profile_courses_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$cadetnet_profile_courses_page_id = $cadetnet_profile_courses_page->ID;
+			//make sure the page is not trashed...
+			$cadetnet_profile_courses_page->post_status = 'private';
+			$cadetnet_profile_courses_page_id = wp_update_post( $cadetnet_profile_courses_page );
+		}
+		delete_option( 'wpnzcfcn_cadetnet_profile_courses_page_id' );
+		add_option( 'wpnzcfcn_cadetnet_profile_courses_page_id', $cadetnet_profile_courses_page_id );
+		
+		
+
+		// the menu entry...
+		delete_option("wpnzcfcn_cadetnet_profile_medical_page_title");
+		add_option("wpnzcfcn_cadetnet_profile_medical_page_title", 'Medical', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_cadetnet_profile_medical_page_name");
+		add_option("wpnzcfcn_cadetnet_profile_medical_page_name", 'medical', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_cadetnet_profile_medical_page_id");
+		add_option("wpnzcfcn_cadetnet_profile_medical_page_id", '0', '', 'yes');
+		
+		$cadetnet_profile_medical_page = get_page_by_title( get_option("wpnzcfcn_cadetnet_profile_medical_page_title") );
+		if ( !$cadetnet_profile_medical_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_cadetnet_profile_medical_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			$_p['post_parent'] = $cadetnet_profile_page_id;
+			// Insert the post into the database
+			$cadetnet_profile_medical_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$cadetnet_profile_medical_page_id = $cadetnet_profile_medical_page->ID;
+			//make sure the page is not trashed...
+			$cadetnet_profile_medical_page->post_status = 'private';
+			$cadetnet_profile_medical_page_id = wp_update_post( $cadetnet_profile_medical_page );
+		}
+		delete_option( 'wpnzcfcn_cadetnet_profile_medical_page_id' );
+		add_option( 'wpnzcfcn_cadetnet_profile_medical_page_id', $cadetnet_profile_medical_page_id );
+		
+		
+
+		// the menu entry...
+		delete_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_title");
+		add_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_title", 'Next of kin', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_name");
+		add_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_name", 'next of kin', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_id");
+		add_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_id", '0', '', 'yes');
+		
+		$cadetnet_profile_next_of_kin_page = get_page_by_title( get_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_title") );
+		if ( !$cadetnet_profile_next_of_kin_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			$_p['post_parent'] = $cadetnet_profile_page_id;
+			// Insert the post into the database
+			$cadetnet_profile_next_of_kin_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$cadetnet_profile_next_of_kin_page_id = $cadetnet_profile_next_of_kin_page->ID;
+			//make sure the page is not trashed...
+			$cadetnet_profile_next_of_kin_page->post_status = 'private';
+			$cadetnet_profile_next_of_kin_page_id = wp_update_post( $cadetnet_profile_next_of_kin_page );
+		}
+		delete_option( 'wpnzcfcn_cadetnet_profile_next_of_kin_page_id' );
+		add_option( 'wpnzcfcn_cadetnet_profile_next_of_kin_page_id', $cadetnet_profile_next_of_kin_page_id );
+		
+		
+
+		// the menu entry...
+		delete_option("wpnzcfcn_cadetnet_profile_promotions_page_title");
+		add_option("wpnzcfcn_cadetnet_profile_promotions_page_title", 'Promotions', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_cadetnet_profile_promotions_page_name");
+		add_option("wpnzcfcn_cadetnet_profile_promotions_page_name", 'promotions', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_cadetnet_profile_promotions_page_id");
+		add_option("wpnzcfcn_cadetnet_profile_promotions_page_id", '0', '', 'yes');
+		
+		$cadetnet_profile_promotions_page = get_page_by_title( get_option("wpnzcfcn_cadetnet_profile_promotions_page_title") );
+		if ( !$cadetnet_profile_promotions_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_cadetnet_profile_promotions_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			$_p['post_parent'] = $cadetnet_profile_page_id;
+			// Insert the post into the database
+			$cadetnet_profile_promotions_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$cadetnet_profile_promotions_page_id = $cadetnet_profile_promotions_page->ID;
+			//make sure the page is not trashed...
+			$cadetnet_profile_promotions_page->post_status = 'private';
+			$cadetnet_profile_promotions_page_id = wp_update_post( $cadetnet_profile_promotions_page );
+		}
+		delete_option( 'wpnzcfcn_cadetnet_profile_promotions_page_id' );
+		add_option( 'wpnzcfcn_cadetnet_profile_promotions_page_id', $cadetnet_profile_promotions_page_id );
+		
+		
+
+		// the menu entry...
+		delete_option("wpnzcfcn_cadetnet_profile_school_page_title");
+		add_option("wpnzcfcn_cadetnet_profile_school_page_title", 'school', '', 'yes');
+		// the slug...
+		delete_option("wpnzcfcn_cadetnet_profile_school_page_name");
+		add_option("wpnzcfcn_cadetnet_profile_school_page_name", 'school', '', 'yes');
+		// the id...
+		delete_option("wpnzcfcn_cadetnet_profile_school_page_id");
+		add_option("wpnzcfcn_cadetnet_profile_school_page_id", '0', '', 'yes');
+		
+		$cadetnet_profile_school_page = get_page_by_title( get_option("wpnzcfcn_cadetnet_profile_school_page_title") );
+		if ( !$cadetnet_profile_school_page ) {
+			// Create post object
+			$_p = array();
+			$_p['post_title'] = get_option("wpnzcfcn_cadetnet_profile_school_page_title");
+			$_p['post_content'] = "This text is just a placeholder text, it does not show, and will be replaced with the Expression of Interest form. It was created by the NZCF CadetNet plugin.";
+			$_p['post_status'] = 'private'; // Need to be logged in
+			$_p['post_type'] = 'page';
+			$_p['comment_status'] = 'closed';
+			$_p['ping_status'] = 'closed';
+			$_p['post_category'] = array(1); // the default 'Uncatrgorised'
+			$_p['post_parent'] = $cadetnet_profile_page_id;
+			// Insert the post into the database
+			$cadetnet_profile_school_page_id = wp_insert_post( $_p );
+		} else {
+			// the plugin may have been previously active and the page may just be trashed...
+			$cadetnet_profile_school_page_id = $cadetnet_profile_school_page->ID;
+			//make sure the page is not trashed...
+			$cadetnet_profile_school_page->post_status = 'private';
+			$cadetnet_profile_school_page_id = wp_update_post( $cadetnet_profile_school_page );
+		}
+		delete_option( 'wpnzcfcn_cadetnet_profile_school_page_id' );
+		add_option( 'wpnzcfcn_cadetnet_profile_school_page_id', $cadetnet_profile_school_page_id );
 	}
 	
 	// Allow users to access the EOI submission form
@@ -348,6 +749,174 @@
 		}
 	}
 	
+	// Allow users to access the EOI submission form
+	// Taken from http://blog.frontendfactory.com/how-to-create-front-end-page-from-your-wordpress-plugin/
+	function cadetnet_form()
+	{
+		if(is_page(get_option("wpnzcfcn_cadetnet_page_title"))) {
+			
+			// wp_enqueue_script( 
+			// 	'cadetnet_cadetnet_js', 
+			// 	plugins_url( '/js/cadetnet.js', __FILE__ ), 
+			// 	array('jquery','jquery-ui-core'), 
+			// 	date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/cadetnet.js' )), 
+			// 	true 
+			// );
+			require_once( dirname(__FILE__)."/cadetnet/cadetnet.php");
+			die();
+		}
+	}
+	
+	function cadetnet_admin_form()
+	{
+		if(is_page(get_option("wpnzcfcn_cadetnet_admin_page_title"))) {
+			
+			// wp_enqueue_script( 
+			// 	'cadetnet_cadetnet_js', 
+			// 	plugins_url( '/js/cadetnet.js', __FILE__ ), 
+			// 	array('jquery','jquery-ui-core'), 
+			// 	date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/cadetnet.js' )), 
+			// 	true 
+			// );
+			require_once( dirname(__FILE__)."/cadetnet/partials/admin.php");
+			die();
+		}
+	}
+	function cadetnet_camps_form()
+	{
+		if(is_page(get_option("wpnzcfcn_cadetnet_camps_page_title"))) {
+			
+			// wp_enqueue_script( 
+			// 	'cadetnet_cadetnet_js', 
+			// 	plugins_url( '/js/cadetnet.js', __FILE__ ), 
+			// 	array('jquery','jquery-ui-core'), 
+			// 	date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/cadetnet.js' )), 
+			// 	true 
+			// );
+			require_once( dirname(__FILE__)."/cadetnet/partials/camps.php");
+			die();
+		}
+	}
+	function cadetnet_profile_form()
+	{
+		if(is_page(get_option("wpnzcfcn_cadetnet_profile_page_title"))) {
+			
+			// wp_enqueue_script( 
+			// 	'cadetnet_cadetnet_js', 
+			// 	plugins_url( '/js/cadetnet.js', __FILE__ ), 
+			// 	array('jquery','jquery-ui-core'), 
+			// 	date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/cadetnet.js' )), 
+			// 	true 
+			// );
+			require_once( dirname(__FILE__)."/cadetnet/partials/profile.php");
+			die();
+		}
+	}
+	function cadetnet_profile_awards_form()
+	{
+		if(is_page(get_option("wpnzcfcn_cadetnet_profile_awards_page_title"))) {
+			
+			// wp_enqueue_script( 
+			// 	'cadetnet_cadetnet_js', 
+			// 	plugins_url( '/js/cadetnet.js', __FILE__ ), 
+			// 	array('jquery','jquery-ui-core'), 
+			// 	date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/cadetnet.js' )), 
+			// 	true 
+			// );
+			require_once( dirname(__FILE__)."/cadetnet/partials/profile/awards.php");
+			die();
+		}
+	}
+	function cadetnet_profile_contact_form()
+	{
+		if(is_page(get_option("wpnzcfcn_cadetnet_profile_contact_page_title"))) {
+			
+			// wp_enqueue_script( 
+			// 	'cadetnet_cadetnet_js', 
+			// 	plugins_url( '/js/cadetnet.js', __FILE__ ), 
+			// 	array('jquery','jquery-ui-core'), 
+			// 	date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/cadetnet.js' )), 
+			// 	true 
+			// );
+			require_once( dirname(__FILE__)."/cadetnet/partials/profile/contact.php");
+			die();
+		}
+	}
+	function cadetnet_profile_courses_form()
+	{
+		if(is_page(get_option("wpnzcfcn_cadetnet_profile_courses_page_title"))) {
+			
+			// wp_enqueue_script( 
+			// 	'cadetnet_cadetnet_js', 
+			// 	plugins_url( '/js/cadetnet.js', __FILE__ ), 
+			// 	array('jquery','jquery-ui-core'), 
+			// 	date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/cadetnet.js' )), 
+			// 	true 
+			// );
+			require_once( dirname(__FILE__)."/cadetnet/partials/profile/courses.php");
+			die();
+		}
+	}
+	function cadetnet_profile_medical_form()
+	{
+		if(is_page(get_option("wpnzcfcn_cadetnet_profile_medical_page_title"))) {
+			
+			// wp_enqueue_script( 
+			// 	'cadetnet_cadetnet_js', 
+			// 	plugins_url( '/js/cadetnet.js', __FILE__ ), 
+			// 	array('jquery','jquery-ui-core'), 
+			// 	date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/cadetnet.js' )), 
+			// 	true 
+			// );
+			require_once( dirname(__FILE__)."/cadetnet/partials/profile/medical.php");
+			die();
+		}
+	}
+	function cadetnet_profile_next_of_kin_form()
+	{
+		if(is_page(get_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_title"))) {
+			
+			// wp_enqueue_script( 
+			// 	'cadetnet_cadetnet_js', 
+			// 	plugins_url( '/js/cadetnet.js', __FILE__ ), 
+			// 	array('jquery','jquery-ui-core'), 
+			// 	date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/cadetnet.js' )), 
+			// 	true 
+			// );
+			require_once( dirname(__FILE__)."/cadetnet/partials/profile/next_of_kin.php");
+			die();
+		}
+	}
+	function cadetnet_profile_promotions_form()
+	{
+		if(is_page(get_option("wpnzcfcn_cadetnet_profile_promotions_page_title"))) {
+			
+			// wp_enqueue_script( 
+			// 	'cadetnet_cadetnet_js', 
+			// 	plugins_url( '/js/cadetnet.js', __FILE__ ), 
+			// 	array('jquery','jquery-ui-core'), 
+			// 	date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/cadetnet.js' )), 
+			// 	true 
+			// );
+			require_once( dirname(__FILE__)."/cadetnet/partials/profile/promotions.php");
+			die();
+		}
+	}
+	function cadetnet_profile_school_form()
+	{
+		if(is_page(get_option("wpnzcfcn_cadetnet_profile_school_page_title"))) {
+			
+			// wp_enqueue_script( 
+			// 	'cadetnet_cadetnet_js', 
+			// 	plugins_url( '/js/cadetnet.js', __FILE__ ), 
+			// 	array('jquery','jquery-ui-core'), 
+			// 	date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/js/cadetnet.js' )), 
+			// 	true 
+			// );
+			require_once( dirname(__FILE__)."/cadetnet/partials/profile/school.php");
+			die();
+		}
+	}
 	// Load our JS scripts
 	// Taken from https://developer.wordpress.org/reference/functions/wp_enqueue_script/
 	function wpnzcfcn_load_scripts($hook) {
@@ -358,6 +927,7 @@
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( 'jquery-ui-widget' );
 		wp_enqueue_script( 'jquery-ui-mouse' );
+		wp_enqueue_script( 'jquery-ui-tabs' );
 		
 		wp_enqueue_script( 
 			'jquery_touchscreen', 
@@ -464,6 +1034,17 @@
 		add_action( 'wp_ajax_nopriv_unit', 		'wpnzcfcn_json_callback_unit' ); 
 		
 		add_action( 'wp', 'eoi_form' );
+		add_action( 'wp', 'cadetnet_form' );
+		add_action( 'wp', 'cadetnet_admin_form');
+		add_action( 'wp', 'cadetnet_camps_form');
+		add_action( 'wp', 'cadetnet_profile_form');
+		add_action( 'wp', 'cadetnet_profile_awards_form');
+		add_action( 'wp', 'cadetnet_profile_contact_form');
+		add_action( 'wp', 'cadetnet_profile_courses_form');
+		add_action( 'wp', 'cadetnet_profile_medical_form');
+		add_action( 'wp', 'cadetnet_profile_next_of_kin_form');
+		add_action( 'wp', 'cadetnet_profile_promotions_form');
+		add_action( 'wp', 'cadetnet_profile_school_form');
 	}
 	
 	// Plugin uninstall/deactivations
@@ -488,10 +1069,97 @@
 		if( $the_page_id ) {
 			wp_delete_post( $the_page_id ); // this will trash, not delete
 		}
-		
 		delete_option("wpnzcfcn_eoi_page_title");
 		delete_option("wpnzcfcn_eoi_page_name");
 		delete_option("wpnzcfcn_eoi_page_id");
+		
+		$the_page_id = get_option( 'wpnzcfcn_cadetnet_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
+		delete_option("wpnzcfcn_cadetnet_page_title");
+		delete_option("wpnzcfcn_cadetnet_page_name");
+		delete_option("wpnzcfcn_cadetnet_page_id");
+		
+		$the_page_id = get_option( 'wpnzcfcn_cadetnet_admin_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
+		delete_option("wpnzcfcn_cadetnet_admin_page_title");
+		delete_option("wpnzcfcn_cadetnet_admin_page_name");
+		delete_option("wpnzcfcn_cadetnet_admin_page_id");
+
+		$the_page_id = get_option( 'wpnzcfcn_cadetnet_camps_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
+		delete_option("wpnzcfcn_cadetnet_camps_page_title");
+		delete_option("wpnzcfcn_cadetnet_camps_page_name");
+		delete_option("wpnzcfcn_cadetnet_camps_page_id");
+
+		$the_page_id = get_option( 'wpnzcfcn_cadetnet_profile_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
+		delete_option("wpnzcfcn_cadetnet_profile_page_title");
+		delete_option("wpnzcfcn_cadetnet_profile_page_name");
+		delete_option("wpnzcfcn_cadetnet_profile_page_id");
+		
+		$the_page_id = get_option( 'wpnzcfcn_cadetnet_profile_awards_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
+		delete_option("wpnzcfcn_cadetnet_profile_awards_page_title");
+		delete_option("wpnzcfcn_cadetnet_profile_awards_page_name");
+		delete_option("wpnzcfcn_cadetnet_profile_awards_page_id");
+		
+		$the_page_id = get_option( 'wpnzcfcn_cadetnet_profile_contact_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
+		delete_option("wpnzcfcn_cadetnet_profile_contact_page_title");
+		delete_option("wpnzcfcn_cadetnet_profile_contact_page_name");
+		delete_option("wpnzcfcn_cadetnet_profile_contact_page_id");
+		
+		$the_page_id = get_option( 'wpnzcfcn_cadetnet_profile_courses_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
+		delete_option("wpnzcfcn_cadetnet_profile_courses_page_title");
+		delete_option("wpnzcfcn_cadetnet_profile_courses_page_name");
+		delete_option("wpnzcfcn_cadetnet_profile_courses_page_id");
+		
+		$the_page_id = get_option( 'wpnzcfcn_cadetnet_profile_medical_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
+		delete_option("wpnzcfcn_cadetnet_profile_medical_page_title");
+		delete_option("wpnzcfcn_cadetnet_profile_medical_page_name");
+		delete_option("wpnzcfcn_cadetnet_profile_medical_page_id");
+		
+		$the_page_id = get_option( 'wpnzcfcn_cadetnet_profile_next_of_kin_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
+		delete_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_title");
+		delete_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_name");
+		delete_option("wpnzcfcn_cadetnet_profile_next_of_kin_page_id");
+		
+		$the_page_id = get_option( 'wpnzcfcn_cadetnet_profile_promotions_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
+		delete_option("wpnzcfcn_cadetnet_profile_promotions_page_title");
+		delete_option("wpnzcfcn_cadetnet_profile_promotions_page_name");
+		delete_option("wpnzcfcn_cadetnet_profile_promotions_page_id");
+		
+		$the_page_id = get_option( 'wpnzcfcn_cadetnet_profile_school_page_id' );
+		if( $the_page_id ) {
+			wp_delete_post( $the_page_id ); // this will trash, not delete
+		}
+		delete_option("wpnzcfcn_cadetnet_profile_school_page_title");
+		delete_option("wpnzcfcn_cadetnet_profile_school_page_name");
+		delete_option("wpnzcfcn_cadetnet_profile_school_page_id");
 	}
     
 	function wpnzcfcn_footer() {

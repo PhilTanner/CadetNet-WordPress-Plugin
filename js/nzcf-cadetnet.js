@@ -19,7 +19,8 @@
 	*/
 	
 	var site_url = WPURLs.site_url;
-
+	
+	
 	jQuery(document).ready( function($){
 	
 		// Make any buttons ... buttons
@@ -47,7 +48,9 @@
 			}
 		});
 	});
-	
+	jQuery(document).on('load', '.rank', function(){
+		autocomplete_inputs();
+	});
 	function autocomplete_inputs() {
 		
 		// Use jQueryUI to create autocomplete form fields.  
@@ -127,7 +130,6 @@
 				}
 			}
 		});
-		
 		// Make our text input entry rank fields a auto-complete drop down
 		jQuery('input[type=text].rank').autocomplete({
 			source: site_url+"/wp-admin/admin-ajax.php?action=rank",
