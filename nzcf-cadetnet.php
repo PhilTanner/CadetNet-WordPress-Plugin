@@ -749,8 +749,6 @@
 		}
 	}
 	
-	// Allow users to access the EOI submission form
-	// Taken from http://blog.frontendfactory.com/how-to-create-front-end-page-from-your-wordpress-plugin/
 	function cadetnet_form()
 	{
 		if(is_page(get_option("wpnzcfcn_cadetnet_page_title"))) {
