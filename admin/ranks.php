@@ -185,41 +185,38 @@
 					</thead>
 					<tbody>
 						<?php
-						
 							foreach( $response as $rank ) {
 								echo '<tr>';
-								echo '	<td>';
-								echo '		<input type="hidden" name="rank_ids[]" value="'.$rank->rank_id.'" />';
-								echo '		<input type="number" name="rank_sort_'.$rank->rank_id.'" value="'.$rank->rank_sort.'" class="order" required="required" />';
-								echo '	</td>';
-								echo '	<td> <input type="number" name="rank_eqv_'.$rank->rank_id.'" id="rank_eqv_'.$rank->rank_id.'" value="'.$rank->rank_eqv.'" required="required" /> </td>';
-								echo '	<td> <input type="text" name="rank_short_'.$rank->rank_id.'" id="rank_short_'.$rank->rank_id.'" value="'.htmlentities($rank->rank_short).'" maxlength="10" required="required" /> </td>';
-								echo '	<td> <input type="text" name="rank_long_'.$rank->rank_id.'" id="rank_long_'.$rank->rank_id.'" value="'.htmlentities($rank->rank_long).'" maxlength="64" required="required" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="rank_applies_to_'.$rank->rank_id.'_scc" id="rank_applies_to_'.$rank->rank_id.'_scc" value="1" '.($rank->rank_applies_to&WPNZCFCN_CADETS_SCC?' checked="checked"':'').' class="scc" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="rank_applies_to_'.$rank->rank_id.'_nzcc" id="rank_applies_to_'.$rank->rank_id.'_nzcc" value="1" '.($rank->rank_applies_to&WPNZCFCN_CADETS_NZCC?' checked="checked"':'').' class="nzcc" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="rank_applies_to_'.$rank->rank_id.'_atc" id="rank_applies_to_'.$rank->rank_id.'_atc" value="1" '.($rank->rank_applies_to&WPNZCFCN_CADETS_ATC?' checked="checked"':'').' class="atc" /> </td>';
+								echo '	<td data-col="rank_sort" class="number"> '.$rank->rank_sort.' </td>';
+								echo '	<td data-col="rank_eqv" class="number"> '.$rank->rank_eqv.' </td>';
+								echo '	<td data-col="rank_short"> '.htmlentities($rank->rank_short).' </td>';
+								echo '	<td data-col="rank_long"> '.htmlentities($rank->rank_long).' </td>';
+								
+								echo '	<td align="center" class="checkbox" data-col="rank_applies_to" data-col2="scc"> '.($rank->rank_applies_to&WPNZCFCN_CADETS_SCC?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="rank_applies_to" data-col2="nzcc"> '.($rank->rank_applies_to&WPNZCFCN_CADETS_NZCC?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="rank_applies_to" data-col2="atc"> '.($rank->rank_applies_to&WPNZCFCN_CADETS_ATC?'✔':'').' </td>';
 
-								echo '	<td align="center"> <input type="checkbox" name="rank_applies_to_'.$rank->rank_id.'_rnzn" id="rank_applies_to_'.$rank->rank_id.'_rnzn" value="1" '.($rank->rank_applies_to&WPNZCFCN_REGULAR_FORCE_NAVY?' checked="checked"':'').' class="rnzn" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="rank_applies_to_'.$rank->rank_id.'_army" id="rank_applies_to_'.$rank->rank_id.'_army" value="1" '.($rank->rank_applies_to&WPNZCFCN_REGULAR_FORCE_ARMY?' checked="checked"':'').' class="army" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="rank_applies_to_'.$rank->rank_id.'_rnzaf" id="rank_applies_to_'.$rank->rank_id.'_rnzaf" value="1" '.($rank->rank_applies_to&WPNZCFCN_REGULAR_FORCE_RNZAF?' checked="checked"':'').' class="rnzaf" /> </td>';
+								echo '	<td align="center" class="checkbox" data-col="rank_applies_to" data-col2="rnzn"> '.($rank->rank_applies_to&WPNZCFCN_REGULAR_FORCE_NAVY?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="rank_applies_to" data-col2="army"> '.($rank->rank_applies_to&WPNZCFCN_REGULAR_FORCE_ARMY?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="rank_applies_to" data-col2="rnzaf"> '.($rank->rank_applies_to&WPNZCFCN_REGULAR_FORCE_RNZAF?'✔':'').' </td>';
 								
-								echo '	<td align="center"> <input type="checkbox" name="rank_applies_to_'.$rank->rank_id.'_off" id="rank_applies_to_'.$rank->rank_id.'_off" value="1" '.($rank->rank_applies_to&(WPNZCFCN_RANK_OFFICER|WPNZCFCN_REGULAR_FORCES)?' checked="checked"':'').' class="civilian" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="rank_applies_to_'.$rank->rank_id.'_cdt" id="rank_applies_to_'.$rank->rank_id.'_cdt" value="1" '.($rank->rank_applies_to&WPNZCFCN_RANK_CADET?' checked="checked"':'').' class="regularforces" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="rank_applies_to_'.$rank->rank_id.'_civ" id="rank_applies_to_'.$rank->rank_id.'_civ" value="1" '.($rank->rank_applies_to&WPNZCFCN_RANK_CIVILIAN?' checked="checked"':'').' class="regularforces" /> </td>';
+								echo '	<td align="center" class="checkbox" data-col="rank_applies_to" data-col2="off"> '.($rank->rank_applies_to&(WPNZCFCN_RANK_OFFICER|WPNZCFCN_REGULAR_FORCES)?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="rank_applies_to" data-col2="cdt"> '.($rank->rank_applies_to&WPNZCFCN_RANK_CADET?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="rank_applies_to" data-col2="civ"> '.($rank->rank_applies_to&WPNZCFCN_RANK_CIVILIAN?'✔':'').' </td>';
 								
-								echo '	<td> ';
-								echo '		<select id="rank_status_'.$rank->rank_id.'" name="rank_status_'.$rank->rank_id.'" required="required">';
-								echo '			<optgroup label="'.htmlentities(__('Enabled','nzcf-cadetnet')).'">';
-								echo '				<option value="'.WPNZCFCN_STATUS_ACTIVE.'"'.($rank->status==WPNZCFCN_STATUS_ACTIVE?' selected="selected"':'').'>'.__('Active','nzcf-cadetnet').'</option>';
-								echo '				<option value="'.WPNZCFCN_STATUS_PENDING.'"'.($rank->status==WPNZCFCN_STATUS_PENDING?' selected="selected"':'').'>'.__('Pending','nzcf-cadetnet').'</option>';
-								echo '			</optgroup>';
-								echo '			<optgroup label="'.htmlentities(__('Disabled','nzcf-cadetnet')).'">';
-								echo '				<option value="'.WPNZCFCN_STATUS_INACTIVE.'"'.($rank->status==WPNZCFCN_STATUS_INACTIVE?' selected="selected"':'').'>'.__('Inactive','nzcf-cadetnet').'</option>';
-								echo '				<option value="'.WPNZCFCN_STATUS_RECESS.'"'.($rank->status==WPNZCFCN_STATUS_RECESS?' selected="selected"':'').'>'.__('Recess','nzcf-cadetnet').'</option>';
-								echo '				<option value="'.WPNZCFCN_STATUS_RETIRED.'"'.($rank->status==WPNZCFCN_STATUS_RETIRED?' selected="selected"':'').'>'.__('Retired','nzcf-cadetnet').'</option>';
-								echo '			</optgroup>';
-								echo '		</select>';
-								echo '	</td>';	
+								echo '	<td class="active_status" data-col="rank_status"> ';
+								switch ($rank->rank_status) {
+									case WPNZCFCN_STATUS_ACTIVE:
+										echo __('Active','nzcf-cadetnet');
+										break;
+									case WPNZCFCN_STATUS_INACTIVE:
+										echo __('Inactive','nzcf-cadetnet');
+										break;
+									default:
+										echo __('Unknown','nzcf-cadetnet');
+								}
+								echo '	</td>';
+								echo '	<td class="options"> <button type="button" class="edit" data-rownum="'.$rank->rank_id.'">'.__('Edit','nzcf-cadnet').'</button> </td>';
 								echo '</tr>';
 							}
 							echo '	<td> <input type="number" name="rank_sort_0" value="99999" class="order" /> </td>';
@@ -240,21 +237,47 @@
 							
 							echo '	<td> ';
 							echo '		<select id="rank_status_0" name="rank_status_0">';
-							echo '			<optgroup label="'.htmlentities(__('Enabled','nzcf-cadetnet')).'">';
-							echo '				<option value="'.WPNZCFCN_STATUS_ACTIVE.'">'.__('Active','nzcf-cadetnet').'</option>';
-							echo '				<option value="'.WPNZCFCN_STATUS_PENDING.'">'.__('Pending','nzcf-cadetnet').'</option>';
-							echo '			</optgroup>';
-							echo '			<optgroup label="'.htmlentities(__('Disabled','nzcf-cadetnet')).'">';
-							echo '				<option value="'.WPNZCFCN_STATUS_INACTIVE.'" selected="selected">'.__('Inactive','nzcf-cadetnet').'</option>';
-							echo '				<option value="'.WPNZCFCN_STATUS_RECESS.'">'.__('Recess','nzcf-cadetnet').'</option>';
-							echo '				<option value="'.WPNZCFCN_STATUS_RETIRED.'">'.__('Retired','nzcf-cadetnet').'</option>';
-							echo '			</optgroup>';
+							echo '			<option value="'.WPNZCFCN_STATUS_ACTIVE.'">'.__('Active','nzcf-cadetnet').'</option>';
+							echo '			<option value="'.WPNZCFCN_STATUS_INACTIVE.'" selected="selected">'.__('Inactive','nzcf-cadetnet').'</option>';
 							echo '		</select>';
 							echo '	</td>';	
 							echo '</tr>';
+							
 						?>
 					</tbody>
 				</table>
+				
+				<script>
+					// Allow us to edit any line as we want to.
+					// This is needed as there's a PHP limit for 1000 data inputs on a form, and we have more than that!
+					jQuery('button.edit').click(function(){
+						var id = jQuery(this).data('rownum');
+						jQuery.each(jQuery(this).parents('tr').children('td').not('.options'), function(){
+							var currvalue = jQuery(this).html().trim();
+							var col = jQuery(this).data('col');
+							var col2 = jQuery(this).data('col2');
+							
+							if( jQuery(this).hasClass('checkbox') ) {
+								jQuery(this).html('<input type="checkbox" name="'+col+'_'+id+'_'+col2+'" id="'+col+'_'+id+'_'+col2+'" value="1"'+(currvalue?' checked="checked"':'')+' />');
+							} else if( jQuery(this).hasClass('active_status') ) {
+								jQuery(this).html(''+
+									'<select name="'+col+'_'+id+'" id="'+col+'_'+id+'">'+
+									'	<option value="<?= WPNZCFCN_STATUS_ACTIVE ?>"'+(currvalue=='<?= htmlentities(__('Active','nzcf-cadetnet')) ?>'?' selected="selected"':'')+'><?= htmlentities(__('Active','nzcf-cadetnet')) ?></option>'+
+									'	<option value="<?= WPNZCFCN_STATUS_INACTIVE ?>"'+(currvalue=='<?= htmlentities(__('Inactive','nzcf-cadetnet')) ?>'?' selected="selected"':'')+'><?= htmlentities(__('Inactive','nzcf-cadetnet')) ?></option>'+
+									'</select>'
+								);
+							} else  if( jQuery(this).hasClass('number') ) {
+								jQuery(this).html('<input type="number" name="'+col+'_'+id+'" id="'+col+'_'+id+'" value="'+currvalue+'" />');
+							} else {
+								jQuery(this).html('<input type="text" name="'+col+'_'+id+'" id="'+col+'_'+id+'" value="'+currvalue+'" />');
+							}
+						});
+						jQuery(this).parent().siblings('td:first-child').append('<input type="hidden" name="rank_ids[]" value="'+id+'" />');
+						jQuery(this).hide();
+					});
+				</script>
+				
+				
 				<button type="submit" class="save"><?= __('Save Changes','nzcf-cadetnet') ?></button>
 				<button type="cancel" class="cancel"><?= __('Cancel','nzcf-cadetnet') ?></button>
 			</form>
