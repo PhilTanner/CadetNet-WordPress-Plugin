@@ -57,3 +57,15 @@ table thead {
 }
 .evenrow { background-color: #f3f3f3; }
 tr.inactive td { text-decoration: line-through; opacity: 0.3; }
+table.tablesorter thead tr .header {
+	background-image: url(../js/tablesorter/themes/blue/bg.gif);
+	background-repeat: no-repeat;
+	background-position: center left;
+	cursor: pointer;
+}
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(../js/tablesorter/themes/blue/asc.gif);
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(../js/tablesorter/themes/blue/desc.gif);
+}
