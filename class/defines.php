@@ -106,10 +106,13 @@
 	define( 'WPNZCFCN_DAY_SATURDAY',			1 << 6	);
 	
 	// Statuses - Negative values are "disabled", positive "enabled".
+	define( 'WPNZCFCN_STATUS_RELEASED',			 -7	);
+	define( 'WPNZCFCN_STATUS_CUCDR_LEAVE',			 -6	);
+	define( 'WPNZCFCN_STATUS_SUPERNUMERARY',		 -5	);
 	define( 'WPNZCFCN_STATUS_RETIRED',			 -4	);
-	define( 'WPNZCFCN_STATUS_DISBANDED',			 -3	);
-	define( 'WPNZCFCN_STATUS_RECESS',			 -2	);
-	define( 'WPNZCFCN_STATUS_INACTIVE',			 -1	);
+	define( 'WPNZCFCN_STATUS_INACTIVE',			 -3	);
+	define( 'WPNZCFCN_STATUS_DISBANDED',			 -2	);
+	define( 'WPNZCFCN_STATUS_RECESS',			 -1	);
 	define( 'WPNZCFCN_STATUS_UNDEFINED',			  0	);
 	define( 'WPNZCFCN_STATUS_ACTIVE',			  1	);
-	define( 'WPNZCFCN_STATUS_PENDING',			  2	);
+	define( 'WPNZCFCN_STATUS_UNRECOGNISED',			  2	);

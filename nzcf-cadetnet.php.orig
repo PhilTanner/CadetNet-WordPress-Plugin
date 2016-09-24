@@ -1084,6 +1084,7 @@
 		delete_option("wpnzcfcn_eoi_page_name");
 		delete_option("wpnzcfcn_eoi_page_id");
 		
+<<<<<<< HEAD
 		$the_page_id = get_option( 'wpnzcfcn_cadetnet_page_id' );
 		if( $the_page_id ) {
 			wp_delete_post( $the_page_id ); // this will trash, not delete
@@ -1171,6 +1172,15 @@
 		delete_option("wpnzcfcn_cadetnet_profile_school_page_title");
 		delete_option("wpnzcfcn_cadetnet_profile_school_page_name");
 		delete_option("wpnzcfcn_cadetnet_profile_school_page_id");
+=======
+		// Delete our saved options
+		delete_option( 'wpnzcfcn_version' );
+		delete_option( 'wpnzcfcn_db_version' );
+		
+		delete_site_option( 'wpnzcfcn_version' );
+		delete_site_option( 'wpnzcfcn_db_version' );
+
+>>>>>>> 45404d6cfa9928fd8fee883b9d96340ba97fb946
 	}
     
 	function wpnzcfcn_footer() {

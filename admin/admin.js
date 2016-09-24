@@ -19,5 +19,5 @@
 	*/
 	
 	// Placeholder file until we decide if we want any JS purely for admin
-	alert('bar');
+	//alert('bar');
 	
