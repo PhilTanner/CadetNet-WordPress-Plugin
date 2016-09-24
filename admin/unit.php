@@ -196,7 +196,7 @@
 					<tbody>
 						<?php
 							foreach( $response as $unit ) {
-								echo '<tr'.($unit->unit_status<0?' class="inactive"':'').'>';
+								echo '<tr'.($unit->unit_status<1?' class="inactive"':'').'>';
 								echo '	<td data-col="unit_sort" class="number"> '.$unit->unit_sort.' </td>';
 								echo '	<td data-col="unit_short"> '.htmlentities($unit->unit_short).' </td>';
 								echo '	<td data-col="unit_medium"> '.htmlentities($unit->unit_medium).' </td>';
@@ -235,6 +235,8 @@
 								echo '	<td class="options"> <button type="button" class="edit" data-rownum="'.$unit->unit_id.'">'.__('Edit','nzcf-cadnet').'</button> </td>';
 								echo '</tr>';
 							}
+							echo '</tbody>';
+							echo '<tbody class="avoid-sort">';
 							echo '<tr>';
 							echo '	<td data-col="unit_sort" class="number"> <input type="number" name="unit_sort_0" id="unit_sort_0" value="99999" /> </td>';
 							echo '	<td data-col="unit_short"> <input type="text" name="unit_short_0" id="unit_short_0" maxlength="12" /> </td>';

@@ -30,7 +30,7 @@
 	// List the types of courses
 	function wpnzcfcn_json_callback_course_type() {
 		global $wpdb;
-	    $response = array();
+		$response = array();
 
 		$keywords = (isset($_GET['term'])?$_GET['term']:'');
 		// Never trust input from a user!
@@ -42,19 +42,21 @@
 			FROM 
 				".$wpdb->prefix."wpnzcfcn_course
 			WHERE
-				LOWER(".$wpdb->prefix."wpnzcfcn_course.course_name) LIKE %s
+				LOWER(".$wpdb->prefix."wpnzcfcn_course.course_long) LIKE %s
+				OR LOWER(".$wpdb->prefix."wpnzcfcn_course.course_short) LIKE %s
 			ORDER BY
-				LOWER(".$wpdb->prefix."wpnzcfcn_course.course_name) ASC;",
+				".$wpdb->prefix."wpnzcfcn_course.course_sort ASC;",
+			'%'.$wpdb->esc_like($keywords).'%',
 			'%'.$wpdb->esc_like($keywords).'%'
-        ) );
-        // For our autocomplete jQueryUI boxes, simplify our value/label options
+		) );
+		// For our autocomplete jQueryUI boxes, simplify our value/label options
 		foreach( $response as $row ) {
 			$row->value = $row->course_id;
-			$row->label = $row->course_name;
+			$row->label = $row->course_long;
 			unset($row->course_id);
 		}
- 	   // Never forget to exit or die on the end of a WordPress AJAX action!
-	    exit( json_encode( $response ) ); 
+		// Never forget to exit or die on the end of a WordPress AJAX action!
+		exit( json_encode( $response ) ); 
 	}
 	
 	// List the NZCF ranks

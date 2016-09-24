@@ -25,65 +25,31 @@
 		if ( !current_user_can( 'manage_options' ) )  {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
-		echo '<h2>'.__('Courses','nzcf-cadetnet').'</h2>';
+		echo '<h2>'.__('Course Types','nzcf-cadetnet').'</h2>';
 		
 		global $wpdb;
 		
 		// Before we extract our data from the DB for display, let's update our records, 
 		// so the DB pull will reflect what's actually in there
-		if( isset($_POST['course_ids']) && is_array($_POST['course_ids']) ) {
+		if( isset($_POST['course_ids']) && is_array($_POST['course_ids']) )
+		{
 			foreach( $_POST['course_ids'] as $course_id ) {
-				// The nzcf_corps is a bitmask, so calculate it.
-				$nzcf_corps = 0;
-				if( isset($_POST['nzcf_corps_'.$course_id.'_atc']) && $_POST['nzcf_corps_'.$course_id.'_atc'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_ATC;
-				} 
-				if( isset($_POST['nzcf_corps_'.$course_id.'_corps']) && $_POST['nzcf_corps_'.$course_id.'_corps'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_NZCC;
-				} 
-				if( isset($_POST['nzcf_corps_'.$course_id.'_sea']) && $_POST['nzcf_corps_'.$course_id.'_sea'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SCC;
-				}  
-				if( isset($_POST['nzcf_corps_'.$course_id.'_civ']) && $_POST['nzcf_corps_'.$course_id.'_civ'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_RANK_CIVILIAN;
-				} 
-				if( isset($_POST['nzcf_corps_'.$course_id.'_rf']) && $_POST['nzcf_corps_'.$course_id.'_rf'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_REGULAR_FORCES;
-				} 
-				
-				$personnel = 0;
-				if( isset($_POST['personnel_'.$course_id.'_officer']) && $_POST['personnel_'.$course_id.'_officer'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_OFFICER;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_under_officer']) && $_POST['personnel_'.$course_id.'_under_officer'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_UNDER_OFFICER;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_nco']) && $_POST['personnel_'.$course_id.'_nco'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_NCO;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_cadet']) && $_POST['personnel_'.$course_id.'_cadet'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_CADET;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_civilian']) && $_POST['personnel_'.$course_id.'_civilian'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_CIVILIAN;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_junior']) && $_POST['personnel_'.$course_id.'_junior'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_LEVEL_JUNIOR;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_senior']) && $_POST['personnel_'.$course_id.'_senior'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_LEVEL_SENIOR;
-				} 
-				
 				// User data handling done by the update function, not our problem.
 				$wpdb->update( 
 					$wpdb->prefix."wpnzcfcn_course", 
 					array( 
-						'course_name' => $_POST['course_name_'.$course_id],
-						'nzcf_corps' => $nzcf_corps,
-						'personnel' => $personnel
+						'course_sort' => $_POST['course_sort_'.$course_id],
+						'course_eqv' => $_POST['course_eqv_'.$course_id],
+						'course_short' => $_POST['course_short_'.$course_id],
+						'course_long' => $_POST['course_long_'.$course_id],
+						'course_applies_to' => $course_applies_to,
+						'course_status' => $_POST['course_status_'.$course_id],
 					), 
 					array( 'course_id' => $course_id ), 
 					array( 
+						'%d',
+						'%d',
+						'%s',
 						'%s',
 						'%d',
 						'%d'
@@ -91,58 +57,52 @@
 					array( '%d' ) 
 				);
 			}
-			if( strlen(trim($_POST['course_name_0'])) ) {
-				// The nzcf_corps is a bitmask, so calculate it.
-				$nzcf_corps = 0;
-				if( isset($_POST['nzcf_corps_0_atc']) && $_POST['nzcf_corps_0_atc'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_ATC;
-				} 
-				if( isset($_POST['nzcf_corps_0_corps']) && $_POST['nzcf_corps_0_corps'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_NZCC;
-				} 
-				if( isset($_POST['nzcf_corps_0_sea']) && $_POST['nzcf_corps_0_sea'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SCC;
-				}  
-				if( isset($_POST['nzcf_corps_0_civ']) && $_POST['nzcf_corps_0_civ'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_RANK_CIVILIAN;
-				} 
-				if( isset($_POST['nzcf_corps_0_rf']) && $_POST['nzcf_corps_0_rf'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_REGULAR_FORCES;
-				} 
-				
-				$personnel = 0;
-				if( isset($_POST['personnel_'.$course_id.'_officer']) && $_POST['personnel_'.$course_id.'_officer'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_OFFICER;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_under_officer']) && $_POST['personnel_'.$course_id.'_under_officer'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_UNDER_OFFICER;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_nco']) && $_POST['personnel_'.$course_id.'_nco'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_NCO;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_cadet']) && $_POST['personnel_'.$course_id.'_cadet'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_CADET;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_civilian']) && $_POST['personnel_'.$course_id.'_civilian'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_CIVILIAN;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_junior']) && $_POST['personnel_'.$course_id.'_junior'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_LEVEL_JUNIOR;
-				} 
-				if( isset($_POST['personnel_'.$course_id.'_senior']) && $_POST['personnel_'.$course_id.'_senior'] ) {
-					$personnel = $personnel | WPNZCFCN_PERSONNEL_GROUP_LEVEL_SENIOR;
-				} 
-				
-				
+			if( strlen(trim($_POST['course_long_0'])) && strlen(trim($_POST['course_long_0'])) )
+			{
 				// User data handling done by the update function, not our problem.
 				$wpdb->insert( 
 					$wpdb->prefix."wpnzcfcn_course", 
 					array( 
-						'course_name' => $_POST['course_name_0'],
-						'nzcf_corps' => $nzcf_corps,
-						'personnel' => $personnel
+						'course_sort'		=> (int)$row['course_sort_0'],
+						'course_short'		=> $row['course_short_0'],
+						'course_long'		=> $row['course_long_0'],
+						'lead_self'		=> (int)$row['lead_self_0'],
+						'lead_team'		=> (int)$row['lead_team_0'],
+						'lead_leaders'		=> (int)$row['lead_leaders_0'],
+						'lead_capability'	=> (int)$row['lead_capability_0'],
+						'lead_systems'		=> (int)$row['lead_systems_0'],
+						'course_jnco'		=> (int)$row['course_jnco_0'],
+						'course_snco'		=> (int)$row['course_snco_0'],
+						'course_rank_eqv'	=> (int)$row['course_rank_eqv_0'],
+						'course_duration'	=> (int)$row['course_duration_0'],
+						'course_sail1'		=> (int)$row['course_sail1_0'],
+						'course_sail2'		=> (int)$row['course_sail2_0'],
+						'course_dayskip'	=> (int)$row['course_dayskip_0'],
+						'course_fore'		=> (int)$row['course_fore_0'],
+						'course_main'		=> (int)$row['relationship_sort_0'],
+						'course_tiller'		=> (int)$row['course_tiller_0'],
+						'course_bow'		=> (int)$row['course_bow_0'],
+						'course_age_min'	=> (int)$row['course_age_min_0'],
+						'course_age_max'	=> (int)$row['course_age_max_0'],
+						'course_attendance'	=> (int)$row['course_attendance_0'],
+						'course_status'		=> (int)$row['course_status_0']
+					) 
+				);
+				
+				$wpdb->insert( 
+					$wpdb->prefix."wpnzcfcn_rank", 
+					array( 
+						'course_sort'	=> $_POST['course_sort_'.$course_id],
+						'course_eqv'	=> $_POST['course_eqv_'.$course_id],
+						'course_short'	=> $_POST['course_short_'.$course_id],
+						'course_long'	=> $_POST['course_long_'.$course_id],
+						'course_applies_to' => $course_applies_to,
+						'course_status'	=> $_POST['course_status_'.$course_id],
 					), 
 					array( 
+						'%d',
+						'%d',
+						'%s',
 						'%s',
 						'%d',
 						'%d'
@@ -158,84 +118,157 @@
 			SELECT 
 				* 
 			FROM 
-				".$wpdb->prefix."wpnzcfcn_course
+				".$wpdb->prefix."wpnzcfcn_course 
 			ORDER BY 
-				LOWER(course_name) ASC;",
+				course_sort ASC;",
 			''
-        ) );
+		) );
  	   
 		?>
 			<form method="post">
 				<table>
 					<thead>	
 						<tr>
-							<th rowspan="2"> <?= __('Course Name','nzcf-cadetnet') ?> </th>
-							<th colspan="5"> <?= __('Corps','nzcf-cadetnet') ?> </th>
-							<th colspan="7"> <?= __('Available for','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Sort','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Shortname','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Course name','nzcf-cadetnet') ?> </th>
+							<th colspan="19"> <?= __('Requirements to attend','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Status','nzcf-cadetnet') ?> </th>
 						</tr>
 						<tr>
-							<th> <?= __('Cadet','nzcf-cadetnet') ?> </th>
-							<th> <?= __('ATC','nzcf-cadetnet') ?> </th>
-							<th> <?= __('Sea','nzcf-cadetnet') ?> </th>
-							<th> <?= __('Civ','nzcf-cadetnet') ?> </th>
-							<th> <?= __('Reg. F','nzcf-cadetnet') ?> </th>
-							
-							<th> <?= __('OFF','nzcf-cadetnet') ?> </th>
-							<th> <?= __('U/O','nzcf-cadetnet') ?> </th>
-							<th> <?= __('NCO','nzcf-cadetnet') ?> </th>
-							<th> <?= __('CDT','nzcf-cadetnet') ?> </th>
-							<th> <?= __('CIV','nzcf-cadetnet') ?> </th>
-							<th> <?= __('JNR','nzcf-cadetnet') ?> </th>
-							<th> <?= __('SNR','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Lead Self','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Lead Team','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Lead Leaders','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Lead Capability','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Lead System','nzcf-cadetnet') ?> </th>
+							<th> <?= __('JNCO','nzcf-cadetnet') ?> </th>
+							<th> <?= __('SNCO','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Min Rank Equiv','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Time in Rank (days)','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Sail 1','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Sail 2','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Day Skippers Course','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Fore Sheet (6hrs)','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Main Sheet (6hrs)','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Tiller (6hrs)','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Bow (6hrs)','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Min Age @ start (days)','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Max Age @ end (days)','nzcf-cadetnet') ?> </th>
+							<th> <?= __('Parade nights counted','nzcf-cadetnet') ?> </th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
-							foreach( $response as $row ) {
-								echo '<tr>';
-								echo '	<td>';
-								echo '		<input type="hidden" name="course_ids[]" value="'.$row->course_id.'" />';
-								echo '		<input type="text" name="course_name_'.$row->course_id.'" value="'.htmlentities($row->course_name).'" class="course_name" maxlength="70" />';
-								echo '	</td>';
+							foreach( $response as $course ) {
+								echo '<tr'.($course->course_status<1?' class="inactive"':'').'>';
 								
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_corps" id="nzcf_corps_'.$row->course_id.'_corps" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_NZCC?' checked="checked"':'').' class="corps" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_atc" id="nzcf_corps_'.$row->course_id.'_atc" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_ATC?' checked="checked"':'').' class="atc" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_sea" id="nzcf_corps_'.$row->course_id.'_sea" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_SCC?' checked="checked"':'').' class="sea" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_civ" id="nzcf_corps_'.$row->course_id.'_civ" value="1" '.($row->nzcf_corps&WPNZCFCN_RANK_CIVILIAN?' checked="checked"':'').' class="civilian" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->course_id.'_rf" id="nzcf_corps_'.$row->course_id.'_rf" value="1" '.($row->nzcf_corps&WPNZCFCN_REGULAR_FORCES?' checked="checked"':'').' class="regularforces" /> </td>';
+					
+											
+								echo '	<td data-col="course_sort" class="number"> '.$course->course_sort.' </td>';
+								echo '	<td data-col="course_short"> '.htmlentities($course->course_short).' </td>';
+								echo '	<td data-col="course_long"> '.htmlentities($course->course_long).' </td>';
+								
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="scc"> '.($course->lead_self?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="nzcc"> '.($course->lead_team?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->lead_leaders?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->lead_capability?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->lead_system?'✔':'').' </td>';
 
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="scc"> '.($course->course_jnco?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="nzcc"> '.($course->course_snco?'✔':'').' </td>';
+								
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->course_rank_eq?'✔':'').' </td>';
+								echo '	<td align="center" class="number" data-col="course_applies_to" data-col2="atc"> '.($course->course_duration?'✔':'').' </td>';
+								
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->course_sail1?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="scc"> '.($course->course_sail2?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="nzcc"> '.($course->course_dayskip?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->course_fore?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->course_main?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->course_tiller?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->course_bow?'✔':'').' </td>';
+								
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->course_age_min?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->course_age_max?'✔':'').' </td>';
 
-								echo '	<td align="center"> <input type="checkbox" name="personnel_'.$row->course_id.'_officer" id="personnel_'.$row->course_id.'_officer" value="1" '.($row->personnel&WPNZCFCN_PERSONNEL_GROUP_OFFICER?' checked="checked"':'').' class="officer" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="personnel_'.$row->course_id.'_under_officer" id="personnel_'.$row->course_id.'_under_officer" value="1" '.($row->personnel&WPNZCFCN_PERSONNEL_GROUP_UNDER_OFFICER?' checked="checked"':'').' class="under_officer" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="personnel_'.$row->course_id.'_nco" id="personnel_'.$row->course_id.'_nco" value="1" '.($row->personnel&WPNZCFCN_PERSONNEL_GROUP_NCO?' checked="checked"':'').' class="nco" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="personnel_'.$row->course_id.'_cadet" id="personnel_'.$row->course_id.'_cadet" value="1" '.($row->personnel&WPNZCFCN_PERSONNEL_GROUP_CADET?' checked="checked"':'').' class="cadet" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="personnel_'.$row->course_id.'_civilian" id="personnel_'.$row->course_id.'_civilian" value="1" '.($row->personnel&WPNZCFCN_PERSONNEL_GROUP_CIVILIAN?' checked="checked"':'').' class="civilian" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="personnel_'.$row->course_id.'_junior" id="personnel_'.$row->course_id.'_junior" value="1" '.($row->personnel&WPNZCFCN_PERSONNEL_GROUP_LEVEL_JUNIOR?' checked="checked"':'').' class="junior" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="personnel_'.$row->course_id.'_senior" id="personnel_'.$row->course_id.'_senior" value="1" '.($row->personnel&WPNZCFCN_PERSONNEL_GROUP_LEVEL_SENIOR?' checked="checked"':'').' class="senior" /> </td>';
-						
+								echo '	<td align="center" class="checkbox" data-col="course_applies_to" data-col2="atc"> '.($course->course_attendance?'✔':'').' </td>';
+
+								echo '	<td class="active_status" data-col="course_status"> ';
+								switch ($course->course_status) {
+									case WPNZCFCN_STATUS_ACTIVE:
+										echo __('Active','nzcf-cadetnet');
+										break;
+									case WPNZCFCN_STATUS_INACTIVE:
+										echo __('Inactive','nzcf-cadetnet');
+										break;
+									default:
+										echo __('Unknown','nzcf-cadetnet');
+								}
+								echo '	</td>';
+								echo '	<td class="options"> <button type="button" class="edit" data-rownum="'.$course->course_id.'">'.__('Edit','nzcf-cadnet').'</button> </td>';
 								echo '</tr>';
 							}
-							echo '<tr>';
-							echo '	<td> <input type="text" name="course_name_0" value="" class="course_name" maxlength="255" /> </td>';
-							
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_corps" id="nzcf_corps_0_corps" value="1" class="corps" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_atc" id="nzcf_corps_0_atc" value="1" class="atc" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_sea" id="nzcf_corps_0_sea" value="1" class="sea" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_civ" id="nzcf_corps_0_civ" value="1" class="civilian" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_rf" id="nzcf_corps_0_rf" value="1" class="regularforces" /> </td>';
+							echo '</tbody>';
+					/*
+							echo '<tbody class="avoid-sort">';
+							echo '	<td> <input type="number" name="course_sort_0" value="99999" class="order" /> </td>';
+							echo '	<td> <input type="number" name="course_eqv_0" id="course_eqv_0" value="99999" /> </td>';
+							echo '	<td> <input type="text" name="course_short_0" id="course_short_0" value="" maxlength="10" /> </td>';
+							echo '	<td> <input type="text" name="course_long_0" id="course_long_0" value="" maxlength="64" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="course_applies_to_0_scc" id="course_applies_to_0_scc" value="1" class="scc" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="course_applies_to_0_nzcc" id="course_applies_to_0_nzcc" value="1" class="nzcc" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="course_applies_to_0_atc" id="course_applies_to_0_atc" value="1" class="atc" /> </td>';
 
-							echo '	<td align="center"> <input type="checkbox" name="personnel_0_officer" id="personnel_0_officer" value="1" class="officer" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="personnel_0_under_officer" id="personnel_0_under_officer" value="1" class="under_officer" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="personnel_0_nco" id="personnel_0_nco" value="1" class="nco" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="personnel_0_cadet" id="personnel_0_cadet" value="1" class="cadet" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="personnel_0_civilian" id="personnel_0_civilian" value="1" class="civlian" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="personnel_0_junior" id="personnel_0_junior" value="1" class="junior" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="personnel_0_senior" id="personnel_0_senior" value="1" class="senior" /> </td>';
-								
+							echo '	<td align="center"> <input type="checkbox" name="course_applies_to_0_rnzn" id="course_applies_to_0_rnzn" value="1" class="rnzn" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="course_applies_to_0_army" id="course_applies_to_0_army" value="1" class="army" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="course_applies_to_0_rnzaf" id="course_applies_to_0_rnzaf" value="1" class="rnzaf" /> </td>';
+							
+							echo '	<td align="center"> <input type="checkbox" name="course_applies_to_0_off" id="course_applies_to_0_off" value="1" class="civilian" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="course_applies_to_0_cdt" id="course_applies_to_0_cdt" value="1" class="regularforces" /> </td>';
+							echo '	<td align="center"> <input type="checkbox" name="course_applies_to_0_civ" id="course_applies_to_0_civ" value="1" class="regularforces" /> </td>';
+							
+							echo '	<td> ';
+							echo '		<select id="course_status_0" name="course_status_0">';
+							echo '			<option value="'.WPNZCFCN_STATUS_ACTIVE.'">'.__('Active','nzcf-cadetnet').'</option>';
+							echo '			<option value="'.WPNZCFCN_STATUS_INACTIVE.'" selected="selected">'.__('Inactive','nzcf-cadetnet').'</option>';
+							echo '		</select>';
+							echo '	</td>';	
 							echo '</tr>';
+					*/
 						?>
 					</tbody>
 				</table>
+				
+				<script>
+					// Allow us to edit any line as we want to.
+					// This is needed as there's a PHP limit for 1000 data inputs on a form, and we have more than that!
+					jQuery('button.edit').click(function(){
+						var id = jQuery(this).data('rownum');
+						jQuery.each(jQuery(this).parents('tr').children('td').not('.options'), function(){
+							var currvalue = jQuery(this).html().trim();
+							var col = jQuery(this).data('col');
+							var col2 = jQuery(this).data('col2');
+							
+							if( jQuery(this).hasClass('checkbox') ) {
+								jQuery(this).html('<input type="checkbox" name="'+col+'_'+id+'_'+col2+'" id="'+col+'_'+id+'_'+col2+'" value="1"'+(currvalue?' checked="checked"':'')+' />');
+							} else if( jQuery(this).hasClass('active_status') ) {
+								jQuery(this).html(''+
+									'<select name="'+col+'_'+id+'" id="'+col+'_'+id+'">'+
+									'	<option value="<?= WPNZCFCN_STATUS_ACTIVE ?>"'+(currvalue=='<?= htmlentities(__('Active','nzcf-cadetnet')) ?>'?' selected="selected"':'')+'><?= htmlentities(__('Active','nzcf-cadetnet')) ?></option>'+
+									'	<option value="<?= WPNZCFCN_STATUS_INACTIVE ?>"'+(currvalue=='<?= htmlentities(__('Inactive','nzcf-cadetnet')) ?>'?' selected="selected"':'')+'><?= htmlentities(__('Inactive','nzcf-cadetnet')) ?></option>'+
+									'</select>'
+								);
+							} else  if( jQuery(this).hasClass('number') ) {
+								jQuery(this).html('<input type="number" name="'+col+'_'+id+'" id="'+col+'_'+id+'" value="'+currvalue+'" />');
+							} else {
+								jQuery(this).html('<input type="text" name="'+col+'_'+id+'" id="'+col+'_'+id+'" value="'+currvalue+'" />');
+							}
+						});
+						jQuery(this).parent().siblings('td:first-child').append('<input type="hidden" name="course_ids[]" value="'+id+'" />');
+						jQuery(this).hide();
+					});
+				</script>
+				
 				<button type="submit" class="save"><?= __('Save Changes','nzcf-cadetnet') ?></button>
 				<button type="cancel" class="cancel"><?= __('Cancel','nzcf-cadetnet') ?></button>
 			</form>

@@ -186,7 +186,7 @@
 					<tbody>
 						<?php
 							foreach( $response as $rank ) {
-								echo '<tr>';
+								echo '<tr'.($rank->rank_status<1?' class="inactive"':'').'>';
 								echo '	<td data-col="rank_sort" class="number"> '.$rank->rank_sort.' </td>';
 								echo '	<td data-col="rank_eqv" class="number"> '.$rank->rank_eqv.' </td>';
 								echo '	<td data-col="rank_short"> '.htmlentities($rank->rank_short).' </td>';
@@ -219,6 +219,8 @@
 								echo '	<td class="options"> <button type="button" class="edit" data-rownum="'.$rank->rank_id.'">'.__('Edit','nzcf-cadnet').'</button> </td>';
 								echo '</tr>';
 							}
+							echo '</tbody>';
+							echo '<tbody class="avoid-sort">';
 							echo '	<td> <input type="number" name="rank_sort_0" value="99999" class="order" /> </td>';
 							echo '	<td> <input type="number" name="rank_eqv_0" id="rank_eqv_0" value="99999" /> </td>';
 							echo '	<td> <input type="text" name="rank_short_0" id="rank_short_0" value="" maxlength="10" /> </td>';

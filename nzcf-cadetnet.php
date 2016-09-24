@@ -156,7 +156,7 @@
 		
 		// Create our database tables, to hold the WordPress NZCF Unit Admin data
 		// Modified from https://codex.wordpress.org/Creating_Tables_with_Plugins
-
+/*
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_course (
   course_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   course_name varchar(70) NOT NULL,
@@ -165,6 +165,38 @@
   UNIQUE KEY course_id (course_id)
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
+*/
+
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_course (
+  course_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  course_sort mediumint(8) unsigned NOT NULL,
+  course_short varchar(24) NOT NULL,
+  course_long varchar(64) NOT NULL,
+  lead_self tinyint(1),
+  lead_team tinyint(1),
+  lead_leaders tinyint(1),
+  lead_capability tinyint(1),
+  lead_systems tinyint(1),
+  course_jnco tinyint(1) COMMENT 'Have attended JNCO',
+  course_snco tinyint(1) COMMENT 'Have attended SNCO',
+  course_rank_eqv mediumint(8) COMMENT 'Minimum rank equivalency to attend',
+  course_duration mediumint(8) COMMENT 'Min Number of days in rank equivalency',
+  course_sail1 tinyint(1) COMMENT 'Done Yachting New Zealand Sail 1 Course',
+  course_sail2 tinyint(1) COMMENT 'Done Yachting New Zealand Sail 2 Course',
+  course_dayskip tinyint(1) COMMENT 'Completed CoastGuard Day Skippers Course',
+  course_fore tinyint(1) COMMENT 'Done 6hrs on fore sheet',
+  course_main tinyint(1) COMMENT 'Done 6hrs on main sheet',
+  course_tiller tinyint(1) COMMENT 'Done 6hrs on tiller',
+  course_bow tinyint(1) COMMENT 'Done 6hrs on bow',
+  course_age_min mediumint(8) COMMENT 'At start of course',
+  course_age_max mediumint(8) COMMENT 'At end of course',
+  course_attendance mediumint(8) COMMENT 'Number of parade nights',
+  course_status tinyint(3) NOT NULL DEFAULT 0,
+  UNIQUE KEY course_id (course_id)
+) ".$wpdb->get_charset_collate().";";
+		dbDelta( $sql );
+		
+		
 		
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_rank (
   rank_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -187,22 +219,25 @@
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
 		
-		/*
-		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_unit (
-  unit_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  unit_name varchar(255) NOT NULL,
-  address varchar(255) NOT NULL,
-  phone varchar(255),
-  email varchar(255),
-  latitude float(10,6),
-  longitude float(10,6),
-  website varchar(150),
-  nzcf_corps tinyint(5) unsigned NOT NULL,
-  parade_night tinyint(7) unsigned,
-  UNIQUE KEY unit_id (unit_id)
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_school (
+  school_id bigint(20) unsigned NOT NULL,
+  school_name varchar(120) NOT NULL,
+  school_number varchar(10),
+  school_fax varchar(10),
+  school_email varchar(128),
+  school_principle varchar(60),
+  school_website varchar(120),
+  school_address1 varchar(60),
+  school_address2 varchar(40),
+  school_address3 varchar(30),
+  school_postal1 varchar(60),
+  school_postal2 varchar(40),
+  school_postal3 varchar(30),
+  school_postcode varchar(10),
+  school_status tinyint(3) NOT NULL,
+  UNIQUE KEY school_id (school_id)
 ) ".$wpdb->get_charset_collate().";";
-		dbDelta( $sql );
-		*/
+		dbDelta( $sql );		
 		
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_unit (
   unit_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
