@@ -47,7 +47,7 @@
 	define('WP_DEBUG', true); 
 	
 	$version = "0.05";
-	$db_version = "0.02";
+	$db_version = "0.03";
 	
 	add_option( "wpnzcfcn_version", $version );
 	add_option( "wpnzcfcn_db_version", $db_version );
@@ -140,19 +140,7 @@
 			);
 		}
 				
-		$table = $wpdb->prefix."wpnzcfcn_unit";
-		if( $wpdb->get_var( "SELECT unit_id FROM $table WHERE unit_name = 'No 49 (District of Kāpiti) Squadron, Air Training Corps'" ) === null ){
-			$wpdb->insert( 
-				$table, 
-				array( 
-					'unit_name' => 'No 49 (District of Kāpiti) Squadron, Air Training Corps', 
-					'address' => 'Old Crash Fire Building, 227 Kāpiti Road, Paraparaumu, Kāpiti Coast 5032.', 
-					'website' => 'http://www.49squadron.org.nz', 
-					'nzcf_corps' => WPNZCFCN_CADETS_ATC,
-					'parade_night' => WPNZCFCN_DAY_WEDNESDAY
-				) 
-			);
-		}
+		
 		
 	}
    	
@@ -199,6 +187,7 @@
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
 		
+		/*
 		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_unit (
   unit_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   unit_name varchar(255) NOT NULL,
@@ -210,6 +199,20 @@
   website varchar(150),
   nzcf_corps tinyint(5) unsigned NOT NULL,
   parade_night tinyint(7) unsigned,
+  UNIQUE KEY unit_id (unit_id)
+) ".$wpdb->get_charset_collate().";";
+		dbDelta( $sql );
+		*/
+		
+		$sql = "CREATE TABLE ".$wpdb->prefix."wpnzcfcn_unit (
+  unit_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  unit_sort mediumint(8) NOT NULL,
+  unit_short varchar(12) NOT NULL,
+  unit_medium varchar(60) NOT NULL,
+  unit_long varchar(100) NOT NULL,
+  unit_area tinyint(1) NOT NULL,
+  unit_corps tinyint(1) NOT NULL,
+  unit_status tinyint(3) NOT NULL,
   UNIQUE KEY unit_id (unit_id)
 ) ".$wpdb->get_charset_collate().";";
 		dbDelta( $sql );
@@ -481,25 +484,34 @@
 			exit();
 		}	
  
-		// Delete our saved options
-		delete_option( 'wpnzcfcn_version' );
-		delete_option( 'wpnzcfcn_db_version' );
-		delete_site_option( 'wpnzcfcn_version' );
-		delete_site_option( 'wpnzcfcn_db_version' );
- 
 		// Drop a custom db table
-		global $wpdb;
-		//$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}mytable" );
+		global $wpdb, $db_version;
+		
+		// Version 0.02 Rebuilt the Ranks table completely.
+		if( $db_version < 0.02 ) {
+			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wpnzcfcn_rank" );
+		}
+		// Likewise 0.03 did the units
+		if( $db_version < 0.03 ) {
+			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wpnzcfcn_unit" );
+		}
 		
 		// Clear the EOI page
 		$the_page_id = get_option( 'wpnzcfcn_eoi_page_id' );
 		if( $the_page_id ) {
 			wp_delete_post( $the_page_id ); // this will trash, not delete
 		}
-		
 		delete_option("wpnzcfcn_eoi_page_title");
 		delete_option("wpnzcfcn_eoi_page_name");
 		delete_option("wpnzcfcn_eoi_page_id");
+		
+		// Delete our saved options
+		delete_option( 'wpnzcfcn_version' );
+		delete_option( 'wpnzcfcn_db_version' );
+		
+		delete_site_option( 'wpnzcfcn_version' );
+		delete_site_option( 'wpnzcfcn_db_version' );
+
 	}
     
 	function wpnzcfcn_footer() {
