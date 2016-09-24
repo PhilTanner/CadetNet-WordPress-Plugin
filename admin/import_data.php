@@ -38,9 +38,10 @@
 				<hr />
 				<label for="datatype"><?= __('Data type', 'nzcf-cadetnet') ?></label>
 				<select name="datatype" id="datatype" required="required">
-					<option value="">
+					<option value=""></option>
 					<option value="ranks"><?=__('Ranks','nzcf-cadetnet')?></option>
 					<option value="relationships"><?=__('Relationships','nzcf-cadetnet')?></option>
+					<option value="units"><?=__('Units','nzcf-cadetnet')?></option>
 				</select>
 				<hr />
 				<button type="submit"><?=__('Upload','nzcf-cadetnet')?></button>
@@ -107,6 +108,22 @@
 							}
 							break;
 						
+						case 'units':
+							$required_cols = array( 'unit_sort','unit_short','unit_medium','unit_long','unit_n','unit_c','unit_s','unit_scc','unit_nzcc','unit_atc','unit_status' );
+							foreach($required_cols as $col ) {
+								if( !isset($row[$col]) ) { 
+									throw new WPNZCFCNExceptionBadData(sprintf(__('Missing required column: "%s" (line %d)','nzcf-cadetnet'), $col, $rowcounter));
+								}
+							}
+							// Make sure we're not getting text where we expect to be receiving numbers
+							$number_cols = array( 'unit_sort','unit_n','unit_c','unit_s','unit_scc','unit_nzcc','unit_atc','unit_status' );
+							foreach($required_cols as $col ) {
+								if( (int)$row[$col] != $row[$col] ) { 
+									throw new WPNZCFCNExceptionBadData(sprintf(__('Wrong data type for column: "%s" expecting number, got "%s" (line %d)','nzcf-cadetnet'), $col, $row[$col], $rowcounter));
+								}
+							}
+							break;
+						
 						default:
 							throw new WPNZCFCNExceptionBadData(sprintf(__('Unknown file datatype: "%s"','nzcf-cadetnet'),$_POST['datatype']));
 					}
@@ -118,6 +135,8 @@
 					$wpdb->query('TRUNCATE '.$wpdb->prefix."wpnzcfcn_rank");
 				} else if( strtolower($_POST['datatype']) == 'relationships' ) {
 					$wpdb->query('TRUNCATE '.$wpdb->prefix."wpnzcfcn_relationship");
+				} else if( strtolower($_POST['datatype']) == 'units' ) {
+					$wpdb->query('TRUNCATE '.$wpdb->prefix."wpnzcfcn_unit");
 				}
 				foreach( $csv as $row ){
 					switch( strtolower($_POST['datatype']) ) {
@@ -172,6 +191,44 @@
 									'relationship_sort' => (int)$row['relationship_sort'], 
 									'relationship_relationship' => $row['relationship_relationship'], 
 									'relationship_status' => (int)$row['relationship_status']
+								) 
+							);
+							break;
+						case 'units':
+							// First off, calculate our rank bitmask
+							$unit_area_bitmask = 0;
+							if( (bool)$row['unit_n'] ) {
+								$unit_area_bitmask = $unit_area_bitmask | WPNZCFCN_AREA_NORTHERN;
+							}
+							if( (bool)$row['unit_c'] ) {
+								$unit_area_bitmask = $unit_area_bitmask | WPNZCFCN_AREA_CENTRAL;
+							}
+							if( (bool)$row['unit_s'] ) {
+								$unit_area_bitmask = $unit_area_bitmask | WPNZCFCN_AREA_SOUTHERN;
+							}
+							
+							$unit_corps_bitmask = 0;
+							if( (bool)$row['unit_scc'] ) {
+								$unit_corps_bitmask = $unit_corps_bitmask | WPNZCFCN_CADETS_SCC;
+							}
+							if( (bool)$row['unit_nzcc'] ) {
+								$unit_corps_bitmask = $unit_corps_bitmask | WPNZCFCN_CADETS_NZCC;
+							}
+							if( (bool)$row['unit_atc'] ) {
+								$unit_corps_bitmask = $unit_corps_bitmask | WPNZCFCN_CADETS_ATC;
+							}
+							
+							$wpdb->insert( 
+								$wpdb->prefix."wpnzcfcn_unit", 
+								array( 
+									'unit_sort'	=> (int)$row['unit_sort'], 
+									'unit_short'	=> $row['unit_short'], 
+									'unit_medium'	=> $row['unit_medium'], 
+									'unit_long'	=> $row['unit_long'], 
+									'unit_area'	=> $unit_area_bitmask, 
+									'unit_corps'	=> $unit_corps_bitmask, 
+									'unit_status'	=> (int)$row['unit_status'], 
+									'unit_medium'	=> $row['unit_medium']
 								) 
 							);
 							break;

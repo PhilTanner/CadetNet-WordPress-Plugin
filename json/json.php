@@ -110,23 +110,19 @@
 			FROM 
 				".$wpdb->prefix."wpnzcfcn_unit
 			WHERE
-				LOWER(".$wpdb->prefix."wpnzcfcn_unit.unit_name) LIKE %s
-				OR LOWER(".$wpdb->prefix."wpnzcfcn_unit.address) LIKE %s
-				OR LOWER(".$wpdb->prefix."wpnzcfcn_unit.website) LIKE %s
-				OR LOWER(".$wpdb->prefix."wpnzcfcn_unit.phone) LIKE %s
-				OR LOWER(".$wpdb->prefix."wpnzcfcn_unit.email) LIKE %s
+				LOWER(".$wpdb->prefix."wpnzcfcn_unit.unit_short) LIKE %s
+				OR LOWER(".$wpdb->prefix."wpnzcfcn_unit.unit_medium) LIKE %s
+				OR LOWER(".$wpdb->prefix."wpnzcfcn_unit.unit_long) LIKE %s
 			ORDER BY
-				LOWER(".$wpdb->prefix."wpnzcfcn_unit.unit_name) ASC;",
-			'%'.$wpdb->esc_like($keywords).'%',
-			'%'.$wpdb->esc_like($keywords).'%',
+				LOWER(".$wpdb->prefix."wpnzcfcn_unit.unit_sort) ASC;",
 			'%'.$wpdb->esc_like($keywords).'%',
 			'%'.$wpdb->esc_like($keywords).'%',
 			'%'.$wpdb->esc_like($keywords).'%'
-        ) );
-        // For our autocomplete jQueryUI boxes, simplify our value/label options
+		) );
+		// For our autocomplete jQueryUI boxes, simplify our value/label options
 		foreach( $response as $row ) {
 			$row->value = $row->unit_id;
-			$row->label = $row->unit_name;
+			$row->label = $row->unit_medium;
 			unset($row->unit_id);
 		}
  	   // Never forget to exit or die on the end of a WordPress AJAX action!

@@ -47,3 +47,13 @@ input[type=date],label[type=date] {
 input[type=text].rank,label.rank,select.rank {
 	width: 13em;
 }
+table {
+	border-spacing: 0;
+	border-collapse: collapse;
+	background-color:White;
+}
+table thead {
+	border-radius:10em;
+}
+.evenrow { background-color: #f3f3f3; }
+tr.inactive td { text-decoration: line-through; opacity: 0.3; }

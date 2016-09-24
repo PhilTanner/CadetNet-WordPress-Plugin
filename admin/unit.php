@@ -31,143 +31,129 @@
 		
 		// Before we extract our data from the DB for display, let's update our records, 
 		// so the DB pull will reflect what's actually in there
-		if( isset($_POST['unit_ids']) && is_array($_POST['unit_ids']) ) {
+		if( isset($_POST['unit_ids']) && is_array($_POST['unit_ids']) )
+		{
 			foreach( $_POST['unit_ids'] as $unit_id ) {
-				// The nzcf_corps is a bitmask, so calculate it.
-				$nzcf_corps = 0;
-				if( isset($_POST['nzcf_corps_'.$unit_id.'_atc']) && $_POST['nzcf_corps_'.$unit_id.'_atc'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_ATC;
+				// The unit_corps is a bitmask, so calculate it.
+				$unit_corps = 0;
+				if( isset($_POST['unit_corps_'.$unit_id.'_scc']) && $_POST['unit_corps_'.$unit_id.'_scc'] ) {
+					$unit_corps = $unit_corps_ | WPNZCFCN_CADETS_SCC;
 				} 
-				if( isset($_POST['nzcf_corps_'.$unit_id.'_corps']) && $_POST['nzcf_corps_'.$unit_id.'_corps'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_NZCC;
+				if( isset($_POST['unit_corps_'.$unit_id.'_nzcc']) && $_POST['unit_corps_'.$unit_id.'_nzcc'] ) {
+					$unit_corps_ = $unit_corps_ | WPNZCFCN_CADETS_NZCC;
 				} 
-				if( isset($_POST['nzcf_corps_'.$unit_id.'_sea']) && $_POST['nzcf_corps_'.$unit_id.'_sea'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SCC;
-				}  
-				if( isset($_POST['nzcf_corps_'.$unit_id.'_civ']) && $_POST['nzcf_corps_'.$unit_id.'_civ'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_RANK_CIVILIAN;
+				if( isset($_POST['unit_corps_'.$unit_id.'_atc']) && $_POST['unit_corps_'.$unit_id.'_atc'] ) {
+					$unit_corps_ = $unit_corps_ | WPNZCFCN_CADETS_ATC;
+				}
+				// So's the area
+				$unit_area = 0;
+				if( isset($_POST['unit_area_'.$unit_id.'_n']) && $_POST['unit_area_'.$unit_id.'_n'] ) {
+					$unit_area = $unit_area | WPNZCFCN_AREA_NORTHERN;
 				} 
-				if( isset($_POST['nzcf_corps_'.$unit_id.'_rf']) && $_POST['nzcf_corps_'.$unit_id.'_rf'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_REGULAR_FORCES;
+				if( isset($_POST['unit_area_'.$unit_id.'_c']) && $_POST['unit_area_'.$unit_id.'_c'] ) {
+					$unit_area = $unit_area | WPNZCFCN_AREA_CENTRAL;
 				} 
-				
-				$parade_night = 0;
-				if( isset($_POST['parade_night_'.$unit_id.'_sun']) && $_POST['parade_night_'.$unit_id.'_sun'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_SUNDAY;
-				} 
-				if( isset($_POST['parade_night_'.$unit_id.'_mon']) && $_POST['parade_night_'.$unit_id.'_mon'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_MONDAY;
-				} 
-				if( isset($_POST['parade_night_'.$unit_id.'_tue']) && $_POST['parade_night_'.$unit_id.'_tue'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_TUESDAY;
-				} 
-				if( isset($_POST['parade_night_'.$unit_id.'_wed']) && $_POST['parade_night_'.$unit_id.'_wed'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_WEDNESDAY;
-				} 
-				if( isset($_POST['parade_night_'.$unit_id.'_thu']) && $_POST['parade_night_'.$unit_id.'_thu'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_THURSDAY;
-				} 
-				if( isset($_POST['parade_night_'.$unit_id.'_fri']) && $_POST['parade_night_'.$unit_id.'_fri'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_FRIDAY;
-				} 
-				if( isset($_POST['parade_night_'.$unit_id.'_sat']) && $_POST['parade_night_'.$unit_id.'_sat'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_SATURDAY;
-				} 
-				
+				if( isset($_POST['unit_area_'.$unit_id.'_s']) && $_POST['unit_area_'.$unit_id.'_s'] ) {
+					$unit_area = $unit_area | WPNZCFCN_AREA_SOUTHERN;
+				}
+								
 				// User data handling done by the update function, not our problem.
 				$wpdb->update( 
 					$wpdb->prefix."wpnzcfcn_unit", 
 					array( 
-						'unit_name' => $_POST['unit_name_'.$unit_id],
-						'address' => $_POST['address_'.$unit_id],
-						'phone' => $_POST['phone_'.$unit_id],
-						'email' => $_POST['email_'.$unit_id],
-						'latitude' => $_POST['latitude_'.$unit_id],
-						'longitude' => $_POST['longitude_'.$unit_id],
-						'website' => $_POST['website_'.$unit_id],
-						'nzcf_corps' => $nzcf_corps,
-						'parade_night' => $parade_night
+						'unit_sort' => $_POST['unit_sort_'.$unit_id],
+						'unit_short' => $_POST['unit_short_'.$unit_id],
+						'unit_medium' => $_POST['unit_medium_'.$unit_id],
+						'unit_long' => $_POST['unit_long_'.$unit_id],
+						'unit_area' => $unit_area,
+						'unit_corps' => $unit_corps,
+						'unit_status' => $_POST['unit_status_'.$unit_id],
 					), 
 					array( 'unit_id' => $unit_id ), 
 					array( 
+						'%d',
 						'%s',
 						'%s',
 						'%s',
-						'%s',
-						'%s',
-						'%s',
+						'%d',
 						'%d',
 						'%d'
 					), 
 					array( '%d' ) 
 				);
 			}
-			if( strlen(trim($_POST['unit_name_0'])) ) {
-				// The nzcf_corps is a bitmask, so calculate it.
-				$nzcf_corps = 0;
-				if( isset($_POST['nzcf_corps_0_atc']) && $_POST['nzcf_corps_0_atc'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_ATC;
+			if( strlen(trim($_POST['unit_long_0'])) && strlen(trim($_POST['unit_long_0'])) )
+			{
+				$unit_id=0;
+				// The unit_corps is a bitmask, so calculate it.
+				$unit_corps = 0;
+				if( isset($_POST['unit_corps_'.$unit_id.'_scc']) && $_POST['unit_corps_'.$unit_id.'_scc'] ) {
+					$unit_corps = $unit_corps_ | WPNZCFCN_CADETS_SCC;
 				} 
-				if( isset($_POST['nzcf_corps_0_corps']) && $_POST['nzcf_corps_0_corps'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_NZCC;
+				if( isset($_POST['unit_corps_'.$unit_id.'_nzcc']) && $_POST['unit_corps_'.$unit_id.'_nzcc'] ) {
+					$unit_corps_ = $unit_corps_ | WPNZCFCN_CADETS_NZCC;
 				} 
-				if( isset($_POST['nzcf_corps_0_sea']) && $_POST['nzcf_corps_0_sea'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_CADETS_SCC;
-				}  
-				if( isset($_POST['nzcf_corps_0_civ']) && $_POST['nzcf_corps_0_civ'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_RANK_CIVILIAN;
+				if( isset($_POST['unit_corps_'.$unit_id.'_atc']) && $_POST['unit_corps_'.$unit_id.'_atc'] ) {
+					$unit_corps_ = $unit_corps_ | WPNZCFCN_CADETS_ATC;
+				}
+				// So's the area
+				$unit_area = 0;
+				if( isset($_POST['unit_area_'.$unit_id.'_n']) && $_POST['unit_area_'.$unit_id.'_n'] ) {
+					$unit_area = $unit_area | WPNZCFCN_AREA_NORTHERN;
 				} 
-				if( isset($_POST['nzcf_corps_0_rf']) && $_POST['nzcf_corps_0_rf'] ) {
-					$nzcf_corps = $nzcf_corps | WPNZCFCN_REGULAR_FORCES;
+				if( isset($_POST['unit_area_'.$unit_id.'_c']) && $_POST['unit_area_'.$unit_id.'_c'] ) {
+					$unit_area = $unit_area | WPNZCFCN_AREA_CENTRAL;
 				} 
-				
-				$parade_night = 0;
-				if( isset($_POST['parade_night_0_sun']) && $_POST['parade_night_'.$unit_id.'_sun'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_SUNDAY;
-				} 
-				if( isset($_POST['parade_night_0_mon']) && $_POST['parade_night_0_mon'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_MONDAY;
-				} 
-				if( isset($_POST['parade_night_0_tue']) && $_POST['parade_night_0_tue'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_TUESDAY;
-				} 
-				if( isset($_POST['parade_night_0_wed']) && $_POST['parade_night_0_wed'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_WEDNESDAY;
-				} 
-				if( isset($_POST['parade_night_0_thu']) && $_POST['parade_night_0_thu'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_THURSDAY;
-				} 
-				if( isset($_POST['parade_night_0_fri']) && $_POST['parade_night_0_fri'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_FRIDAY;
-				} 
-				if( isset($_POST['parade_night_0_sat']) && $_POST['parade_night_0_sat'] ) {
-					$parade_night = $parade_night | WPNZCFCN_DAY_SATURDAY;
-				} 
-				
+				if( isset($_POST['unit_area_'.$unit_id.'_s']) && $_POST['unit_area_'.$unit_id.'_s'] ) {
+					$unit_area = $unit_area | WPNZCFCN_AREA_SOUTHERN;
+				}
+								
+				// User data handling done by the update function, not our problem.
+				$wpdb->update( 
+					$wpdb->prefix."wpnzcfcn_unit", 
+					array( 
+						'unit_sort' => $_POST['unit_sort_'.$unit_id],
+						'unit_short' => $_POST['unit_short_'.$unit_id],
+						'unit_medium' => $_POST['unit_medium_'.$unit_id],
+						'unit_long' => $_POST['unit_long_'.$unit_id],
+						'unit_area' => $unit_area,
+						'unit_corps' => $unit_corps,
+						'unit_status' => $_POST['unit_status_'.$unit_id],
+					), 
+					array( 'unit_id' => $unit_id ), 
+					array( 
+						'%d',
+						'%s',
+						'%s',
+						'%s',
+						'%d',
+						'%d',
+						'%d'
+					), 
+					array( '%d' ) 
+				); 
 				
 				// User data handling done by the update function, not our problem.
 				$wpdb->insert( 
 					$wpdb->prefix."wpnzcfcn_unit", 
 					array( 
-						'unit_name' => $_POST['unit_name_0'],
-						'phone' => $_POST['phone_0'],
-						'email' => $_POST['email_0'],
-						'latitude' => $_POST['latitude_0'],
-						'longitude' => $_POST['longitude_0'],
-						'website' => $_POST['website_0'],
-						'nzcf_corps' => $nzcf_corps,
-						'parade_night' => $parade_night
-					), 
+						'unit_sort' => $_POST['unit_sort_'.$unit_id],
+						'unit_short' => $_POST['unit_short_'.$unit_id],
+						'unit_medium' => $_POST['unit_medium_'.$unit_id],
+						'unit_long' => $_POST['unit_long_'.$unit_id],
+						'unit_area' => $unit_area,
+						'unit_corps' => $unit_corps,
+						'unit_status' => $_POST['unit_status_'.$unit_id],
+					),  
 					array( 
-						'%s',
-						'%s',
-						'%s',
+						'%d',
 						'%s',
 						'%s',
 						'%s',
 						'%d',
+						'%d',
 						'%d'
-					)
+					) 
 				);
 			}
 			echo '<h3>'.__('Saved','nzcf-cadetnet').'</h3>';
@@ -179,106 +165,148 @@
 			SELECT 
 				* 
 			FROM 
-				".$wpdb->prefix."wpnzcfcn_unit 
+				".$wpdb->prefix."wpnzcfcn_unit
 			ORDER BY 
-				LOWER(unit_name) ASC;",
+				unit_sort ASC;",
 			''
-        ) );
+		) );
  	   
 		?>
 			<form method="post">
 				<table>
 					<thead>	
 						<tr>
-							<th rowspan="2"> <?= __('Unit Name','nzcf-cadetnet') ?> </th>
-							<th rowspan="2"> <?= __('Address','nzcf-cadetnet') ?> </th>
-							<th rowspan="2"> <?= __('Phone','nzcf-cadetnet') ?> </th>
-							<th rowspan="2"> <?= __('Email','nzcf-cadetnet') ?> </th>
-							<th colspan="2"> <?= __('Location','nzcf-cadetnet') ?> </th>
-							<th rowspan="2"> <?= __('Website','nzcf-cadetnet') ?> </th>
-							<th colspan="5"> <?= __('Corps','nzcf-cadetnet') ?> </th>
-							<th colspan="7"> <?= __('Parade Nights','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Sort','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Shortname','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Medium name','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Long name','nzcf-cadetnet') ?> </th>
+							<th colspan="3"> <?= __('Area','nzcf-cadetnet') ?> </th>
+							<th colspan="3"> <?= __('Corps','nzcf-cadetnet') ?> </th>
+							<th rowspan="2"> <?= __('Status','nzcf-cadetnet') ?> </th>
 						</tr>
 						<tr>
-							<th> <?= __('Lat','nzcf-cadetnet') ?> </th>
-							<th> <?= __('Lng','nzcf-cadetnet') ?> </th>
-							
-							<th> <?= __('Cadet','nzcf-cadetnet') ?> </th>
+							<th> <?= __('N','nzcf-cadetnet') ?> </th>
+							<th> <?= __('C','nzcf-cadetnet') ?> </th>
+							<th> <?= __('S','nzcf-cadetnet') ?> </th>
+							<th> <?= __('SCC','nzcf-cadetnet') ?> </th>
+							<th> <?= __('NZCC','nzcf-cadetnet') ?> </th>
 							<th> <?= __('ATC','nzcf-cadetnet') ?> </th>
-							<th> <?= __('Sea','nzcf-cadetnet') ?> </th>
-							<th> <?= __('Civ','nzcf-cadetnet') ?> </th>
-							<th> <?= __('Reg. F','nzcf-cadetnet') ?> </th>
-							
-							<th> <?= __('S','nzcf-cadetnet') ?> </th>
-							<th> <?= __('M','nzcf-cadetnet') ?> </th>
-							<th> <?= __('T','nzcf-cadetnet') ?> </th>
-							<th> <?= __('W','nzcf-cadetnet') ?> </th>
-							<th> <?= __('T','nzcf-cadetnet') ?> </th>
-							<th> <?= __('F','nzcf-cadetnet') ?> </th>
-							<th> <?= __('S','nzcf-cadetnet') ?> </th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
-							foreach( $response as $row ) {
-								echo '<tr>';
-								echo '	<td>';
-								echo '		<input type="hidden" name="unit_ids[]" value="'.$row->unit_id.'" />';
-								echo '		<input type="text" name="unit_name_'.$row->unit_id.'" value="'.htmlentities($row->unit_name).'" class="unit_name" maxlength="255" />';
-								echo '	</td>';
-								echo '	<td>';
-								echo '		<input type="text" name="address_'.$row->unit_id.'" id="address_'.$row->unit_id.'" value="'.htmlentities($row->address).'" maxlength="255" />';
-								echo '	</td>';
-								echo '	<td> <input type="tel" name="phone_'.$row->unit_id.'" id="phone_'.$row->unit_id.'" value="'.htmlentities($row->phone).'" maxlength="255" /> </td>';
-								echo '	<td> <input type="email" name="email_'.$row->unit_id.'" id="email_'.$row->unit_id.'" value="'.htmlentities($row->email).'" maxlength="255" /> </td>';
-								echo '	<td> <input type="number" name="latitude_'.$row->unit_id.'" id="latitude_'.$row->unit_id.'" value="'.$row->latitude.'" max="180" min="-180" /> </td>';
-								echo '	<td> <input type="number" name="longitude_'.$row->unit_id.'" id="longitude_'.$row->unit_id.'" value="'.$row->longitude.'" max="180" min="-180" /> </td>';
-								echo '	<td> <input type="text" name="website_'.$row->unit_id.'" id="website_'.$row->unit_id.'" value="'.htmlentities($row->website).'" maxlength="150" /> </td>';
+							foreach( $response as $unit ) {
+								echo '<tr'.($unit->unit_status<0?' class="inactive"':'').'>';
+								echo '	<td data-col="unit_sort" class="number"> '.$unit->unit_sort.' </td>';
+								echo '	<td data-col="unit_short"> '.htmlentities($unit->unit_short).' </td>';
+								echo '	<td data-col="unit_medium"> '.htmlentities($unit->unit_medium).' </td>';
+								echo '	<td data-col="unit_long"> '.htmlentities($unit->unit_long).' </td>';
 								
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_corps" id="nzcf_corps_'.$row->unit_id.'_corps" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_NZCC?' checked="checked"':'').' class="corps" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_atc" id="nzcf_corps_'.$row->unit_id.'_atc" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_ATC?' checked="checked"':'').' class="atc" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_sea" id="nzcf_corps_'.$row->unit_id.'_sea" value="1" '.($row->nzcf_corps&WPNZCFCN_CADETS_SCC?' checked="checked"':'').' class="sea" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_civ" id="nzcf_corps_'.$row->unit_id.'_civ" value="1" '.($row->nzcf_corps&WPNZCFCN_RANK_CIVILIAN?' checked="checked"':'').' class="civilian" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_'.$row->unit_id.'_rf" id="nzcf_corps_'.$row->unit_id.'_rf" value="1" '.($row->nzcf_corps&WPNZCFCN_REGULAR_FORCES?' checked="checked"':'').' class="regularforces" /> </td>';
-
-
-								echo '	<td align="center"> <input type="checkbox" name="parade_night_'.$row->unit_id.'_sun" id="parade_night_'.$row->unit_id.'_sun" value="1" '.($row->parade_night&WPNZCFCN_DAY_SUNDAY?' checked="checked"':'').' class="sunday" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="parade_night_'.$row->unit_id.'_mon" id="parade_night_'.$row->unit_id.'_mon" value="1" '.($row->parade_night&WPNZCFCN_DAY_MONDAY?' checked="checked"':'').' class="monday" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="parade_night_'.$row->unit_id.'_tue" id="parade_night_'.$row->unit_id.'_tue" value="1" '.($row->parade_night&WPNZCFCN_DAY_TUESDAY?' checked="checked"':'').' class="tuesday" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="parade_night_'.$row->unit_id.'_wed" id="parade_night_'.$row->unit_id.'_wed" value="1" '.($row->parade_night&WPNZCFCN_DAY_WEDNESDAY?' checked="checked"':'').' class="wednesday" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="parade_night_'.$row->unit_id.'_thu" id="parade_night_'.$row->unit_id.'_thu" value="1" '.($row->parade_night&WPNZCFCN_DAY_THURSDAY?' checked="checked"':'').' class="thursday" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="parade_night_'.$row->unit_id.'_fri" id="parade_night_'.$row->unit_id.'_fri" value="1" '.($row->parade_night&WPNZCFCN_DAY_FRIDAY?' checked="checked"':'').' class="friday" /> </td>';
-								echo '	<td align="center"> <input type="checkbox" name="parade_night_'.$row->unit_id.'_sat" id="parade_night_'.$row->unit_id.'_sat" value="1" '.($row->parade_night&WPNZCFCN_DAY_SATURDAY?' checked="checked"':'').' class="saturday" /> </td>';
+								echo '	<td align="center" class="checkbox" data-col="unit_area" data-col2="n"> '.($unit->unit_area&WPNZCFCN_AREA_NORTHERN?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="unit_area" data-col2="c"> '.($unit->unit_area&WPNZCFCN_AREA_CENTRAL?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="unit_area" data-col2="s"> '.($unit->unit_area&WPNZCFCN_AREA_SOUTHERN?'✔':'').' </td>';
 								
+								echo '	<td align="center" class="checkbox" data-col="unit_corps" data-col2="scc"> '.($unit->unit_corps&WPNZCFCN_CADETS_SCC?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="unit_corps" data-col2="nzcc"> '.($unit->unit_corps&WPNZCFCN_CADETS_NZCC?'✔':'').' </td>';
+								echo '	<td align="center" class="checkbox" data-col="unit_corps" data-col2="atc"> '.($unit->unit_corps&WPNZCFCN_CADETS_ATC?'✔':'').' </td>';
+								
+								echo '	<td class="active_status" data-col="unit_status"> ';
+								switch ($unit->unit_status) {
+									case WPNZCFCN_STATUS_ACTIVE:
+										echo __('Active','nzcf-cadetnet');
+										break;
+									case WPNZCFCN_STATUS_INACTIVE:
+										echo __('Inactive','nzcf-cadetnet');
+										break;
+									case WPNZCFCN_STATUS_DISBANDED:
+										echo __('Disbanded','nzcf-cadetnet');
+										break;
+									case WPNZCFCN_STATUS_RECESS:
+										echo __('Recess','nzcf-cadetnet');
+										break;
+									case WPNZCFCN_STATUS_UNRECOGNISED:
+										echo __('Unrecognised','nzcf-cadetnet');
+										break;
+									default:
+										echo __('Unknown','nzcf-cadetnet');
+								}
+								
+								echo '	</td>';
+								echo '	<td class="options"> <button type="button" class="edit" data-rownum="'.$unit->unit_id.'">'.__('Edit','nzcf-cadnet').'</button> </td>';
 								echo '</tr>';
 							}
 							echo '<tr>';
-							echo '	<td> <input type="text" name="unit_name_0" value="" class="unit_name" maxlength="255" /> </td>';
-							echo '	<td> <input type="text" name="address_0" id="address_0" value="" maxlength="255" /> </td>';
-							echo '	<td> <input type="tel" name="phone_0" id="phone_0" value="" maxlength="255" /> </td>';
-							echo '	<td> <input type="email" name="email_0" id="email_0" value="" maxlength="255" /> </td>';
-							echo '	<td> <input type="number" name="latitude_0" id="latitude_0" value="" max="180" min="-180" /> </td>';
-							echo '	<td> <input type="number" name="longitude_0" id="longitude_0" value="" max="180" min="-180" /> </td>';
-							echo '	<td> <input type="text" name="website_0" id="website_0" maxlength="150" /> </td>';
+							echo '	<td data-col="unit_sort" class="number"> <input type="number" name="unit_sort_0" id="unit_sort_0" value="99999" /> </td>';
+							echo '	<td data-col="unit_short"> <input type="text" name="unit_short_0" id="unit_short_0" maxlength="12" /> </td>';
+							echo '	<td data-col="unit_medium"> <input type="text" name="unit_medium_0" id="unit_medium_0" maxlength="60" /> </td>';
+							echo '	<td data-col="unit_long"> <input type="text" name="unit_long_0" id="unit_long_0" maxlength="100" /> </td>';
 							
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_corps" id="nzcf_corps_0_corps" value="1" class="corps" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_atc" id="nzcf_corps_0_atc" value="1" class="atc" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_sea" id="nzcf_corps_0_sea" value="1" class="sea" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_civ" id="nzcf_corps_0_civ" value="1" class="civilian" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="nzcf_corps_0_rf" id="nzcf_corps_0_rf" value="1" class="regularforces" /> </td>';
-
-							echo '	<td align="center"> <input type="checkbox" name="parade_night_0_sun" id="parade_night_0_sun" value="1" class="sunday" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="parade_night_0_mon" id="parade_night_0_mon" value="1" class="monday" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="parade_night_0_tue" id="parade_night_0_tue" value="1" class="tuesday" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="parade_night_0_wed" id="parade_night_0_wed" value="1" class="wednesday" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="parade_night_0_thu" id="parade_night_0_thu" value="1" class="thursday" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="parade_night_0_fri" id="parade_night_0_fri" value="1" class="friday" /> </td>';
-							echo '	<td align="center"> <input type="checkbox" name="parade_night_0_sat" id="parade_night_0_sat" value="1" class="saturday" /> </td>';
-								
+							echo '	<td align="center" class="checkbox" data-col="unit_area" data-col2="n"> <input type="checkbox" name="unit_area_n" id="unit_area_n" value="1" /> </td>';
+							echo '	<td align="center" class="checkbox" data-col="unit_area" data-col2="c"> <input type="checkbox" name="unit_area_c" id="unit_area_c" value="1" /> </td>';
+							echo '	<td align="center" class="checkbox" data-col="unit_area" data-col2="s"> <input type="checkbox" name="unit_area_s" id="unit_area_s" value="1" /> </td>';
+							
+							echo '	<td align="center" class="checkbox" data-col="unit_corps" data-col2="scc"> <input type="checkbox" name="unit_corps_scc" id="unit_corps_scc" value="1" /> </td>';
+							echo '	<td align="center" class="checkbox" data-col="unit_corps" data-col2="nzcc"> <input type="checkbox" name="unit_corps_nzcc" id="unit_corps_nzcc" value="1" /> </td>';
+							echo '	<td align="center" class="checkbox" data-col="unit_corps" data-col2="atc"> <input type="checkbox" name="unit_corps_atc" id="unit_corps_atc" value="1" /> </td>';
+							
+							echo '	<td class="active_status" data-col="unit_status"> ';
+							echo '		<select name="unit_status_0" id="unit_status_0">';
+							echo '			<optgroup label="'. htmlentities(__('Active','nzcf-cadetnet')).'">';
+							echo '				<option value="'.WPNZCFCN_STATUS_ACTIVE.'">'.htmlentities(__('Active','nzcf-cadetnet')).'</option>';
+							echo '				<option value="'.WPNZCFCN_STATUS_UNRECOGNISED.'">'.htmlentities(__('Unrecognised','nzcf-cadetnet')).'</option>';
+							echo '			</optgroup>';
+							echo '			<optgroup label="'.htmlentities(__('Inactive','nzcf-cadetnet')).'">';
+							echo '				<option value="'.WPNZCFCN_STATUS_INACTIVE.'">'.htmlentities(__('Inactive','nzcf-cadetnet')).'</option>';
+							echo '				<option value="'.WPNZCFCN_STATUS_DISBANDED.'">'.htmlentities(__('Disbanded','nzcf-cadetnet')).'</option>';
+							echo '				<option value="'.WPNZCFCN_STATUS_RECESS.'">'.htmlentities(__('Recess','nzcf-cadetnet')).'</option>';
+							echo '			</optgroup>';
+							echo '		</select>';
+							echo '	</td>';
+							echo '	<td class="options"> <button type="button" class="edit" data-rownum="'.$unit->unit_id.'">'.__('Edit','nzcf-cadnet').'</button> </td>';
 							echo '</tr>';
+						
 						?>
 					</tbody>
 				</table>
+				
+				<script>
+					// Allow us to edit any line as we want to.
+					// This is needed as there's a PHP limit for 1000 data inputs on a form, and we have more than that!
+					jQuery('button.edit').click(function(){
+						var id = jQuery(this).data('rownum');
+						jQuery.each(jQuery(this).parents('tr').children('td').not('.options'), function(){
+							var currvalue = jQuery(this).html().trim();
+							var col = jQuery(this).data('col');
+							var col2 = jQuery(this).data('col2');
+							
+							if( jQuery(this).hasClass('checkbox') ) {
+								jQuery(this).html('<input type="checkbox" name="'+col+'_'+id+'_'+col2+'" id="'+col+'_'+id+'_'+col2+'" value="1"'+(currvalue?' checked="checked"':'')+' />');
+							} else if( jQuery(this).hasClass('active_status') ) {
+								jQuery(this).html(''+
+									'<select name="'+col+'_'+id+'" id="'+col+'_'+id+'">'+
+									'	<optgroup label="<?= htmlentities(__('Active','nzcf-cadetnet'))?>">'+
+									'		<option value="<?= WPNZCFCN_STATUS_ACTIVE ?>"'+(currvalue=='<?= htmlentities(__('Active','nzcf-cadetnet')) ?>'?' selected="selected"':'')+'><?= htmlentities(__('Active','nzcf-cadetnet')) ?></option>'+
+									'		<option value="<?= WPNZCFCN_STATUS_UNRECOGNISED ?>"'+(currvalue=='<?= htmlentities(__('Unrecognised','nzcf-cadetnet')) ?>'?' selected="selected"':'')+'><?= htmlentities(__('Unrecognised','nzcf-cadetnet')) ?></option>'+
+									'	</optgroup>'+
+									'	<optgroup label="<?= htmlentities(__('Inactive','nzcf-cadetnet'))?>">'+
+									'		<option value="<?= WPNZCFCN_STATUS_INACTIVE ?>"'+(currvalue=='<?= htmlentities(__('Inactive','nzcf-cadetnet')) ?>'?' selected="selected"':'')+'><?= htmlentities(__('Inactive','nzcf-cadetnet')) ?></option>'+
+									'		<option value="<?= WPNZCFCN_STATUS_DISBANDED ?>"'+(currvalue=='<?= htmlentities(__('Disbanded','nzcf-cadetnet')) ?>'?' selected="selected"':'')+'><?= htmlentities(__('Disbanded','nzcf-cadetnet')) ?></option>'+
+									'		<option value="<?= WPNZCFCN_STATUS_RECESS ?>"'+(currvalue=='<?= htmlentities(__('Recess','nzcf-cadetnet')) ?>'?' selected="selected"':'')+'><?= htmlentities(__('Recess','nzcf-cadetnet')) ?></option>'+
+									'	</optgroup>'+
+									'</select>'
+								);
+							} else  if( jQuery(this).hasClass('number') ) {
+								jQuery(this).html('<input type="number" name="'+col+'_'+id+'" id="'+col+'_'+id+'" value="'+currvalue+'" />');
+							} else {
+								jQuery(this).html('<input type="text" name="'+col+'_'+id+'" id="'+col+'_'+id+'" value="'+currvalue+'" />');
+							}
+						});
+						jQuery(this).parent().siblings('td:first-child').append('<input type="hidden" name="unit_ids[]" value="'+id+'" />');
+						jQuery(this).hide();
+					});
+				</script>
+				
+				
 				<button type="submit" class="save"><?= __('Save Changes','nzcf-cadetnet') ?></button>
 				<button type="cancel" class="cancel"><?= __('Cancel','nzcf-cadetnet') ?></button>
 			</form>
